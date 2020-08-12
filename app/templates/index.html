@@ -5,22 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- SEO Meta Tags -->
-    <meta name="description"
-        content="Create a stylish landing page for your business startup and get leads for the offered services with this HTML landing page template.">
-    <meta name="author" content="Inovatik">
-
     <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
-    <meta property="og:site_name" content="" /> <!-- website name -->
-    <meta property="og:site" content="" /> <!-- website link -->
-    <meta property="og:title" content="" /> <!-- title shown in the actual shared post -->
+    <meta property="og:site_name" content="{{config.SITE_NAME}}" /> <!-- website name -->
+    <meta property="og:site" content="{{config.SITE_NAME}}" /> <!-- website link -->
+    <meta property="og:title" content="{{config.APP_NAME}}" /> <!-- title shown in the actual shared post -->
     <meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
     <meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
     <meta property="og:url" content="" /> <!-- where do you want your post to link to -->
     <meta property="og:type" content="article" />
 
     <!-- Website Title -->
-    <title>Evolo - StartUp HTML Landing Page Template</title>
+    <title>{{config.SITE_NAME}}</title>
 
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext"
@@ -37,7 +32,7 @@
 
 <body data-spy="scroll" data-target=".fixed-top">
 
-    <!-- Preloader --
+    <!-- Preloader -->
     <div class="spinner-wrapper">
         <div class="spinner">
             <div class="bounce1"></div>
@@ -45,13 +40,13 @@
             <div class="bounce3"></div>
         </div>
     </div>
-    -- end of preloader -->
+    <!-- end of preloader -->
 
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
         <!-- Text Logo - Use this if you don't have a graphic logo -->
-        <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Evolo</a> -->
+        <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">{{config.SITE_NAME}}</a> -->
 
         <!-- Image Logo -->
         <a class="navbar-brand logo-image" href="index.html"><img src="static/images/logo.svg" alt="alternative"></a>
@@ -70,13 +65,10 @@
                     <a class="nav-link page-scroll" href="#header">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#services">Services</a>
+                    <a class="nav-link page-scroll" href="#services">Solutions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#pricing">Pricing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#request">Request</a>
+                    <a class="nav-link page-scroll" href="#header">Demo</a> <!-- will be route the app-->
                 </li>
 
                 <!-- Dropdown Menu -->
@@ -94,7 +86,7 @@
                 <!-- end of dropdown menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#contact">Contact</a>
+                    <a class="nav-link page-scroll" href="#contact">Contact Us</a>
                 </li>
             </ul>
             <span class="nav-item social-icons">
@@ -126,7 +118,7 @@
                             <h1><span class="turquoise">StartUp Landing</span> Page Template Free</h1>
                             <p class="p-large">Use Evolo free landing page template to promote your business startup and
                                 generate leads for the offered services</p>
-                            <a class="btn-solid-lg page-scroll" href="#services">DISCOVER</a>
+                            <a class="btn-solid-lg page-scroll" href="#header">DEMO</a> <!-- to the app route -->
                         </div> <!-- end of text-container -->
                     </div> <!-- end of col -->
                     <div class="col-lg-6">
@@ -192,397 +184,6 @@
     </div> <!-- end of cards-1 -->
     <!-- end of services -->
 
-
-    <!-- Details 1 -->
-    <div class="basic-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="text-container">
-                        <h2>Design And Plan Your Business Growth Steps</h2>
-                        <p>Use our staff and our expertise to design and plan your business growth strategy. Evolo team
-                            is eager to advise you on the best opportunities that you should look into</p>
-                        <a class="btn-solid-reg popup-with-move-anim" href="#details-lightbox-1">LIGHTBOX</a>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
-                <div class="col-lg-6">
-                    <div class="image-container">
-                        <img class="img-fluid" src="static/images/details-1-office-worker.svg" alt="alternative">
-                    </div> <!-- end of image-container -->
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of basic-1 -->
-    <!-- end of details 1 -->
-
-
-    <!-- Details 2 -->
-    <div class="basic-2">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="image-container">
-                        <img class="img-fluid" src="static/images/details-2-office-team-work.svg" alt="alternative">
-                    </div> <!-- end of image-container -->
-                </div> <!-- end of col -->
-                <div class="col-lg-6">
-                    <div class="text-container">
-                        <h2>Search For Optimization Wherever Is Possible</h2>
-                        <ul class="list-unstyled li-space-lg">
-                            <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body">Basically we'll teach you step by step what you need to do</div>
-                            </li>
-                            <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body">In order to develop your company and reach new heights</div>
-                            </li>
-                            <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body">Everyone will be pleased from stakeholders to employees</div>
-                            </li>
-                        </ul>
-                        <a class="btn-solid-reg popup-with-move-anim" href="#details-lightbox-2">LIGHTBOX</a>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of basic-2 -->
-    <!-- end of details 2 -->
-
-    <!-- Details Lightboxes -->
-    <!-- Details Lightbox 1 -->
-    <div id="details-lightbox-1" class="lightbox-basic zoom-anim-dialog mfp-hide">
-        <div class="container">
-            <div class="row">
-                <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
-                <div class="col-lg-8">
-                    <div class="image-container">
-                        <img class="img-fluid" src="static/images/details-lightbox-1.svg" alt="alternative">
-                    </div> <!-- end of image-container -->
-                </div> <!-- end of col -->
-                <div class="col-lg-4">
-                    <h3>Design And Plan</h3>
-                    <hr>
-                    <h5>Core feature</h5>
-                    <p>The emailing module basically will speed up your email marketing operations while offering more
-                        subscriber control.</p>
-                    <p>Do you need to build lists for your email campaigns? It just got easier with Evolo.</p>
-                    <ul class="list-unstyled li-space-lg">
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">List building framework</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">Easy database browsing</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">User administration</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">Automate user signup</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">Quick formatting tools</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">Fast email checking</div>
-                        </li>
-                    </ul>
-                    <a class="btn-solid-reg mfp-close page-scroll" href="#request">REQUEST</a> <a
-                        class="btn-outline-reg mfp-close as-button" href="#screenshots">BACK</a>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of lightbox-basic -->
-    <!-- end of details lightbox 1 -->
-
-    <!-- Details Lightbox 2 -->
-    <div id="details-lightbox-2" class="lightbox-basic zoom-anim-dialog mfp-hide">
-        <div class="container">
-            <div class="row">
-                <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
-                <div class="col-lg-8">
-                    <div class="image-container">
-                        <img class="img-fluid" src="static/images/details-lightbox-2.svg" alt="alternative">
-                    </div> <!-- end of image-container -->
-                </div> <!-- end of col -->
-                <div class="col-lg-4">
-                    <h3>Search To Optimize</h3>
-                    <hr>
-                    <h5>Core feature</h5>
-                    <p>The emailing module basically will speed up your email marketing operations while offering more
-                        subscriber control.</p>
-                    <p>Do you need to build lists for your email campaigns? It just got easier with Evolo.</p>
-                    <ul class="list-unstyled li-space-lg">
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">List building framework</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">Easy database browsing</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">User administration</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">Automate user signup</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">Quick formatting tools</div>
-                        </li>
-                        <li class="media">
-                            <i class="fas fa-check"></i>
-                            <div class="media-body">Fast email checking</div>
-                        </li>
-                    </ul>
-                    <a class="btn-solid-reg mfp-close page-scroll" href="#request">REQUEST</a> <a
-                        class="btn-outline-reg mfp-close as-button" href="#screenshots">BACK</a>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of lightbox-basic -->
-    <!-- end of details lightbox 2 -->
-    <!-- end of details lightboxes -->
-
-
-    <!-- Pricing -->
-    <div id="pricing" class="cards-2">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2>Multiple Pricing Options</h2>
-                    <p class="p-heading p-large">We've prepared pricing plans for all budgets so you can get started
-                        right away. They're great for small companies and large organizations</p>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-            <div class="row">
-                <div class="col-lg-12">
-
-                    <!-- Card-->
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">STARTER</div>
-                            <div class="card-subtitle">Just to see what can be achieved</div>
-                            <hr class="cell-divide-hr">
-                            <div class="price">
-                                <span class="currency">$</span><span class="value">199</span>
-                                <div class="frequency">monthly</div>
-                            </div>
-                            <hr class="cell-divide-hr">
-                            <ul class="list-unstyled li-space-lg">
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">Improve Your Email Marketing</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">User And Admin Rights Control</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-times"></i>
-                                    <div class="media-body">List Building And Cleaning</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-times"></i>
-                                    <div class="media-body">Collected Data Management</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-times"></i>
-                                    <div class="media-body">More Planning And Evaluation</div>
-                                </li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <a class="btn-solid-reg page-scroll" href="#request">REQUEST</a>
-                            </div>
-                        </div>
-                    </div> <!-- end of card -->
-                    <!-- end of card -->
-
-                    <!-- Card-->
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">MEDIUM</div>
-                            <div class="card-subtitle">Very appropriate for the short term</div>
-                            <hr class="cell-divide-hr">
-                            <div class="price">
-                                <span class="currency">$</span><span class="value">299</span>
-                                <div class="frequency">monthly</div>
-                            </div>
-                            <hr class="cell-divide-hr">
-                            <ul class="list-unstyled li-space-lg">
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">Improve Your Email Marketing</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">User And Admin Rights Control</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">List Building And Cleaning</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">Collected Data Management</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-times"></i>
-                                    <div class="media-body">More Planning And Evaluation</div>
-                                </li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <a class="btn-solid-reg page-scroll" href="#request">REQUEST</a>
-                            </div>
-                        </div>
-                    </div> <!-- end of card -->
-                    <!-- end of card -->
-
-                    <!-- Card-->
-                    <div class="card">
-                        <div class="label">
-                            <p class="best-value">Best Value</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="card-title">COMPLETE</div>
-                            <div class="card-subtitle">Must have for large companies</div>
-                            <hr class="cell-divide-hr">
-                            <div class="price">
-                                <span class="currency">$</span><span class="value">399</span>
-                                <div class="frequency">monthly</div>
-                            </div>
-                            <hr class="cell-divide-hr">
-                            <ul class="list-unstyled li-space-lg">
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">Improve Your Email Marketing</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">User And Admin Rights Control</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">List Building And Cleaning</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">Collected Data Management</div>
-                                </li>
-                                <li class="media">
-                                    <i class="fas fa-check"></i>
-                                    <div class="media-body">More Planning And Evaluation</div>
-                                </li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <a class="btn-solid-reg page-scroll" href="#request">REQUEST</a>
-                            </div>
-                        </div>
-                    </div> <!-- end of card -->
-                    <!-- end of card -->
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of cards-2 -->
-    <!-- end of pricing -->
-
-
-    <!-- Request -->
-    <div id="request" class="form-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="text-container">
-                        <h2>Fill The Following Form To Request A Meeting</h2>
-                        <p>Evolo is one of the easiest and feature packed marketing automation apps in the market.
-                            Discover what it can do for your business organization right away.</p>
-                        <ul class="list-unstyled li-space-lg">
-                            <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body"><strong class="blue">Automate your marketing</strong> activities
-                                    and get results today</div>
-                            </li>
-                            <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body"><strong class="blue">Interact with all your</strong> targeted
-                                    customers at a personal level</div>
-                            </li>
-                            <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body"><strong class="blue">Convince them to buy</strong> your
-                                    company's awesome products</div>
-                            </li>
-                            <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body"><strong class="blue">Save precious time</strong> and invest it
-                                    where you need it the most</div>
-                            </li>
-                        </ul>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
-                <div class="col-lg-6">
-
-                    <!-- Request Form -->
-                    <div class="form-container">
-                        <form id="requestForm" data-toggle="validator" data-focus="false">
-                            <div class="form-group">
-                                <input type="text" class="form-control-input" id="rname" name="rname" required>
-                                <label class="label-control" for="rname">Full name</label>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control-input" id="remail" name="remail" required>
-                                <label class="label-control" for="remail">Email</label>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control-input" id="rphone" name="rphone" required>
-                                <label class="label-control" for="rphone">Phone</label>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control-select" id="rselect" required>
-                                    <option class="select-option" value="" disabled selected>Interested in...</option>
-                                    <option class="select-option" value="Personal Loan">Starter</option>
-                                    <option class="select-option" value="Car Loan">Medium</option>
-                                    <option class="select-option" value="House Loan">Complete</option>
-                                </select>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group checkbox">
-                                <input type="checkbox" id="rterms" value="Agreed-to-Terms" name="rterms" required>I
-                                agree with Evolo's stated <a href="static/privacy-policy.html">Privacy Policy</a> and <a
-                                    href="static/terms-conditions.html">Terms & Conditions</a>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="form-control-submit-button">REQUEST</button>
-                            </div>
-                            <div class="form-message">
-                                <div id="rmsgSubmit" class="h3 text-center hidden"></div>
-                            </div>
-                        </form>
-                    </div> <!-- end of form-container -->
-                    <!-- end of request form -->
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of form-1 -->
-    <!-- end of request -->
-
-
     <!-- Video -->
     <div class="basic-3">
         <div class="container">
@@ -615,84 +216,6 @@
         </div> <!-- end of container -->
     </div> <!-- end of basic-3 -->
     <!-- end of video -->
-
-
-    <!-- Testimonials -->
-    <div class="slider-2">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="image-container">
-                        <img class="img-fluid" src="static/images/testimonials-2-men-talking.svg" alt="alternative">
-                    </div> <!-- end of image-container -->
-                </div> <!-- end of col -->
-                <div class="col-lg-6">
-                    <h2>Testimonials</h2>
-
-                    <!-- Card Slider -->
-                    <div class="slider-container">
-                        <div class="swiper-container card-slider">
-                            <div class="swiper-wrapper">
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <div class="card">
-                                        <img class="card-image" src="static/images/testimonial-1.svg" alt="alternative">
-                                        <div class="card-body">
-                                            <p class="testimonial-text">I just finished my trial period and was so
-                                                amazed with the support and results that I purchased Evolo right away at
-                                                the special price.</p>
-                                            <p class="testimonial-author">Jude Thorn - Designer</p>
-                                        </div>
-                                    </div>
-                                </div> <!-- end of swiper-slide -->
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <div class="card">
-                                        <img class="card-image" src="static/images/testimonial-2.svg" alt="alternative">
-                                        <div class="card-body">
-                                            <p class="testimonial-text">Evolo has always helped or startup to position
-                                                itself in the highly competitive market of mobile applications. You will
-                                                not regret using it!</p>
-                                            <p class="testimonial-author">Marsha Singer - Developer</p>
-                                        </div>
-                                    </div>
-                                </div> <!-- end of swiper-slide -->
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <div class="card">
-                                        <img class="card-image" src="static/images/testimonial-3.svg" alt="alternative">
-                                        <div class="card-body">
-                                            <p class="testimonial-text">Love their services and was so amazed with the
-                                                support and results that I purchased Evolo for two years in a row. They
-                                                are awesome.</p>
-                                            <p class="testimonial-author">Roy Smith - Marketer</p>
-                                        </div>
-                                    </div>
-                                </div> <!-- end of swiper-slide -->
-                                <!-- end of slide -->
-
-                            </div> <!-- end of swiper-wrapper -->
-
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            <!-- end of add arrows -->
-
-                        </div> <!-- end of swiper-container -->
-                    </div> <!-- end of slider-container -->
-                    <!-- end of card slider -->
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of slider-2 -->
-    <!-- end of testimonials -->
-
 
     <!-- About -->
     <div id="about" class="basic-4">
@@ -881,7 +404,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="footer-col">
-                        <h4>About Evolo</h4>
+                        <h4>About {{config.SITE_NAME}}</h4>
                         <p>We're passionate about offering some of the best business growth services for startups</p>
                     </div>
                 </div> <!-- end of col -->
@@ -950,7 +473,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <p class="p-small">Copyright © 2020 <a href="https://inovatik.com">Inovatik</a> - All rights
+                    <p class="p-small">Copyright © 2020 <a href="https://simple2b.com">Simple2B</a> - All rights
                         reserved</p>
                 </div> <!-- end of col -->
             </div> <!-- enf of row -->
@@ -967,6 +490,7 @@
     <script src="static/js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
     <script src="static/js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
     <script src="static/js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
+    <script src="static/js/scripts.js"></script>
 
 </body>
 
