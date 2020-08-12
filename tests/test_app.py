@@ -1,7 +1,6 @@
 from unittest import TestCase, main
 
 from app import db, create_app
-from app.models import User
 
 app = create_app(environment='testing')
 

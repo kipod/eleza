@@ -1,4 +1,4 @@
-from .auth.models import User, AnonymousUser
+# from .auth.models import User, AnonymousUser
 
 # Define your models here.
 # You can also define them inside a package and import them here.

@@ -15,7 +15,7 @@ class BaseConfig(object):
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
-        pass 
+        pass
 
 
 class DevelopmentConfig(BaseConfig):
