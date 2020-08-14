@@ -33,7 +33,7 @@ def create_app(environment="development"):
     # Register blueprints.
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
-    app.register_blueprint(demo_blueprint)
+    app.register_blueprint(demo_blueprint, url_prefix="/demo")
 
     # Set up flask login.
     @login_manager.user_loader
