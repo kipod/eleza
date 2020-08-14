@@ -1,13 +1,12 @@
 import os
 
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.exceptions import HTTPException
+from app.models import Diagnosis, ModelType, Feature
 
 # instantiate extensions
 login_manager = LoginManager()
-db = SQLAlchemy()
 
 
 def create_app(environment='development'):
@@ -16,6 +15,7 @@ def create_app(environment='development'):
     from .views import main_blueprint
     from .auth.views import auth_blueprint
     from .auth.models import User, AnonymousUser
+    from .database import db
 
     # Instantiate app.
     app = Flask(__name__)
@@ -48,3 +48,13 @@ def create_app(environment='development'):
         return render_template('error.html', error=exc), exc.code
 
     return app
+
+
+def fill_db():
+    ModelType(name='XGBoost').save()
+    Diagnosis(name='Cancer').save()
+    Diagnosis(name='Cardiac').save()
+    Diagnosis(name='Dermatology').save()
+    Diagnosis(name='Diabetic').save()
+    Feature(name='Age', short_name='age').save()
+    Feature(name='Num. of Pregnacies', short_name='preg').save()
