@@ -4,8 +4,8 @@ from flask_login import UserMixin, AnonymousUserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from .. import db
-from ..utils import ModelMixin
+from app.database import db
+from app.utils import ModelMixin
 
 
 class User(db.Model, UserMixin, ModelMixin):
