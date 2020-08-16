@@ -14,3 +14,4 @@ pytest
 flake8
 black
 email_validator
+flask-migrate
