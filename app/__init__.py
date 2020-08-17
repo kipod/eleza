@@ -3,7 +3,6 @@ import os
 from flask import Flask, render_template
 from flask_login import LoginManager
 from werkzeug.exceptions import HTTPException
-from app.models import Diagnosis, ModelType, Feature
 
 # instantiate extensions
 login_manager = LoginManager()
@@ -50,13 +49,3 @@ def create_app(environment="development"):
         return render_template("error.html", error=exc), exc.code
 
     return app
-
-
-def fill_db():
-    ModelType(name='XGBoost').save()
-    Diagnosis(name='Cancer').save()
-    Diagnosis(name='Cardiac').save()
-    Diagnosis(name='Dermatology').save()
-    Diagnosis(name='Diabetic').save()
-    Feature(name='Age', short_name='age').save()
-    Feature(name='Num. of Pregnacies', short_name='preg').save()

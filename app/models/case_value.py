@@ -5,20 +5,24 @@ from sqlalchemy.orm import relationship
 
 class CaseValue(db.Model, ModelMixin):
     """CaseValue entity"""
+
     __tablename__ = "case_value"
 
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, nullable=False)
     value = db.Column(db.Float)
     explainer = db.Column(db.Float)
-    diagnosis_id = db.Column(db.Integer, db.ForeignKey("diagnosis.id"))
+    subdomain_id = db.Column(db.Integer, db.ForeignKey("subdomain.id"))
     model_type_id = db.Column(db.Integer, db.ForeignKey("model_type.id"))
     feature_id = db.Column(db.Integer, db.ForeignKey("feature.id"))
-    diagnosis = relationship("Diagnosis")
+    subdomain = relationship("Subdomain")
     model_type = relationship("ModelType")
     feature = relationship("Feature")
 
-
+    def __repr__(self):
+        return "<Val({}) case_id:{} val:{} ex:{} name:{}>".format(
+            self.id, self.case_id, self.value, self.explainer, self.feature.short_name
+        )
 
     def to_dict(self) -> dict:
         return {"id": self.id, "name": self.сase, "value": self.value}
