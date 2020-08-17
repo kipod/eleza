@@ -54,6 +54,6 @@ def import_data_from_file(
                         case.explainer = explainer
 
     db.session.commit()
-    log(log.INFO, "Import successfull")
+    log(log.INFO, "Import data successfull for %s[%s]", subdomain_type, subdomain_name)
     if not app.config["TESTING"]:
         log(log.DEBUG, "Testing")
