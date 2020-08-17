@@ -10,6 +10,8 @@ def predictive_power(subdomain):
             .all()
         )
         count = len(all)
+        if not count:
+            return {}
         result[feature.name] = sum([abs(case.explainer) for case in all]) / count
         result[feature.name] = add_pred_pow(result[feature.name])
     return result

@@ -41,7 +41,7 @@
             <h3 style="margin-top: 10px;">
               Please enter required information:
             </h3>
-            <form class="form" role="form" action="." method="post">
+            <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post">
               <input id="subdomain_type" name="subdomain_type" type="hidden" value="healthcare">
               <table class="table table-hover table-borderless" style="margin-top: 50px;">
                 <tr>
@@ -60,12 +60,14 @@
                 </tr>
                 <tr>
                   <td>
-                    <p>Select Model Type</p>
+                    {{ form.model_type.label(class="form-control") }}
                   </td>
                   <td>
-                    <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                      Dropdown
-                    </button>
+                    <select class="form-control" id="model_type" name="model_type">
+                      {% for model in form.models %}
+                      <option value="{{model.id}}">{{model.name}}</option>
+                      {% endfor %}
+                    </select>
                   </td>
                 </tr>
                 <tr>
