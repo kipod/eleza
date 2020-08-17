@@ -2,7 +2,7 @@
 import click
 
 from app import create_app, models, forms
-from app.database import db
+from app.database import db, db_fill_data
 
 app = create_app()
 
@@ -18,14 +18,15 @@ def get_context():
 def create_db():
     """Create the configured database."""
     db.create_all()
+    db_fill_data()
 
 
 @app.cli.command()
-@click.confirmation_option(prompt='Drop all database tables?')
+@click.confirmation_option(prompt="Drop all database tables?")
 def drop_db():
     """Drop the current database."""
     db.drop_all()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
