@@ -20,7 +20,7 @@ def client():
         app_ctx.push()
         db.drop_all()
         db.create_all()
-        db_fill_data()
+        db_fill_data(import_values=False)
         yield client
         db.session.remove()
         db.drop_all()
@@ -28,6 +28,7 @@ def client():
 
 
 def test_import(client):
+    CaseValue.query.delete()
     import_data_from_file(
         TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, "Diabetic", "healthcare",
     )

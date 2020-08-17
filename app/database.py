@@ -12,7 +12,7 @@ BASE_DIR = os.path.join(
 )
 
 
-def db_fill_data():
+def db_fill_data(import_values=True):
     from app.models import Subdomain, ModelType, Feature
     from app.contoller import import_data_from_file
 
@@ -29,20 +29,21 @@ def db_fill_data():
     Feature(name="Skin Thickness", short_name="skin").save()
     # Feature(name="")
 
-    # load init data
-    # Healthcare - Diabetic
-    import_data_from_file(
-        file_path_value=os.path.join(BASE_DIR, "diabetes_background_dataset.csv"),
-        file_path_explaner=os.path.join(BASE_DIR, "diabetes_explainer_dataset.csv"),
-        subdomain_name="Diabetic",
-        subdomain_type=Subdomain.Type.healthcare.name,
-        model_type="XGBoost",
-    )
-    # Financial - Credit
-    import_data_from_file(
-        file_path_value=os.path.join(BASE_DIR, "credit_background_dataset.csv"),
-        file_path_explaner=os.path.join(BASE_DIR, "credit_explainer_dataset.csv"),
-        subdomain_name="Credit",
-        subdomain_type=Subdomain.Type.financial.name,
-        model_type="XGBoost",
-    )
+    if import_values:
+        # load init data
+        # Healthcare - Diabetic
+        import_data_from_file(
+            file_path_value=os.path.join(BASE_DIR, "diabetes_background_dataset.csv"),
+            file_path_explaner=os.path.join(BASE_DIR, "diabetes_explainer_dataset.csv"),
+            subdomain_name="Diabetic",
+            subdomain_type=Subdomain.Type.healthcare.name,
+            model_type="XGBoost",
+        )
+        # Financial - Credit
+        import_data_from_file(
+            file_path_value=os.path.join(BASE_DIR, "credit_background_dataset.csv"),
+            file_path_explaner=os.path.join(BASE_DIR, "credit_explainer_dataset.csv"),
+            subdomain_name="Credit",
+            subdomain_type=Subdomain.Type.financial.name,
+            model_type="XGBoost",
+        )
