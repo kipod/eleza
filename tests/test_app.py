@@ -1,6 +1,7 @@
 import pytest
 
-from app import db, create_app
+from app import create_app
+from app.database import db
 
 app = create_app(environment='testing')
 

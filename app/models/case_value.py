@@ -19,6 +19,11 @@ class CaseValue(db.Model, ModelMixin):
     model_type = relationship("ModelType")
     feature = relationship("Feature")
 
+    def __repr__(self):
+        return "<Val({}) case_id:{} val:{} ex:{} name:{}>".format(
+            self.id, self.case_id, self.value, self.explainer, self.feature.short_name
+        )
+
     def to_dict(self) -> dict:
         return {"id": self.id, "name": self.сase, "value": self.value}
 
