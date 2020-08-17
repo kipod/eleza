@@ -2,7 +2,7 @@ import pytest
 from app import create_app
 from app.database import db, db_fill_data
 from app.contoller import predictive_power
-from app.models import Feature, Subdomain
+from app.models import Feature, Subdomain  # noqa F401
 
 
 app = create_app(environment="testing")
@@ -28,7 +28,10 @@ def test_predictive_power(client):
         .filter(Subdomain.type == Subdomain.Type.healthcare)
         .first()
     )
-    feature = Feature.query.filter(Feature.name == "Age").first()
-    pp = predictive_power(feature=feature, subdomain=subdomain)
-    assert pp > 0.09
-    assert pp < 10.0
+    # feature = Feature.query.filter(Feature.name == "Age").first()
+    # pp = predictive_power(feature=feature, subdomain=subdomain)
+    all_pp = predictive_power(subdomain=subdomain)
+
+    for pp in all_pp.values():
+        assert pp > 0.1
+        assert pp < 10.0
