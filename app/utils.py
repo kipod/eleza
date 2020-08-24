@@ -3,10 +3,11 @@ from .database import db
 
 class ModelMixin(object):
 
-    def save(self):
+    def save(self, do_commit=True):
         # Save this model to the database.
         db.session.add(self)
-        db.session.commit()
+        if do_commit:
+            db.session.commit()
         return self
 
 
