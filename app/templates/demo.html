@@ -41,7 +41,7 @@
             <h3 style="margin-top: 10px;">
               Please enter required information:
             </h3>
-            <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post">
+            <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post" enctype="multipart/form-data">
               <input id="subdomain_type" name="subdomain_type" type="hidden" value="healthcare">
               <table class="table table-hover table-borderless" style="margin-top: 50px;">
                 <tr>
@@ -51,11 +51,19 @@
                   <td>
                     <select class="form-control" id="subdomain_name" name="subdomain_name">
                       {% for subdomain in form.subdomains %}
-                      {% if subdomain.type.name == "healthcare" %}
+                      {% if subdomain.domain.name == "healthcare" %}
                       <option value="{{subdomain.id}}">{{subdomain.name}}</option>
                       {% endif %}
                       {% endfor %}
                     </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    {{ form.bkg_file.label(class="form-control") }}
+                  </td>
+                  <td>
+                    {{ form.bkg_file(class="form-control") }}
                   </td>
                 </tr>
                 <tr>

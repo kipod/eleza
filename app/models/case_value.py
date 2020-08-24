@@ -12,12 +12,14 @@ class CaseValue(db.Model, ModelMixin):
     case_id = db.Column(db.Integer, nullable=False)
     value = db.Column(db.Float)
     explainer = db.Column(db.Float)
-    subdomain_id = db.Column(db.Integer, db.ForeignKey("subdomain.id"))
-    model_type_id = db.Column(db.Integer, db.ForeignKey("model_type.id"))
-    feature_id = db.Column(db.Integer, db.ForeignKey("feature.id"))
+    subdomain_id = db.Column(db.Integer, db.ForeignKey("subdomain.id"), nullable=False)
+    model_type_id = db.Column(db.Integer, db.ForeignKey("model_type.id"), nullable=False)
+    feature_id = db.Column(db.Integer, db.ForeignKey("feature.id"), nullable=False)
+    user_data_id = db.Column(db.Integer, db.ForeignKey("user_data.id"), nullable=False)
     subdomain = relationship("Subdomain")
     model_type = relationship("ModelType")
     feature = relationship("Feature")
+    user_data = relationship("UserData")
 
     def __repr__(self):
         return "<Val({}) case_id:{} val:{} ex:{} name:{}>".format(

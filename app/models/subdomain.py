@@ -9,20 +9,20 @@ class Subdomain(db.Model, ModelMixin):
 
     __tablename__ = "subdomain"
 
-    class Type(enum.Enum):
+    class Domain(enum.Enum):
         healthcare = "Healthcare"
         financial = "Financial"
 
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(Enum(Type), default=Type.healthcare)
+    domain = db.Column(Enum(Domain), default=Domain.healthcare)
     name = db.Column(db.String(64), unique=True, nullable=False)
 
     def __repr__(self):
-        return "<Subdomain:{0} {1}>".format(self.type.name, self.name)
+        return "<Subdomain:{0} {1}>".format(self.domain.name, self.name)
 
     def to_dict(self) -> dict:
         return {"id": self.id, "name": self.name}
 
     @staticmethod
     def columns():
-        return ["ID", "TYPE", "NAME"]
+        return ["ID", "DOMAIN", "NAME"]

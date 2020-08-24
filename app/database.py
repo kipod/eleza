@@ -16,12 +16,13 @@ def db_fill_data(import_values=True):
     from app.models import Subdomain, ModelType, Feature
     from app.contoller import import_data_from_file
 
-    Subdomain(type=Subdomain.Type.healthcare, name="Cancer").save(False)
-    Subdomain(type=Subdomain.Type.healthcare, name="Diabetic").save(False)
-    Subdomain(type=Subdomain.Type.healthcare, name="Dermatology").save(False)
-    Subdomain(type=Subdomain.Type.healthcare, name="Radiology").save(False)
-    Subdomain(type=Subdomain.Type.healthcare, name="Pharma").save(False)
-    Subdomain(type=Subdomain.Type.healthcare, name="Genomics").save(False)
+    Subdomain(domain=Subdomain.Domain.healthcare, name="Cancer").save(False)
+    Subdomain(domain=Subdomain.Domain.healthcare, name="Diabetic").save(False)
+    Subdomain(domain=Subdomain.Domain.healthcare, name="Dermatology").save(False)
+    Subdomain(domain=Subdomain.Domain.healthcare, name="Radiology").save(False)
+    Subdomain(domain=Subdomain.Domain.healthcare, name="Pharma").save(False)
+    Subdomain(domain=Subdomain.Domain.healthcare, name="Genomics").save(False)
+    Subdomain(domain=Subdomain.Domain.financial, name="Credit").save(False)
     ModelType(name="XGBoost").save(False)
     Feature(name="Age", short_name="age").save()
     Feature(name="Number of Pregnancies", short_name="preg").save(False)
@@ -39,16 +40,16 @@ def db_fill_data(import_values=True):
         # Healthcare - Diabetic
         import_data_from_file(
             file_path_value=os.path.join(BASE_DIR, "diabetes_background_dataset.csv"),
-            file_path_explaner=os.path.join(BASE_DIR, "diabetes_explainer_dataset.csv"),
+            file_path_explainer=os.path.join(BASE_DIR, "diabetes_explainer_dataset.csv"),
             subdomain_name="Diabetic",
-            subdomain_type=Subdomain.Type.healthcare.name,
+            domain=Subdomain.Domain.healthcare.name,
             model_type="XGBoost",
         )
         # Financial - Credit
         import_data_from_file(
             file_path_value=os.path.join(BASE_DIR, "credit_background_dataset.csv"),
-            file_path_explaner=os.path.join(BASE_DIR, "credit_explainer_dataset.csv"),
+            file_path_explainer=os.path.join(BASE_DIR, "credit_explainer_dataset.csv"),
             subdomain_name="Credit",
-            subdomain_type=Subdomain.Type.financial.name,
+            domain=Subdomain.Domain.financial.name,
             model_type="XGBoost",
         )

@@ -32,7 +32,7 @@ def test_import(client):
     import_data_from_file(
         TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, "Diabetic", "healthcare",
     )
-    assert len(CaseValue.query.all()) == 404
+    assert len(CaseValue.query.all())
     for case in CaseValue.query.all():
         assert case.value is not None
         assert case.explainer

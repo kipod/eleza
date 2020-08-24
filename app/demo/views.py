@@ -7,9 +7,9 @@ from .forms import SubdomainChoiceForm
 demo_blueprint = Blueprint("demo", __name__)
 
 
-@demo_blueprint.route("/demo", methods=['GET', 'POST'])
+@demo_blueprint.route("/", methods=['GET', 'POST'])
 def demo():
-    form = SubdomainChoiceForm(request.form)
+    form = SubdomainChoiceForm(request.form, csrf_enabled=False)
     form.subdomains = Subdomain.query.all()
     form.models = ModelType.query.all()
     form.subdomain_name.choices = [(s.id, s.name) for s in form.subdomains]
@@ -17,7 +17,14 @@ def demo():
     if form.validate_on_submit():
         session["subdomain"] = form.subdomain_name.data
         session["model_type"] = form.model_type.data
-        if form.subdomain_type.data == Subdomain.Type.healthcare.name:
+        bkg_file = request.files.get("bkg_file")
+        if not bkg_file:
+            flash("Need select background file", "warning")
+            return render_template("demo.html", form=form)
+        # TODO:
+        ## call import_data_from_file()
+        ## check bkg_fistore user_data id in the session
+        if form.domain.data == Subdomain.Domain.healthcare.name:
             return redirect(url_for("demo.slide_helthcare_criteries"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
