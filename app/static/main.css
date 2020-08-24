@@ -2,3 +2,7 @@
 * {
     border-radius: 0 !important;
 }
+
+.nav-pills .nav-link.active {
+	background-color: #00bfd8;
+}
