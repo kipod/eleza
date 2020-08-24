@@ -1,6 +1,5 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField, HiddenField
-from wtforms.validators import DataRequired, Length
 from app.models import Subdomain, ModelType
 
 

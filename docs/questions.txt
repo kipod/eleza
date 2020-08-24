@@ -1,1 +1,12 @@
-What is "plas"?
+Features:
+What is in file diabetes_explainer_dataset.csv and diabetes_background_dataset.csv:
+* "plas" === ???
+* "test" === ???
+* mass === "Body Mass Index"
+* pedi === "Diabetes Family Pedigree"
+* preg === "Number of Pregnancies"
+* pres === "Blood Pressure"
+* skin === "Skin Thickness"
+
+---------------------------------------------------------------------
+

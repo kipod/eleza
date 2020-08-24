@@ -27,6 +27,11 @@ def db_fill_data(import_values=True):
     Feature(name="Number of Pregnancies", short_name="preg").save()
     Feature(name="Blood Pressure", short_name="pres").save()
     Feature(name="Skin Thickness", short_name="skin").save()
+    Feature(name="Body Mass Index", short_name="mass").save()
+    Feature(name="Diabetes Family Pedigree", short_name="pedi").save()
+    # Feature(name="Glucose", short_name="gluc").save()
+    # Feature(name="Skin Thickness", short_name="skin").save() ??
+    # TODO: others features: fill questions.txt
     # Feature(name="")
 
     if import_values:
