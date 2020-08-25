@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block links %}
-<link href="/static/css/style_slide.css" rel="stylesheet" />
-{% endblock %} {% block content %}
+{% extends "base.html" %}
+
+{% block content %}
 <!-- Header -->
 <div id="header" class="ex-header"></div>
 
@@ -10,34 +10,34 @@
     <div class="col-lg-6">
       <div class="tab" role="tabpanel" style="width: 767.2px;">
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active">
-            <a href="#General" aria-controls="home" role="tab" data-toggle="tab">General</a>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="pills-gen-tab" data-toggle="pill" href="#pills-gen" role="tab" aria-controls="pills-gen" aria-selected="true">General</a>
           </li>
-          <li role="presentation">
-            <a href="#Healthcare" aria-controls="profile" role="tab" data-toggle="tab">Healthcare</a>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-health-tab" data-toggle="pill" href="#pills-health" role="tab" aria-controls="pills-health" aria-selected="false">Healthcare</a>
           </li>
-          <li role="presentation">
-            <a href="#Financial" aria-controls="messages" role="tab" data-toggle="tab">Financial</a>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-fin-tab" data-toggle="pill" href="#pills-fin" role="tab" aria-controls="pills-fin" aria-selected="false">Financial</a>
           </li>
-          <li role="presentation">
-            <a href="#Education" aria-controls="messages" role="tab" data-toggle="tab">Education</a>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-edu-tab" data-toggle="pill" href="#pills-edu" role="tab" aria-controls="pills-edu" aria-selected="false">Education</a>
           </li>
-          <li role="presentation">
-            <a href="#Manufacturing" aria-controls="messages" role="tab" data-toggle="tab">Manufacturing</a>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-man-tab" data-toggle="pill" href="#pills-man" role="tab" aria-controls="pills-man" aria-selected="false">Manufacturing</a>
           </li>
-          <li role="presentation">
-            <a href="#Legal" aria-controls="messages" role="tab" data-toggle="tab">Legal</a>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-leg-tab" data-toggle="pill" href="#pills-leg" role="tab" aria-controls="pills-leg" aria-selected="false">Legal</a>
           </li>
         </ul>
-        <!-- Tab panes -->
-        <div class="tab-content tabs" , style="height: 400px;">
-          <div role="tabpanel" class="tab-pane fade in active show" id="General">
+        <!-- Tab panes begin -->
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
             <h3 style="margin-top: 10px;">
               Some general information
             </h3>
           </div>
-          <div role="tabpanel" class="tab-pane fade" id="Healthcare">
+          <div class="tab-pane fade" id="pills-health" role="tabpanel" aria-labelledby="pills-health-tab">
             <h3 style="margin-top: 10px;">
               Please enter required information:
             </h3>
@@ -81,13 +81,13 @@
                 <tr>
                   <td></td>
                   <td>
-                    {{ form.next(class="btn btn-primary", style="width: 200px") }}
+                    {{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}
                   </td>
                 </tr>
               </table>
             </form>
           </div>
-          <div role="tabpanel" class="tab-pane fade" id="Financial">
+          <div class="tab-pane fade" id="pills-fin" role="tabpanel" aria-labelledby="pills-fin-tab">
             <h3 style="margin-top: 10px;">
               Please enter required information:
             </h3>
@@ -124,122 +124,17 @@
             </table>
 
           </div>
-          <div role="tabpanel" class="tab-pane fade" id="Education">
-            <h3 style="margin-top: 10px;">
-              Please enter required information:
-            </h3>
-            <table class="table table-hover table-borderless" style="margin-top: 50px;">
-              <tr>
-                <td>
-                  <p>Type of application subdomain:</p>
-                </td>
-                <td>
-                  <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                    Dropdown
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <p>Select Model Type</p>
-                </td>
-                <td>
-                  <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                    Dropdown
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>
-                  <a class="btn btn-primary" style="width: 200px;"
-                    href="{{ url_for('demo.slide_helthcare_criteries')}}">
-                    Next
-                  </a>
-                </td>
-              </tr>
-            </table>
-
+          <div class="tab-pane fade" id="pills-edu" role="tabpanel" aria-labelledby="pills-edu-tab">
           </div>
-          <div role="tabpanel" class="tab-pane fade" id="Manufacturing">
-            <h3 style="margin-top: 10px;">
-              Please enter required information:
-            </h3>
-            <table class="table table-hover table-borderless" style="margin-top: 50px;">
-              <tr>
-                <td>
-                  <p>Type of application subdomain:</p>
-                </td>
-                <td>
-                  <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                    Dropdown
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <p>Select Model Type</p>
-                </td>
-                <td>
-                  <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                    Dropdown
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>
-                  <a class="btn btn-primary" style="width: 200px;"
-                    href="{{ url_for('demo.slide_helthcare_criteries')}}">
-                    Next
-                  </a>
-                </td>
-              </tr>
-            </table>
+          <div class="tab-pane fade" id="pills-man" role="tabpanel" aria-labelledby="pills-man-tab">
           </div>
-          <div role="tabpanel" class="tab-pane fade" id="Legal">
-            <h3 style="margin-top: 10px;">
-              Please enter required information:
-            </h3>
-            <table class="table table-hover table-borderless" style="margin-top: 50px;">
-              <tr>
-                <td>
-                  <p>Type of application subdomain:</p>
-                </td>
-                <td>
-                  <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                    Dropdown
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <p>Select Model Type</p>
-                </td>
-                <td>
-                  <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                    Dropdown
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>
-                  <a class="btn btn-primary" style="width: 200px;"
-                    href="{{ url_for('demo.slide_helthcare_criteries')}}">
-                    Next
-                  </a>
-                </td>
-              </tr>
-            </table>
+          <div class="tab-pane fade" id="pills-leg" role="tabpanel" aria-labelledby="pills-leg-tab">
           </div>
         </div>
+        <!-- Tab panes end -->
       </div>
     </div>
   </div>
 </div>
-{% block scripts %}
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-  integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-{% endblock %} {% endblock %}
+
+{% endblock %}
