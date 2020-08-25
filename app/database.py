@@ -22,6 +22,7 @@ def db_fill_data(import_values=True):
     Subdomain(domain=Subdomain.Domain.healthcare, name="Radiology").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Pharma").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Genomics").save(False)
+    Subdomain(domain=Subdomain.Domain.healthcare, name="Cardiac").save(False)
     Subdomain(domain=Subdomain.Domain.financial, name="Credit").save(False)
     ModelType(name="Model1").save(False)
     ModelType(name="Model2").save(False)
@@ -36,8 +37,7 @@ def db_fill_data(import_values=True):
     Feature(name="Diabetes Family Pedigree", short_name="pedi").save()
     # Feature(name="Glucose", short_name="gluc").save()
     # Feature(name="Skin Thickness", short_name="skin").save() ??
-    # TODO: others features: fill questions.txt
-    # Feature(name="")
+
     return
     if import_values:
         # load init data
