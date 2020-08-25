@@ -1,15 +1,15 @@
 import os
-
+from flask_wtf.csrf import CSRFProtect
 from flask import Flask, render_template
 from flask_login import LoginManager
 from werkzeug.exceptions import HTTPException
 
 # instantiate extensions
 login_manager = LoginManager()
+csrf = CSRFProtect()
 
 
 def create_app(environment="development"):
-
     from config import config
     from .views import main_blueprint
     from .auth.views import auth_blueprint
@@ -28,6 +28,7 @@ def create_app(environment="development"):
     # Set up extensions.
     db.init_app(app)
     login_manager.init_app(app)
+    csrf.init_app(app)
 
     # Register blueprints.
     app.register_blueprint(auth_blueprint)

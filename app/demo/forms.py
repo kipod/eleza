@@ -24,5 +24,9 @@ class SubdomainChoiceForm(FlaskForm):
         "Select Background Dataset File (.csv):",
         validators=[FileAllowed(["csv"], "CSV file only!")],
     )
+    explainer_file = FileField(
+        "Select Explainer File (.csv):",
+        validators=[FileAllowed(["csv"], "CSV file only!")],
+    )
     model_type = SelectField("Select Model Type:")
     next = SubmitField("Next")

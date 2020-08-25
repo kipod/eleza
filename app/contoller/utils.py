@@ -1,12 +1,13 @@
 from app.models import CaseValue, Feature
 
 
-def predictive_power(subdomain):
+def predictive_power(subdomain, user_data_id):
     result = {}
     for feature in Feature.query.all():
         all = (
             CaseValue.query.filter(CaseValue.subdomain == subdomain)
             .filter(CaseValue.feature == feature)
+            .filter(CaseValue.user_data_id == user_data_id)
             .all()
         )
         count = len(all)

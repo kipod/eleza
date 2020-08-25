@@ -23,7 +23,11 @@ def db_fill_data(import_values=True):
     Subdomain(domain=Subdomain.Domain.healthcare, name="Pharma").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Genomics").save(False)
     Subdomain(domain=Subdomain.Domain.financial, name="Credit").save(False)
-    ModelType(name="XGBoost").save(False)
+    ModelType(name="Model1").save(False)
+    ModelType(name="Model2").save(False)
+    ModelType(name="Model3").save(False)
+    ModelType(name="Model4").save(False)
+    ModelType(name="Model5").save(False)
     Feature(name="Age", short_name="age").save()
     Feature(name="Number of Pregnancies", short_name="preg").save(False)
     Feature(name="Blood Pressure", short_name="pres").save(False)
@@ -34,7 +38,7 @@ def db_fill_data(import_values=True):
     # Feature(name="Skin Thickness", short_name="skin").save() ??
     # TODO: others features: fill questions.txt
     # Feature(name="")
-
+    return
     if import_values:
         # load init data
         # Healthcare - Diabetic
@@ -43,7 +47,7 @@ def db_fill_data(import_values=True):
             file_path_explainer=os.path.join(BASE_DIR, "diabetes_explainer_dataset.csv"),
             subdomain_name="Diabetic",
             domain=Subdomain.Domain.healthcare.name,
-            model_type="XGBoost",
+            model_type="Model1",
         )
         # Financial - Credit
         import_data_from_file(
@@ -51,5 +55,5 @@ def db_fill_data(import_values=True):
             file_path_explainer=os.path.join(BASE_DIR, "credit_explainer_dataset.csv"),
             subdomain_name="Credit",
             domain=Subdomain.Domain.financial.name,
-            model_type="XGBoost",
+            model_type="Model1",
         )
