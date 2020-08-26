@@ -14,9 +14,12 @@ def demo():
     form.models = ModelType.query.all()
     form.subdomain_id.choices = [(s.id, s.name) for s in form.subdomains]
     form.model_type.choices = [(m.name, m.name) for m in form.models]
+    form.active_domain = session.get("active_domain", "general")
+
     if form.validate_on_submit():
         session["subdomain"] = form.subdomain_id.data
         session["model_type"] = form.model_type.data
+        session["active_domain"] = form.domain.data
         bkg_file = request.files.get("bkg_file")
         if not bkg_file:
             flash("Need select background file", "warning")

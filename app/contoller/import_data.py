@@ -30,7 +30,7 @@ def import_data_from_file_stream(
                     subdomain=subdomain,
                     model_type=model,
                     user_data=user_data,
-                ).save()
+                ).save(False)
 
     csv_reader = csv.DictReader(TextIOWrapper(file_explainer, encoding="utf-8"), delimiter=",")
     for row in csv_reader:

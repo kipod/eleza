@@ -30,7 +30,7 @@ def client():
 def test_import(client):
     CaseValue.query.delete()
     import_data_from_file(
-        TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, "Diabetic", "healthcare",
+        TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, "Diabetic", "healthcare", "Model1"
     )
     assert len(CaseValue.query.all())
     for case in CaseValue.query.all():

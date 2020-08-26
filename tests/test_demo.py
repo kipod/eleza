@@ -1,10 +1,8 @@
 import os
 import pytest
-from flask import url_for
 from app import create_app
 from app.database import db, db_fill_data
-from app.contoller import predictive_power
-from app.models import Subdomain, ModelType
+from app.models import Subdomain
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
