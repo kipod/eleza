@@ -1554,10 +1554,10 @@ a:hover.back-to-top {
 	color: #FFF5EE;
 	font-style: normal;
 	font-size: 250%;
-	padding-top: 4rem;
-	padding-bottom: 4rem;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
 	text-align: center;
-	background: -webkit-linear-gradient(top, #4169E1, #1E90FF);
+	background: -webkit-linear-gradient(top, #00CED1, #00BFFF);
 }
 
 .ex-basic-1 {
