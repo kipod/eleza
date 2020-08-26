@@ -18,7 +18,7 @@ def get_model_type_names():
 
 class SubdomainChoiceForm(FlaskForm):
 
-    subdomain_name = SelectField("Type of application subdomain:")
+    subdomain_id = SelectField("Type of application subdomain:")
     domain = HiddenField()
     bkg_file = FileField(
         "Select Background Dataset File (.csv):",

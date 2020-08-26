@@ -12,10 +12,10 @@ def demo():
     form = SubdomainChoiceForm(request.form, csrf_enabled=False)
     form.subdomains = Subdomain.query.all()
     form.models = ModelType.query.all()
-    form.subdomain_name.choices = [(s.id, s.name) for s in form.subdomains]
+    form.subdomain_id.choices = [(s.id, s.name) for s in form.subdomains]
     form.model_type.choices = [(m.name, m.name) for m in form.models]
     if form.validate_on_submit():
-        session["subdomain"] = form.subdomain_name.data
+        session["subdomain"] = form.subdomain_id.data
         session["model_type"] = form.model_type.data
         bkg_file = request.files.get("bkg_file")
         if not bkg_file:
@@ -28,7 +28,7 @@ def demo():
         user_data = import_data_from_file_stream(
             file_value=bkg_file,
             file_explainer=explainer_file,
-            subdomain_name=form.subdomain_name.data,
+            subdomain_id=form.subdomain_id.data,
             domain=form.domain.data,
             model_type=form.model_type.data
         )

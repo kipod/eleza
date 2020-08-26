@@ -7,10 +7,10 @@ from app.logger import log
 
 
 def import_data_from_file_stream(
-    file_value, file_explainer, subdomain_name, domain, model_type,
+    file_value, file_explainer, subdomain_id, domain, model_type,
 ):
     subdomain = (
-        Subdomain.query.filter(Subdomain.name == subdomain_name)
+        Subdomain.query.filter(Subdomain.id == subdomain_id)
         .filter(Subdomain.domain == Subdomain.Domain[domain])
         .first()
     )
@@ -50,17 +50,17 @@ def import_data_from_file_stream(
                     case.explainer = explainer
 
     db.session.commit()
-    log(log.INFO, "Import data successfull for %s[%s]", domain, subdomain_name)
+    log(log.INFO, "Import data successfull for %s[%s]", domain, subdomain_id)
     if not app.config["TESTING"]:
         log(log.DEBUG, "Testing")
     return user_data
 
 
 def import_data_from_file(
-    file_path_value, file_path_explainer, subdomain_name, domain, model_type,
+    file_path_value, file_path_explainer, subdomain_id, domain, model_type,
 ):
     with open(file_path_value, "rb") as f_value:
         with open(file_path_explainer, "rb") as f_explainer:
             return import_data_from_file_stream(
-                f_value, f_explainer, subdomain_name, domain, model_type
+                f_value, f_explainer, subdomain_id, domain, model_type
             )

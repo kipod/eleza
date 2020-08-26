@@ -32,7 +32,7 @@ def test_upload_files(client):
     with open(TEST_CSV_VALUE_FILE, "rb") as bkg_f:
         with open(TEST_CSV_EXPLAINER_FILE, "rb") as exp_f:
             data = {
-                "subdomain": Subdomain.query.filter(Subdomain.name == 'Diabetic').first().id,
+                "subdomain_id": Subdomain.query.filter(Subdomain.name == 'Diabetic').first().id,
                 "domain": Subdomain.Domain.healthcare.name,
                 "bkg_file": (bkg_f, "test_bkg.csv"),
                 "explainer_file": (exp_f, "test_bkg.csv"),
@@ -41,7 +41,7 @@ def test_upload_files(client):
             response = client.post(
                 "demo/",
                 data=data,
-                follow_redirects=True,
+                follow_redirects=False,
                 content_type="multipart/form-data",
             )
-            assert response
+            assert response.status_code == 302
