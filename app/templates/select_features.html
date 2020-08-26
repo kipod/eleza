@@ -2,17 +2,16 @@
 {% block content %}
 <!-- Header -->
 
-<div id="header" class="ex-header" style="text-align:left;"  title='Healthcare – Diabetes Diagnosis'>
-    Healthcare – Diabetes Diagnosis
-</div>
-<table class="table-bordered" cellspacing="0" width="50%" style="margin-left: 20%; margin-bottom: 20%; " bgcolor="Seashell">
-    <thead>
-        <tr>
+<div class="container" style="margin-bottom: 5%;">
+    <div id="header" class="ex-header" style="text-align:left;" title='Healthcare – Diabetes Diagnosis'>
+        Healthcare – Diabetes Diagnosis
+    </div>
+<table class="ex-header_table" cellspacing="1" width="50%">
+        <thead>
             <th scope="col">Select Relevant</th>
             <th scope="col">Features</th>
             <th scope="col">Predictive Power</th>
-        </tr>
-    </thead>
+        </thead>
     <tbody>
         {% for feature in features %}
         <tr>
@@ -23,5 +22,5 @@
         {% endfor %}
     </tbody>
 </table>
-
+</div>
 {% endblock %}

@@ -12,13 +12,25 @@
         <!-- Nav tabs -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
+            {% if form.active_domain == "general" %}
             <a class="nav-link active" id="pills-gen-tab" data-toggle="pill" href="#pills-gen" role="tab" aria-controls="pills-gen" aria-selected="true">General</a>
+            {% else %}
+            <a class="nav-link" id="pills-gen-tab" data-toggle="pill" href="#pills-gen" role="tab" aria-controls="pills-gen" aria-selected="true">General</a>
+            {% endif %}
           </li>
           <li class="nav-item">
+            {% if form.active_domain == "healthcare" %}
+            <a class="nav-link active" id="pills-health-tab" data-toggle="pill" href="#pills-health" role="tab" aria-controls="pills-health" aria-selected="false">Healthcare</a>
+            {% else %}
             <a class="nav-link" id="pills-health-tab" data-toggle="pill" href="#pills-health" role="tab" aria-controls="pills-health" aria-selected="false">Healthcare</a>
+            {% endif %}
           </li>
           <li class="nav-item">
+            {% if form.active_domain == "financial" %}
+            <a class="nav-link active" id="pills-fin-tab" data-toggle="pill" href="#pills-fin" role="tab" aria-controls="pills-fin" aria-selected="false">Financial</a>
+            {% else %}
             <a class="nav-link" id="pills-fin-tab" data-toggle="pill" href="#pills-fin" role="tab" aria-controls="pills-fin" aria-selected="false">Financial</a>
+            {% endif %}
           </li>
           <li class="nav-item">
             <a class="nav-link" id="pills-edu-tab" data-toggle="pill" href="#pills-edu" role="tab" aria-controls="pills-edu" aria-selected="false">Education</a>
@@ -32,12 +44,20 @@
         </ul>
         <!-- Tab panes begin -->
         <div class="tab-content" id="pills-tabContent">
+          {% if form.active_domain == "general" %}
           <div class="tab-pane fade show active" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
+          {% else %}
+          <div class="tab-pane fade" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
+          {% endif %}
             <h3 style="margin-top: 10px;">
               Some general information
             </h3>
           </div>
+          {% if form.active_domain == "healthcare" %}
+          <div class="tab-pane fade show active" id="pills-health" role="tabpanel" aria-labelledby="pills-health-tab">
+          {% else %}
           <div class="tab-pane fade" id="pills-health" role="tabpanel" aria-labelledby="pills-health-tab">
+          {% endif %}
             <div>
               <!-- Flash Messages -->
               {% with messages = get_flashed_messages(with_categories=true) %}
@@ -60,14 +80,14 @@
             </h3>
             <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post" enctype="multipart/form-data">
               {{ form.csrf_token }}
-              <input id="subdomain_type" name="subdomain_type" type="hidden" value="healthcare">
+              <input id="domain" name="domain" type="hidden" value="healthcare">
               <table class="table table-hover table-borderless" style="margin-top: 50px;">
                 <tr>
                   <td>
-                    {{ form.subdomain_name.label(class="form-control") }}
+                    {{ form.subdomain_id.label(class="form-control") }}
                   </td>
                   <td>
-                    <select class="form-control" id="subdomain_name" name="subdomain_name">
+                    <select class="form-control" id="subdomain_id" name="subdomain_id">
                       {% for subdomain in form.subdomains %}
                       {% if subdomain.domain.name == "healthcare" %}
                       <option value="{{subdomain.id}}">{{subdomain.name}}</option>
@@ -114,7 +134,11 @@
               </table>
             </form>
           </div>
+          {% if form.active_domain == "financial" %}
+          <div class="tab-pane fade show active" id="pills-fin" role="tabpanel" aria-labelledby="pills-fin-tab">
+          {% else %}
           <div class="tab-pane fade" id="pills-fin" role="tabpanel" aria-labelledby="pills-fin-tab">
+          {% endif %}
             <h3 style="margin-top: 10px;">
               Please enter required information:
             </h3>

@@ -1560,6 +1560,13 @@ a:hover.back-to-top {
 	background: -webkit-linear-gradient(top, #00CED1, #00BFFF);
 }
 
+.ex-header-table {
+	margin: auto;
+	margin-bottom: 20%;
+	border: 3px outset lightskyblue;
+	background: #FFF5EE;
+}
+
 .ex-basic-1 {
 	padding-top: 2rem;
 	padding-bottom: 0.875rem;

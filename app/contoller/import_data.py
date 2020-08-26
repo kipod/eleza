@@ -14,7 +14,7 @@ def import_data_from_file_stream(
         .filter(Subdomain.domain == Subdomain.Domain[domain])
         .first()
     )
-    user_data = UserData().save(False)
+    user_data = UserData().save()
     model = ModelType.query.filter(ModelType.name == model_type).first()
     feature_names = {feature.short_name: feature for feature in Feature.query.all()}
     csv_reader = csv.DictReader(TextIOWrapper(file_value, encoding="utf-8"), delimiter=",")
@@ -30,8 +30,7 @@ def import_data_from_file_stream(
                     subdomain=subdomain,
                     model_type=model,
                     user_data=user_data,
-                )
-                db.session.add(case)
+                ).save()
 
     csv_reader = csv.DictReader(TextIOWrapper(file_explainer, encoding="utf-8"), delimiter=",")
     for row in csv_reader:
@@ -44,10 +43,11 @@ def import_data_from_file_stream(
                     .filter(CaseValue.subdomain == subdomain)
                     .filter(CaseValue.model_type == model)
                     .filter(CaseValue.feature == feature_names[feature_short_name])
+                    .filter(CaseValue.user_data == user_data)
                     .first()
                 )
-                if case:
-                    case.explainer = explainer
+                assert case
+                case.explainer = explainer
 
     db.session.commit()
     log(log.INFO, "Import data successfull for %s[%s]", domain, subdomain_id)

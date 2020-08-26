@@ -45,3 +45,5 @@ def test_upload_files(client):
                 content_type="multipart/form-data",
             )
             assert response.status_code == 302
+    response = client.get(response.location)
+    assert response.status_code == 200

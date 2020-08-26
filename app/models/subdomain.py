@@ -12,6 +12,9 @@ class Subdomain(db.Model, ModelMixin):
     class Domain(enum.Enum):
         healthcare = "Healthcare"
         financial = "Financial"
+        education = "Education"
+        manufactiring = "Manufacturing"
+        legal = "Legal"
 
     id = db.Column(db.Integer, primary_key=True)
     domain = db.Column(Enum(Domain), default=Domain.healthcare)
