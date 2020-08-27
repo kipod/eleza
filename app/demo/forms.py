@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, HiddenField
+from wtforms import SelectField, SubmitField, HiddenField, StringField
 from app.models import Subdomain, ModelType
 from flask_wtf.file import FileField, FileAllowed
+from wtforms.validators import DataRequired
 
 
 def get_subdomain_names():
@@ -37,4 +38,10 @@ class SelectFeaturesForm(FlaskForm):
 
 
 class RangeGroupsForm(FlaskForm):
+    next = SubmitField("Next")
+
+
+class CategoriesForm(FlaskForm):
+    category_name = StringField("Enter category name:", validators=[DataRequired()])
+    submit = SubmitField("Submit")
     next = SubmitField("Next")
