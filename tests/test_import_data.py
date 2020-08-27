@@ -44,6 +44,7 @@ def import_test_data():
         TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, subdomain_id, TEST_MODEL
     )
 
+
 def test_import(client):
     import_test_data()
     assert len(CaseValue.query.all())

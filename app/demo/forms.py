@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField, HiddenField, StringField
 from app.models import Subdomain, ModelType
 from flask_wtf.file import FileField, FileAllowed
-from wtforms.validators import DataRequired
 
 
 def get_subdomain_names():
