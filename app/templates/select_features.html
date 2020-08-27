@@ -14,19 +14,20 @@
     color: #FFF5EE;
     font-style: normal;
     font-size: 250%;
-    padding-top: 1.2rem;
-    padding-bottom: 1.2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Healthcare – Diabetes Diagnosis'>
         Healthcare – Diabetes Diagnosis
     </div>
     <table class="ex-header_table" cellspacing="1" style="margin-left: 0%; margin-bottom: 20%;
     border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%; height: 380px">
         <thead>
-            <th scope="col" style="text-align:center;">Select Relevant</th>
-            <th scope="col" style="width:0%">Features</th>
-            <th scope="col" style="font-size = ">Predictive Power</th>
+            <th scope="col" style="text-align:center; padding: 4px;">Select Relevant</th>
+            <th scope="col" >Features</th>
+            <th scope="col" style="font-size: 100%;">Predictive Power</th>
         </thead>
         <tbody>
+            <tr><td></td><td></td><td></td></tr>
             {% for feature in features %}
             <tr>
                 <td style="text-align:center;"><input type="checkbox"></td>
@@ -34,8 +35,10 @@
                 <td>{{pred_pow[feature.name]}}</td>
             </tr>
             {% endfor %}
+            <tr><td></td><td></td><td><div style="margin-top: 30px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}</div></td></tr>
         </tbody>
     </table>
 </div>
-<div style="margin-left: 83%; margin-bottom: 1%;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}</div>
+
+
 {% endblock %}
