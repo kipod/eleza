@@ -14,11 +14,20 @@ def predictive_power(subdomain, user_data_id):
         if not count:
             return {}
         result[feature.name] = sum([abs(case.explainer) for case in all]) / count
-        result[feature.name] = add_pred_pow(result[feature.name])
+
+    # result[feature.name] = add_pred_pow(result[feature.name])
+    update_values(result)
     return result
 
 
-def add_pred_pow(result_pow):
-    if result_pow < 0.1:
-        result_pow = result_pow * 10
-    return result_pow
+def update_values(params):
+    max_val = max([v for v in params.values()])
+    assert max_val > 0
+    multiply = 1
+    while (multiply * max_val) < 1:
+        multiply *= 10
+    while (multiply * max_val) > 10:
+        multiply *= 0.1
+    for key in params:
+        params[key] *= multiply
+    return params

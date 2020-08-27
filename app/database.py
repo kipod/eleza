@@ -37,7 +37,6 @@ def db_fill_data(import_values=True):
     Feature(name="Glucose", short_name="plas").save()
     Feature(name="Insulin", short_name="test").save()
 
-
     user = User(username="admin", email="simple2b.info@gmail.com")
     user.password = "ZAQ!xsw2"
     user.save()

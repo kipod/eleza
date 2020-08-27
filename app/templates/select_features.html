@@ -35,10 +35,11 @@
                 <td>{{pred_pow[feature.name]}}</td>
             </tr>
             {% endfor %}
-            <tr><td></td><td></td><td><div style="margin-top: 30px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}</div></td></tr>
+            <tr><td></td>
+                <td><div style="margin-top: 30px; margin-bottom: 10px;"><button class="btn-solid-lg page-scroll", style="width: 250px", onclick="window.history.back();">Go Back</button></div></td>
+                <td><div style="margin-top: 30px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}</div></td>
+            </tr>
         </tbody>
     </table>
 </div>
-
-
 {% endblock %}

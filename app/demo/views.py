@@ -51,6 +51,8 @@ def select_features():
     features = Feature.query.all()
     subdomain = Subdomain.query.get(session.get("subdomain", None))
     pred_pow = predictive_power(subdomain, user_data_id=session.get('user_data_id'))
+    for k in pred_pow:
+        pred_pow[k] = round(pred_pow[k], 2)
     return render_template(
         "select_features.html",
         features=features,

@@ -4,6 +4,7 @@ from app import create_app
 from app.database import db, db_fill_data
 from app.contoller.import_data import import_data_from_file
 from app.models import CaseValue, Subdomain
+from app.contoller.utils import predictive_power
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -27,7 +28,7 @@ def client():
         app_ctx.pop()
 
 
-def test_import(client):
+def import_test_data():
     TEST_SUBDOMAIN = "Diabetic"
     TEST_DOMAIN = "healthcare"
     TEST_MODEL = "Model1"
@@ -42,6 +43,9 @@ def test_import(client):
     import_data_from_file(
         TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, subdomain_id, TEST_MODEL
     )
+
+def test_import(client):
+    import_test_data()
     assert len(CaseValue.query.all())
     for case in CaseValue.query.all():
         assert case.value is not None
@@ -53,9 +57,7 @@ def test_import(client):
 
 
 def test_predictive_power(client):
-    import_data_from_file(
-        TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, "Diabetic", "healthcare", "Model1"
-    )
+    import_test_data()
     subdomain = (
         Subdomain.query.filter(Subdomain.name == "Diabetic")
         .filter(Subdomain.domain == Subdomain.Domain.healthcare)
@@ -64,7 +66,5 @@ def test_predictive_power(client):
     # feature = Feature.query.filter(Feature.name == "Age").first()
     # pp = predictive_power(feature=feature, subdomain=subdomain)
     all_pp = predictive_power(subdomain=subdomain, user_data_id=1)
-
-    # for pp in all_pp.values():
-    #     assert pp > 0.1
-    #     assert pp < 10.0
+    assert max(all_pp.values()) >= 1
+    assert max(all_pp.values()) <= 10
