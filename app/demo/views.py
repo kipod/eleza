@@ -74,8 +74,6 @@ def range_groups():
     form = RangeGroupsForm(request.form)
     form.selected_features = session.get("selected_features", [])
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
-    # subdomain_id = session["subdomain"]
-    # Subdomain.query.filter(Subdomain.id == subdomain_id).first()
     user_data_id = session["user_data_id"]
     form.ranges = {}
     for feature_name in form.selected_features:
