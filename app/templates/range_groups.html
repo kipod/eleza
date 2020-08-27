@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Header -->
+
+<div id="header" class="ex-header"></div>
+<div class="container" style="margin-bottom: 5%; margin-left: 0%;">
+    <div class="ex-header-top-main" style="padding: 15px; text-align: left;
+    font-family: 'serif';
+    width: 1318px;
+    color: #FFF5EE;
+    font-style: normal;
+    font-size: 250%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Healthcare – Diabetes Diagnosis'>
+        Healthcare – {{ form.subdomain.name }} Diagnosis
+    </div>
+    <h4>
+        Post-model Binning
+    </h4>
+    <table cellspacing="1" style="margin-bottom: 20%;
+    border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%; border-collapse: collapse;" height="520">
+        <tbody>
+            <tr><td>
+                  <div>
+                    <div class="form-control">Select Feature to Bin:</div>
+                    <select class="form-control"  style='width: 50%;' id="feature" name="feature">
+                        {% for feature in form.selected_features %}
+                        <option value="{{feature}}">{{feature}}</option>
+                        {% endfor %}
+                      </select>
+                  </div>
+                </td>
+                <td>
+                  sdasdasdsd
+                </td>
+            </tr>
+            <tr><td></td><td></td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -21,6 +21,8 @@
     <h5>
         Summarized for all patients, the attributes are listed from having the highest to lowest predictive power:
     </h5>
+    <form class="form" role="form" action="{{ url_for("demo.select_features") }}" method="post">
+        {{ form.csrf_token }}
     <table class="ex-header_table" cellspacing="1" style="margin-bottom: 20%;
     border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%; border-collapse: collapse;" height="520">
         <thead>
@@ -33,7 +35,7 @@
             <tr><td></td><td></td><td></td></tr>
             {% for feature in features %}
             <tr>
-                <td style="text-align:center;"><div><input class="form-control" type="checkbox"></div></td>
+                <td style="text-align:center;"><div><input class="form-control" type="checkbox" name="{{feature.name}}"></div></td>
                 <td style="text-align:justify;"><div class="form-control">{{feature.name}}</div></td>
                 <td><div class="form-control">{{pred_pow[feature.name]}}</div></td>
             </tr>
@@ -45,5 +47,6 @@
             </tr>
         </tbody>
     </table>
+    </form>
 </div>
 {% endblock %}

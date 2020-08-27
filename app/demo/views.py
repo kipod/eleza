@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, request, session, redirect, url_fo
 from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType
 from app.contoller import predictive_power, import_data_from_file_stream
-from .forms import SubdomainChoiceForm
+from .forms import SubdomainChoiceForm, SelectFeaturesForm, RangeGroupsForm
 
 
 demo_blueprint = Blueprint("demo", __name__)
@@ -45,17 +45,37 @@ def demo():
     return render_template("demo.html", form=form)
 
 
-@demo_blueprint.route("/features")
+@demo_blueprint.route("/features", methods=['GET', 'POST'])
 def select_features():
-    form = SubdomainChoiceForm(request.form, csrf_enabled=False)
+    form = SelectFeaturesForm(request.form)
     features = Feature.query.all()
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     pred_pow = predictive_power(form.subdomain, user_data_id=session.get('user_data_id'))
     for k in pred_pow:
         pred_pow[k] = round(pred_pow[k], 2)
+    if form.validate_on_submit():
+        selected_features = []
+        for name in request.form:
+            if request.form[name] == 'on':
+                selected_features += [name]
+        session["selected_features"] = selected_features
+        return redirect(url_for("demo.range_groups"))
+    elif form.is_submitted():
+        flash("Invalid data", "warning")
     return render_template(
         "select_features.html",
         features=features,
         pred_pow=pred_pow,
         form=form,
+    )
+
+
+@demo_blueprint.route("/range_groups", methods=['GET', 'POST'])
+def range_groups():
+    form = RangeGroupsForm(request.form)
+    form.selected_features = session.get("selected_features", [])
+    form.subdomain = Subdomain.query.get(session.get("subdomain", None))
+    return render_template(
+        "range_groups.html",
+        form=form
     )

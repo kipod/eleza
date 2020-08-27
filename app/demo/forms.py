@@ -30,3 +30,11 @@ class SubdomainChoiceForm(FlaskForm):
     )
     model_type = SelectField("Select Model Type:")
     next = SubmitField("Next")
+
+
+class SelectFeaturesForm(FlaskForm):
+    next = SubmitField("Next")
+
+
+class RangeGroupsForm(FlaskForm):
+    next = SubmitField("Next")
