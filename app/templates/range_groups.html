@@ -4,7 +4,7 @@
 
 <div id="header" class="ex-header"></div>
 <div class="container" style="margin-bottom: 5%; margin-left: 0%;">
-    <div class="ex-header-top-main" style="padding: 15px; text-align: left;
+  <div class="ex-header-top-main" style="padding: 15px; text-align: left;
     font-family: 'serif';
     width: 1318px;
     color: #FFF5EE;
@@ -13,30 +13,70 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
     background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Healthcare – Diabetes Diagnosis'>
-        Healthcare – {{ form.subdomain.name }} Diagnosis
-    </div>
-    <h4>
-        Post-model Binning
-    </h4>
-    <table cellspacing="1" style="margin-bottom: 20%;
-    border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%; border-collapse: collapse;" height="520">
-        <tbody>
-            <tr><td>
-                  <div>
-                    <div class="form-control">Select Feature to Bin:</div>
-                    <select class="form-control"  style='width: 50%;' id="feature" name="feature">
-                        {% for feature in form.selected_features %}
-                        <option value="{{feature}}">{{feature}}</option>
-                        {% endfor %}
-                      </select>
+    Healthcare – {{ form.subdomain.name }} Diagnosis
+  </div>
+  <h4>
+    Post-model Binning
+  </h4>
+  <table cellspacing="1" style="margin-bottom: 20%;
+    border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%;" height="520">
+    <tbody>
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td style="padding: 8px;">
+                <div>
+                  <div class="form-control">Select Feature to Bin:</div>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <div style="width:107%;">
+                    <select class="form-control" id="feature" name="feature">
+                      {% for feature in form.selected_features %}
+                      <option value="{{feature}}">{{feature}}</option>
+                      {% endfor %}
+                    </select>
                   </div>
-                </td>
-                <td>
-                  sdasdasdsd
-                </td>
+                </div>
+              </td>
             </tr>
-            <tr><td></td><td></td></tr>
-        </tbody>
-    </table>
+            <tr>
+              <td colspan="3" style="padding: 8px; border-cell;">
+              <div> Create {{ feature }} Groups [Allowable {{feature}} Range: 21 – 81]: </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="padding: 8px; border-cell;">
+                <div> Enter Range </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div style="padding: 8px; border-cell;"> From: &ensp; <input type="text" size="7"></div>
+                </div>
+              </td>
+              <td>
+                <div style="border-cell;"> To: &ensp; <input type="text" size="7"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                sdasdasdsd
+              </td>
+              <td>
+
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 {% endblock %}
