@@ -38,7 +38,10 @@ def logout(client):
 
 
 def test_index_page(client):
-    register(client, 'sam', 'sam@example.com')
+    response = register(client, 'sam', 'sam@example.com')
+    assert response.status_code == 200
+    assert b'Registration successful' in response.data
+    logout(client)
     response = login(client, 'sam')
     assert b'Login successful.' in response.data
     response = client.get('/')
@@ -73,6 +76,8 @@ def test_registration(client):
 def test_login_and_logout(client):
     # Access to logout view before login should fail.
     response = logout(client)
+    assert response.status_code == 200
+    response = client.get('/demo', follow_redirects=True)
     assert b'Please log in to access this page.' in response.data
     # New user will be automatically logged in.
     register(client, 'sam', 'sam@example.com')
