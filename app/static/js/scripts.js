@@ -341,3 +341,21 @@
 	});
 
 })(jQuery);
+
+$(document).ready(() => {
+    function updateDescription() {
+        let desc_tag = $("#description")[0];
+        let selector = $("#feature")[0];
+        let rangeStr = "0 - 100"
+        theRangeMap.forEach(element => {
+            if(element.name == selector.value) {
+                rangeStr = element.range;
+            }
+        });
+        desc_tag.innerHTML = `Create ${selector.value} Groups [Allowable ${selector.value} Range: ${rangeStr}]:`;
+    }
+    $("#feature").on("change", e => {
+        updateDescription();
+    })
+    updateDescription();
+});

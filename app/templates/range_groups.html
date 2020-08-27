@@ -44,7 +44,7 @@
             </tr>
             <tr>
               <td colspan="3" style="padding: 8px; border-cell;">
-              <div> Create {{ feature }} Groups [Allowable {{feature}} Range: 21 – 81]: </div>
+              <div id="description"> Create {{ feature }} Groups [Allowable {{feature}} Range: 21 – 81]: </div>
               </td>
             </tr>
             <tr>
@@ -61,22 +61,47 @@
                 </div>
               </td>
             </tr>
-          </table>
-        </td>
-        <td>
-          <table>
             <tr>
+              <td></td>
               <td>
-                sdasdasdsd
-              </td>
-              <td>
-
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                <button class="btn-solid-lg page-scroll", style="width: 250px", onclick="window.history.back();">Go Back
+                </button></div>
               </td>
             </tr>
+          </table>
+        </td>
+        <td style="width: 50%;">
+          <table>
+            <thead>
+              <th scope="col" style="width: 50%;">
+                "Features" groups
+              </th>
+              <th scope="col" style="text-align: center;">
+                Ranges
+              </th>
+            </thead>
+            <tbody>
+
+            </tbody>
           </table>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const theRangeMap = [
+        {% for range in form.ranges %}
+        {
+            name: "{{ range }}",
+            range: "{{ '{} - {}'.format(form.ranges[range][0], form.ranges[range][1]) }}"
+        },
+        {% endfor %}
+    ];
+
+</script>
 {% endblock %}
