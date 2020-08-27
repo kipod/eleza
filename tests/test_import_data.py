@@ -3,7 +3,7 @@ import pytest
 from app import create_app
 from app.database import db, db_fill_data
 from app.contoller.import_data import import_data_from_file
-from app.models import CaseValue
+from app.models import CaseValue, Subdomain
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,9 +28,19 @@ def client():
 
 
 def test_import(client):
+    TEST_SUBDOMAIN = "Diabetic"
+    TEST_DOMAIN = "healthcare"
+    TEST_MODEL = "Model1"
+    subdomain = (
+        Subdomain.query.filter(Subdomain.name == TEST_SUBDOMAIN)
+        .filter(Subdomain.domain == TEST_DOMAIN)
+        .first()
+    )
+    subdomain_id = subdomain.id
+
     CaseValue.query.delete()
     import_data_from_file(
-        TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, "Diabetic", "healthcare", "Model1"
+        TEST_CSV_VALUE_FILE, TEST_CSV_EXPLAINER_FILE, subdomain_id, TEST_MODEL
     )
     assert len(CaseValue.query.all())
     for case in CaseValue.query.all():

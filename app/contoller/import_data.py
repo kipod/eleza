@@ -1,23 +1,20 @@
 import csv
 from io import TextIOWrapper
 from app.database import db
-from flask import current_app as app
 from app.models import Subdomain, ModelType, Feature, CaseValue, UserData
 from app.logger import log
 
 
 def import_data_from_file_stream(
-    file_value, file_explainer, subdomain_id, domain, model_type,
+    file_value, file_explainer, subdomain_id, model_type,
 ):
-    subdomain = (
-        Subdomain.query.filter(Subdomain.id == subdomain_id)
-        .filter(Subdomain.domain == Subdomain.Domain[domain])
-        .first()
-    )
+    subdomain = Subdomain.query.filter(Subdomain.id == subdomain_id).first()
     user_data = UserData().save()
     model = ModelType.query.filter(ModelType.name == model_type).first()
     feature_names = {feature.short_name: feature for feature in Feature.query.all()}
-    csv_reader = csv.DictReader(TextIOWrapper(file_value, encoding="utf-8"), delimiter=",")
+    csv_reader = csv.DictReader(
+        TextIOWrapper(file_value, encoding="utf-8"), delimiter=","
+    )
     for row in csv_reader:
         case_id = int(row[""])
         for feature_short_name in feature_names:
@@ -32,7 +29,9 @@ def import_data_from_file_stream(
                     user_data=user_data,
                 ).save(False)
 
-    csv_reader = csv.DictReader(TextIOWrapper(file_explainer, encoding="utf-8"), delimiter=",")
+    csv_reader = csv.DictReader(
+        TextIOWrapper(file_explainer, encoding="utf-8"), delimiter=","
+    )
     for row in csv_reader:
         case_id = int(row[""])
         for feature_short_name in feature_names:
@@ -50,17 +49,15 @@ def import_data_from_file_stream(
                 case.explainer = explainer
 
     db.session.commit()
-    log(log.INFO, "Import data successfull for %s[%s]", domain, subdomain_id)
-    if not app.config["TESTING"]:
-        log(log.DEBUG, "Testing")
+    log(log.INFO, "Import data successfull for %s[%s]", subdomain.domain, subdomain_id)
     return user_data
 
 
 def import_data_from_file(
-    file_path_value, file_path_explainer, subdomain_id, domain, model_type,
+    file_path_value, file_path_explainer, subdomain_id, model_type,
 ):
     with open(file_path_value, "rb") as f_value:
         with open(file_path_explainer, "rb") as f_explainer:
             return import_data_from_file_stream(
-                f_value, f_explainer, subdomain_id, domain, model_type
+                f_value, f_explainer, subdomain_id, model_type
             )

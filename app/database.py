@@ -13,8 +13,7 @@ BASE_DIR = os.path.join(
 
 
 def db_fill_data(import_values=True):
-    from app.models import Subdomain, ModelType, Feature
-    from app.contoller import import_data_from_file
+    from app.models import Subdomain, ModelType, Feature, User
 
     Subdomain(domain=Subdomain.Domain.healthcare, name="Cancer").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Diabetic").save(False)
@@ -34,27 +33,11 @@ def db_fill_data(import_values=True):
     Feature(name="Blood Pressure", short_name="pres").save(False)
     Feature(name="Skin Thickness", short_name="skin").save(False)
     Feature(name="Body Mass Index", short_name="mass").save(False)
-    Feature(name="Diabetes Family Pedigree", short_name="pedi").save()
+    Feature(name="Diabetes Family Pedigree", short_name="pedi").save(False)
     Feature(name="Glucose", short_name="plas").save()
     Feature(name="Insulin", short_name="test").save()
 
 
-    return
-    if import_values:
-        # load init data
-        # Healthcare - Diabetic
-        import_data_from_file(
-            file_path_value=os.path.join(BASE_DIR, "diabetes_background_dataset.csv"),
-            file_path_explainer=os.path.join(BASE_DIR, "diabetes_explainer_dataset.csv"),
-            subdomain_name="Diabetic",
-            domain=Subdomain.Domain.healthcare.name,
-            model_type="Model1",
-        )
-        # Financial - Credit
-        import_data_from_file(
-            file_path_value=os.path.join(BASE_DIR, "credit_background_dataset.csv"),
-            file_path_explainer=os.path.join(BASE_DIR, "credit_explainer_dataset.csv"),
-            subdomain_name="Credit",
-            domain=Subdomain.Domain.financial.name,
-            model_type="Model1",
-        )
+    user = User(username="admin", email="simple2b.info@gmail.com")
+    user.password = "ZAQ!xsw2"
+    user.save()
