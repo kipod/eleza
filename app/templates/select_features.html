@@ -3,41 +3,45 @@
 <!-- Header -->
 
 <div id="header" class="ex-header"></div>
-    <!-- <div id="header" class="ex-header" style="text-align:left;" title='Healthcare – Diabetes Diagnosis'>
-        Healthcare – Diabetes Diagnosis
-    </div> -->
 <div class="container" style="margin-bottom: 5%; margin-left: 0%;">
     <div class="ex-header-top-main" style="padding: 15px; text-align: left;
     font-family: 'serif';
     width: 1318px;
-    margin-left: 0%;
     color: #FFF5EE;
     font-style: normal;
     font-size: 250%;
     padding-top: 1rem;
     padding-bottom: 1rem;
     background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Healthcare – Diabetes Diagnosis'>
-        Healthcare – Diabetes Diagnosis
+        Healthcare – {{ form.subdomain.name }} Diagnosis
     </div>
-    <table class="ex-header_table" cellspacing="1" style="margin-left: 0%; margin-bottom: 20%;
-    border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%; height: 380px">
+    <h4>
+        Select (keep) only relevant attributes:
+    </h4>
+    <h5>
+        Summarized for all patients, the attributes are listed from having the highest to lowest predictive power:
+    </h5>
+    <table class="ex-header_table" cellspacing="1" style="margin-bottom: 20%;
+    border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%; border-collapse: collapse;" height="520">
         <thead>
             <th scope="col" style="text-align:center; padding: 4px;">Select Relevant</th>
-            <th scope="col" >Features</th>
+            <th scope="col" style="text-align:center;">Features</th>
             <th scope="col" style="font-size: 100%;">Predictive Power</th>
         </thead>
         <tbody>
             <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
             {% for feature in features %}
             <tr>
-                <td style="text-align:center;"><input type="checkbox"></td>
-                <td>{{feature.name}}</td>
-                <td>{{pred_pow[feature.name]}}</td>
+                <td style="text-align:center;"><div><input class="form-control" type="checkbox"></div></td>
+                <td style="text-align:justify;"><div class="form-control">{{feature.name}}</div></td>
+                <td><div class="form-control">{{pred_pow[feature.name]}}</div></td>
             </tr>
             {% endfor %}
+            <tr><td></td><td colspan="2"><div style="margin-top: 10px; margin-bottom: 10px;"><h5>Outcome: {{ form.subdomain.name }} Diagnosis or Not</h5></div></td></tr>
             <tr><td></td>
-                <td><div style="margin-top: 30px; margin-bottom: 10px;"><button class="btn-solid-lg page-scroll", style="width: 250px", onclick="window.history.back();">Go Back</button></div></td>
-                <td><div style="margin-top: 30px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}</div></td>
+                <td><div style="margin-top: 10px; margin-bottom: 10px;"><button class="btn-solid-lg page-scroll", style="width: 250px", onclick="window.history.back();">Go Back</button></div></td>
+                <td><div style="margin-top: 10px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}</div></td>
             </tr>
         </tbody>
     </table>
