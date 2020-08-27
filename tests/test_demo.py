@@ -2,7 +2,8 @@ import os
 import pytest
 from app import create_app
 from app.database import db, db_fill_data
-from app.models import Subdomain
+from app.models import Subdomain, UserData
+from .login import login, register
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,6 +21,8 @@ def client():
         db.drop_all()
         db.create_all()
         db_fill_data()
+        register(client)
+        login(client)
         yield client
         db.session.remove()
         db.drop_all()
@@ -45,3 +48,4 @@ def test_upload_files(client):
             assert response.status_code == 302
     response = client.get(response.location)
     assert response.status_code == 200
+    assert UserData.query.all(), "User Data presents in DB"

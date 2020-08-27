@@ -30,7 +30,8 @@ def test_predictive_power(client):
     )
     # feature = Feature.query.filter(Feature.name == "Age").first()
     # pp = predictive_power(feature=feature, subdomain=subdomain)
-    all_pp = predictive_power(subdomain=subdomain, user_data_id=1)
+
+    all_pp = predictive_power(subdomain=subdomain, user_data_id=1)  # noqa F841
 
     # for pp in all_pp.values():
     #     assert pp > 0.1

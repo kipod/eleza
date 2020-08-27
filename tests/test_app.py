@@ -2,6 +2,7 @@ import pytest
 
 from app import create_app
 from app.database import db
+from .login import login, logout, register
 
 app = create_app(environment='testing')
 
@@ -17,24 +18,6 @@ def client():
         db.session.remove()
         db.drop_all()
         app_ctx.pop()
-
-
-def register(client, username, email, password='password', confirmation='password'):
-    return client.post(
-        '/register', data=dict(
-            username=username,  email=email, password=password,
-            password_confirmation=confirmation),
-        follow_redirects=True)
-
-
-def login(client, user_id, password='password'):
-    return client.post(
-        '/login', data=dict(user_id=user_id, password=password),
-        follow_redirects=True)
-
-
-def logout(client):
-    return client.get('/logout', follow_redirects=True)
 
 
 def test_index_page(client):

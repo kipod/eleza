@@ -11,7 +11,7 @@ demo_blueprint = Blueprint("demo", __name__)
 @demo_blueprint.route("/", methods=['GET', 'POST'])
 @login_required
 def demo():
-    form = SubdomainChoiceForm(request.form, csrf_enabled=False)
+    form = SubdomainChoiceForm(request.form)
     form.subdomains = Subdomain.query.all()
     form.models = ModelType.query.all()
     form.subdomain_id.choices = [(s.id, s.name) for s in form.subdomains]
@@ -34,7 +34,6 @@ def demo():
             file_value=bkg_file,
             file_explainer=explainer_file,
             subdomain_id=form.subdomain_id.data,
-            domain=form.domain.data,
             model_type=form.model_type.data
         )
         session["user_data_id"] = user_data.id
