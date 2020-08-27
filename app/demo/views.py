@@ -61,6 +61,7 @@ def select_features():
             if request.form[name] == "on":
                 selected_features += [name]
         session["selected_features"] = selected_features
+        session["ranges_for_feature"] = {}
         return redirect(url_for("demo.range_groups"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
@@ -75,7 +76,9 @@ def range_groups():
     form.selected_features = session.get("selected_features", [])
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     user_data_id = session["user_data_id"]
+    form.feature.choices = [(v, v) for v in form.selected_features]
     form.ranges = {}
+    ranges_for_feature = session.get("ranges_for_feature", {})
     for feature_name in form.selected_features:
         feature = Feature.query.filter(Feature.name == feature_name).first()
         all_values = [
@@ -85,33 +88,41 @@ def range_groups():
             .all()
         ]
         form.ranges[feature_name] = (min(all_values), max(all_values))
+    if form.validate_on_submit():
+        if form.next.data:
+            session["categories"] = {}
+            return redirect(url_for("demo.categories"))
+        try:
+            if form.feature.data in ranges_for_feature:
+                ranges_for_feature[form.feature.data] += [(
+                    float(form.range_from.data),
+                    float(form.range_to.data)
+                    )]
+            else:
+                ranges_for_feature[form.feature.data] = [(
+                    float(form.range_from.data),
+                    float(form.range_to.data)
+                    )]
+        except ValueError:
+            flash("Invalid data", "warning")
+            return render_template("range_groups.html", form=form)
+        session["ranges_for_feature"] = ranges_for_feature
+    elif form.is_submitted():
+        flash("Invalid data", "warning")
 
-    return render_template("range_groups.html", form=form)
+    return render_template("range_groups.html", form=form, ranges_for_feature=ranges_for_feature)
 
 
 @demo_blueprint.route("/categories", methods=['GET', 'POST'])
 def categories():
     form = CategoriesForm(request.form)
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {
-        "Personal & Family History": [
-            "Age",
-            "Num. of Pregnancies",
-        ],
-        "Blood Lab Values": [
-            "Glucose",
-            "Insulin"
-        ],
-        "Clinical Measurements": [
-            "Body Mass Index",
-            "Skin Thickness",
-            "Blood Pressure"
-        ]
-    })
+    form.categories = session.get("categories", {})
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     if form.validate_on_submit():
-        if form.submit:
+        if form.submit.data:
             form.categories[form.category_name.data] = [k for k in request.form if request.form[k] == 'on']
+            session["categories"] = form.categories
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template(

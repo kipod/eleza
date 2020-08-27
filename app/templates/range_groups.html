@@ -18,6 +18,24 @@
   <h4>
     Post-model Binning
   </h4>
+  <!-- Flash Messages BEGIN -->
+  <div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismisible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </div>
+  <!-- Flash Messages END -->
+  <form class="form" role="form" action="{{ url_for("demo.range_groups") }}" method="post">
   <table cellspacing="1" style="margin-bottom: 20%;
     border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%;" height="520">
     <tbody>
@@ -53,26 +71,28 @@
               </td>
             </tr>
             <tr>
-              <td><div style="padding: 8px; border-cell;"> From: &ensp; <input type="text" size="7"></div>
+              <td><div style="padding: 8px; border-cell;"> From: &ensp; {{ form.range_from(class="form-control") }}</div>
                 </div>
               </td>
               <td>
-                <div style="border-cell;"> To: &ensp; <input type="text" size="7"></div>
+                <div style="border-cell;"> To: &ensp; {{ form.range_to(class="form-control") }}</div>
                 </div>
               </td>
             </tr>
             <tr>
               <td></td>
+              <td><div style="margin-top: 10px; margin-bottom: 10px;">{{ form.submit(class="btn-solid-lg page-scroll", style="width: 250px") }}</div></td>
+            </tr>
+            <tr>
               <td>
-                <div style="margin-top: 10px; margin-bottom: 10px;">
-                <button class="btn-solid-lg page-scroll", style="width: 250px", onclick="window.history.back();">Go Back
-                </button></div>
+
               </td>
+              <td></td>
             </tr>
           </table>
         </td>
         <td style="width: 50%;">
-          <table>
+          <table id="group_table">
             <thead>
               <th scope="col" style="width: 50%;">
                 "Features" groups
@@ -82,23 +102,48 @@
               </th>
             </thead>
             <tbody>
-
+              <tr></tr>
+              <tr></tr>
+              <tr></tr>
             </tbody>
           </table>
         </td>
       </tr>
+      <tr>
+        <td>
+          <div style="margin-top: 10px; margin-bottom: 10px;">
+            <a class="btn-solid-lg page-scroll" href="{{ url_for('demo.select_features') }}">Go Back</a>
+          </div>
+        </td>
+        <td><div style="margin-top: 10px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}</div></td>
+      </tr>
     </tbody>
   </table>
+</form>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
     const theRangeMap = [
-        {% for range in form.ranges %}
+        {% for feature in form.ranges %}
         {
-            name: "{{ range }}",
-            range: "{{ '{} - {}'.format(form.ranges[range][0], form.ranges[range][1]) }}"
+            name: "{{ feature }}",
+            range: "{{ '{} - {}'.format(form.ranges[feature][0], form.ranges[feature][1]) }}"
+        },
+        {% endfor %}
+    ];
+
+    const theRangeOfFeatures = [
+        {% for feature in ranges_for_feature %}
+        {
+            name: "{{ feature }}",
+            groups: [
+
+            {% for range in ranges_for_feature[feature] %}
+            "{{ '{} - {}'.format(range[0], range[1]) }}",
+            {% endfor %}
+            ]
         },
         {% endfor %}
     ];

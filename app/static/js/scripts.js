@@ -353,6 +353,31 @@ $(document).ready(() => {
             }
         });
         desc_tag.innerHTML = `Create ${selector.value} Groups [Allowable ${selector.value} Range: ${rangeStr}]:`;
+        let group_table = $("#group_table")[0];
+        const row_count = group_table.tBodies[0].rows.length;
+        for (let index = 0; index < row_count; index++) {
+            group_table.tBodies[0].deleteRow(0);
+        }
+
+        theRangeOfFeatures.forEach(element => {
+            if (element.name == selector.value) {
+                for (let i = element.groups.length-1; i >= 0; i--) {
+                    const range_group = element.groups[i];
+                    let row = group_table.tBodies[0].insertRow(0);
+                    let cell1 = row.insertCell(0);
+                    let cell2 = row.insertCell(1);
+                    cell1.innerHTML = `${i+1}`;
+                    cell1.style = "text-align: center;"
+                    cell2.innerHTML = range_group;
+                    cell2.style = "text-align: center;"
+                }
+            }
+        });
+
+        for (let i = 0; i < theRangeOfFeatures.length; i++) {
+            const element = theRangeOfFeatures[i];
+
+        }
     }
     $("#feature").on("change", e => {
         updateDescription();

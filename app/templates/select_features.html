@@ -42,7 +42,7 @@
             {% endfor %}
             <tr><td></td><td colspan="2"><div style="margin-top: 10px; margin-bottom: 10px;"><h5>Outcome: {{ form.subdomain.name }} Diagnosis or Not</h5></div></td></tr>
             <tr><td></td>
-                <td><div style="margin-top: 10px; margin-bottom: 10px;"><button class="btn-solid-lg page-scroll", style="width: 250px", onclick="window.history.back();">Go Back</button></div></td>
+                <td><div style="margin-top: 10px; margin-bottom: 10px;"><a class="btn-solid-lg page-scroll" href="{{ url_for('demo.demo') }}">Go Back</a></div></td>
                 <td><div style="margin-top: 10px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px") }}</div></td>
             </tr>
         </tbody>
