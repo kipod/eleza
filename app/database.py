@@ -35,8 +35,9 @@ def db_fill_data(import_values=True):
     Feature(name="Skin Thickness", short_name="skin").save(False)
     Feature(name="Body Mass Index", short_name="mass").save(False)
     Feature(name="Diabetes Family Pedigree", short_name="pedi").save()
-    # Feature(name="Glucose", short_name="gluc").save()
-    # Feature(name="Skin Thickness", short_name="skin").save() ??
+    Feature(name="Glucose", short_name="plas").save()
+    Feature(name="Insulin", short_name="test").save()
+
 
     return
     if import_values:

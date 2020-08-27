@@ -46,6 +46,7 @@ def demo():
 
 @demo_blueprint.route("/features")
 def select_features():
+    form = SubdomainChoiceForm(request.form, csrf_enabled=False)
     features = Feature.query.all()
     subdomain = Subdomain.query.get(session.get("subdomain", None))
     pred_pow = predictive_power(subdomain, user_data_id=session.get('user_data_id'))
@@ -53,4 +54,5 @@ def select_features():
         "select_features.html",
         features=features,
         pred_pow=pred_pow,
+        form=form,
     )
