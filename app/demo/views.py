@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, request, session, redirect, url_fo
 from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType
 from app.contoller import predictive_power, import_data_from_file_stream
-from .forms import SubdomainChoiceForm, SelectFeaturesForm, RangeGroupsForm
+from .forms import SubdomainChoiceForm, SelectFeaturesForm, RangeGroupsForm, CategoriesForm
 
 
 demo_blueprint = Blueprint("demo", __name__)
@@ -59,7 +59,7 @@ def select_features():
             if request.form[name] == 'on':
                 selected_features += [name]
         session["selected_features"] = selected_features
-        return redirect(url_for("demo.range_groups"))
+        return redirect(url_for("demo.categories"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template(
@@ -77,5 +77,37 @@ def range_groups():
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     return render_template(
         "range_groups.html",
+        form=form
+    )
+
+
+@demo_blueprint.route("/categories", methods=['GET', 'POST'])
+def categories():
+    form = CategoriesForm(request.form)
+    form.selected_features = session.get("selected_features", [])
+    form.categories = session.get("categories", {
+        "Personal & Family History": [
+            "Age",
+            "Num. of Pregnancies",
+
+        ],
+        "Blood Lab Values": [
+            "Glucose",
+            "Insulin"
+        ],
+        "Clinical Measurements": [
+            "Body Mass Index",
+            "Skin Thickness",
+            "Blood Pressure"
+        ]
+    })
+    form.subdomain = Subdomain.query.get(session.get("subdomain", None))
+    if form.validate_on_submit():
+        if form.submit:
+            form.categories[form.category_name.data] = [k for k in request.form if request.form[k] == 'on']
+    elif form.is_submitted():
+        flash("Invalid data", "warning")
+    return render_template(
+        "categories.html",
         form=form
     )
