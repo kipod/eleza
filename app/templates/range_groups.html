@@ -53,7 +53,11 @@
                   <div style="width:107%;">
                     <select class="form-control" id="feature" name="feature">
                       {% for feature in form.selected_features %}
+                      {% if feature == form.feature.data %}
+                      <option selected value="{{feature}}">{{feature}}</optinon>
+                      {% else %}
                       <option value="{{feature}}">{{feature}}</option>
+                      {% endif %}
                       {% endfor %}
                     </select>
                   </div>
@@ -111,7 +115,7 @@
       </tr>
       <tr>
         <td>
-          <div style="margin-top: 10px; margin-bottom: 10px;">
+          <div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;">
             <a class="btn-solid-lg page-scroll" href="{{ url_for('demo.select_features') }}" style="font-size: 120%;">Go Back</a>
           </div>
         </td>

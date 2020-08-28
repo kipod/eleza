@@ -48,3 +48,9 @@ class CategoriesForm(FlaskForm):
     category_name = StringField("Enter category name:")
     submit = SubmitField("Submit")
     next = SubmitField("Next")
+
+
+class ExplanationsSummary(FlaskForm):
+    # category_name = StringField("Enter category name:")
+    # submit = SubmitField("Submit")
+    next = SubmitField("Next")

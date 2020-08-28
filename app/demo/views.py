@@ -103,10 +103,9 @@ def range_groups():
                     float(form.range_from.data),
                     float(form.range_to.data)
                     )]
+            session["ranges_for_feature"] = ranges_for_feature
         except ValueError:
             flash("Invalid data", "warning")
-            return render_template("range_groups.html", form=form)
-        session["ranges_for_feature"] = ranges_for_feature
     elif form.is_submitted():
         flash("Invalid data", "warning")
 
@@ -123,9 +122,33 @@ def categories():
         if form.submit.data:
             form.categories[form.category_name.data] = [k for k in request.form if request.form[k] == 'on']
             session["categories"] = form.categories
+        if form.next.data:
+            session["categories"] = {}
+            return redirect(url_for("demo.explanations_summary"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template(
         "categories.html",
         form=form
     )
+
+@demo_blueprint.route("/explanations_summary", methods=['GET', 'POST'])
+def explanations_summary():
+    form = CategoriesForm(request.form)
+    form.selected_features = session.get("selected_features", [])
+    form.categories = session.get("categories", {})
+    form.subdomain = Subdomain.query.get(session.get("subdomain", None))
+    if form.validate_on_submit():
+        if form.submit.data:
+            form.categories[form.category_name.data] = [k for k in request.form if request.form[k] == 'on']
+        if form.next.data:
+            session["categories"] = {}
+            return redirect(url_for("demo.categories"))
+    elif form.is_submitted():
+        flash("Invalid data", "warning")
+    return render_template(
+        "explanations_summary.html",
+        form=form
+    )
+
+

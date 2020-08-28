@@ -12,23 +12,23 @@
     font-size: 250%;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Healthcare – Diabetes Diagnosis'>
+    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
         Healthcare – {{ form.subdomain.name }} Diagnosis
     </div>
-    <h4>
+    <h5>
         Select (keep) only relevant attributes:
-    </h4>
+    </h5>
     <h5>
         Summarized for all patients, the attributes are listed from having the highest to lowest predictive power:
     </h5>
-    <form class="form" role="form" action="{{ url_for("demo.select_features") }}" method="post">
+    <form class="form" role="form" action="{{ url_for('demo.select_features') }}" method="post">
         {{ form.csrf_token }}
     <table class="ex-header_table" cellspacing="1" style="margin-bottom: 20%;
     border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%; border-collapse: collapse;" height="520">
         <thead>
             <th scope="col" style="text-align:center; padding: 4px;">Select Relevant</th>
             <th scope="col" style="text-align:center;">Features</th>
-            <th scope="col" style="font-size: 100%;">Predictive Power</th>
+            <th scope="col" style="text-align:center; font-size: 100%;">Predictive Power</th>
         </thead>
         <tbody>
             <tr><td></td><td></td><td></td></tr>
@@ -37,7 +37,7 @@
             <tr>
                 <td style="text-align:center;"><div><input class="form-control" type="checkbox" name="{{feature.name}}"></div></td>
                 <td style="text-align:justify;"><div class="form-control">{{feature.name}}</div></td>
-                <td><div class="form-control">{{pred_pow[feature.name]}}</div></td>
+                <td><div class="form-control" style="text-align: center;">{{pred_pow[feature.name]}}</div></td>
             </tr>
             {% endfor %}
             <tr><td></td><td colspan="2"><div style="margin-top: 10px; margin-bottom: 10px;"><h5>Outcome: {{ form.subdomain.name }} Diagnosis or Not</h5></div></td></tr>
