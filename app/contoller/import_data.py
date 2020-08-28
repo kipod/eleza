@@ -17,6 +17,7 @@ def import_data_from_file_stream(
     )
     for row in csv_reader:
         case_id = int(row[""])
+        prediction = row["predictions"]
         for feature_short_name in feature_names:
             if feature_short_name in row:
                 value = float(row[feature_short_name])
@@ -27,6 +28,7 @@ def import_data_from_file_stream(
                     subdomain=subdomain,
                     model_type=model,
                     user_data=user_data,
+                    prediction=prediction
                 ).save(False)
 
     csv_reader = csv.DictReader(

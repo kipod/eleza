@@ -36,16 +36,57 @@
   </div>
   <!-- Flash Messages END -->
   <form class="form" role="form" action="{{ url_for('demo.explanations_summary') }}" method="post">
-  <table cellspacing="1" style="margin-bottom: 20%;
+  <table cellspacing="1" style="margin-bottom: 21%;
     border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%;" height="520">
     <tbody>
+        <thead>
+            <th></th>
+            <th>Credit Score: View Explanations (Summary)</th>
+        </thead>
         <tr>
-            <td></td>
-            <td>Credit Score: View Explanations (Summary)</td>
+            <td  style="padding:8px;">How to view Contributions:</td>
+            <td>
+                <div style="max-width: 100%; height: auto; overflow:hidden">
+                    <div style="width: 100%;">Prediction Score & Category Contributions:</div>
+                    <div style="background-color: aquamarine; float:left; width: 50%; text-align: center;">Explanations</div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td>How to view Contributions:</td>
-            <td></td>
+            <td  style="padding:8px;">
+                <div style="width:50%; margin-bottom: 170px;">
+                    <select class="form-control" id="feature" name="feature">
+                      <option selected value="Dropdown">{{feature}}</optinon>
+                      <option value="Dropdown">{{feature}}</option>
+                    </select>
+                  </div>
+            </td>
+            <td  style="padding:8px;">
+                <table>
+                    <thead>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                    </thead>
+                    <body>
+                        <tr><td>1</td></tr>
+                        <tr><td>2</td></tr>
+                        <tr><td>3</td></tr>
+                        <tr><td>4</td></tr>
+                        <tr><td>5</td></tr>
+                        <tr><td>6</td></tr>
+                        <tr><td>7</td></tr>
+                    </body>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;"><a class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go Back</a></div></td>
+            <td><div style="margin-top: 10px; margin-bottom: 10px; text-align:right; padding: 8px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
         </tr>
     </tbody>
   </table>

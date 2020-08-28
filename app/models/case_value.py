@@ -12,6 +12,7 @@ class CaseValue(db.Model, ModelMixin):
     case_id = db.Column(db.Integer, nullable=False)
     value = db.Column(db.Float)
     explainer = db.Column(db.Float)
+    prediction = db.Column(db.Float)
     subdomain_id = db.Column(db.Integer, db.ForeignKey("subdomain.id"), nullable=False)
     model_type_id = db.Column(db.Integer, db.ForeignKey("model_type.id"), nullable=False)
     feature_id = db.Column(db.Integer, db.ForeignKey("feature.id"), nullable=False)
