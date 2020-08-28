@@ -150,5 +150,3 @@ def explanations_summary():
         "explanations_summary.html",
         form=form
     )
-
-
