@@ -34,7 +34,7 @@ def db_fill_data(import_values=True):
     Feature(name="Skin Thickness", short_name="skin").save(False)
     Feature(name="Body Mass Index", short_name="mass").save(False)
     Feature(name="Diabetes Family Pedigree", short_name="pedi").save(False)
-    Feature(name="Glucose", short_name="plas").save()
+    Feature(name="Glucose", short_name="plas").save(False)
     Feature(name="Insulin", short_name="test").save()
 
     user = User(username="admin", email="simple2b.info@gmail.com")
