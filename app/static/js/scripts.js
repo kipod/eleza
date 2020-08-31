@@ -382,5 +382,14 @@ $(document).ready(() => {
     $("#feature").on("change", e => {
         updateDescription();
     })
-    updateDescription();
+
+    if( $("#feature")[0] ) {
+        updateDescription();
+    }
+
+
+    $('#patientsTable').DataTable({
+        "pageLength": 10,
+        "order": []
+    });
 });

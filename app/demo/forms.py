@@ -52,5 +52,5 @@ class CategoriesForm(FlaskForm):
 
 class ExplanationsSummary(FlaskForm):
     # category_name = StringField("Enter category name:")
-    # submit = SubmitField("Submit")
+    submit = SubmitField("Submit")
     next = SubmitField("Next")

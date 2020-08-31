@@ -2,7 +2,13 @@ from flask import render_template, Blueprint, request, session, redirect, url_fo
 from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType, CaseValue
 from app.contoller import predictive_power, import_data_from_file_stream
-from .forms import SubdomainChoiceForm, SelectFeaturesForm, RangeGroupsForm, CategoriesForm
+from .forms import (
+    SubdomainChoiceForm,
+    SelectFeaturesForm,
+    RangeGroupsForm,
+    CategoriesForm,
+    ExplanationsSummary,
+)
 
 
 demo_blueprint = Blueprint("demo", __name__)
@@ -94,59 +100,114 @@ def range_groups():
             return redirect(url_for("demo.categories"))
         try:
             if form.feature.data in ranges_for_feature:
-                ranges_for_feature[form.feature.data] += [(
-                    float(form.range_from.data),
-                    float(form.range_to.data)
-                    )]
+                ranges_for_feature[form.feature.data] += [
+                    (float(form.range_from.data), float(form.range_to.data))
+                ]
             else:
-                ranges_for_feature[form.feature.data] = [(
-                    float(form.range_from.data),
-                    float(form.range_to.data)
-                    )]
+                ranges_for_feature[form.feature.data] = [
+                    (float(form.range_from.data), float(form.range_to.data))
+                ]
             session["ranges_for_feature"] = ranges_for_feature
         except ValueError:
             flash("Invalid data", "warning")
     elif form.is_submitted():
         flash("Invalid data", "warning")
 
-    return render_template("range_groups.html", form=form, ranges_for_feature=ranges_for_feature)
+    return render_template(
+        "range_groups.html", form=form, ranges_for_feature=ranges_for_feature
+    )
 
 
-@demo_blueprint.route("/categories", methods=['GET', 'POST'])
+@demo_blueprint.route("/categories", methods=["GET", "POST"])
 def categories():
     form = CategoriesForm(request.form)
     form.selected_features = session.get("selected_features", [])
     form.categories = session.get("categories", {})
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
+    # ranges_for_feature = session.get("ranges_for_feature", {})
     if form.validate_on_submit():
         if form.submit.data:
-            form.categories[form.category_name.data] = [k for k in request.form if request.form[k] == 'on']
+            form.categories[form.category_name.data] = [
+                k for k in request.form if request.form[k] == "on"
+            ]
             session["categories"] = form.categories
         if form.next.data:
-            session["categories"] = {}
+            session["categories"] = form.categories
+            # {}
             return redirect(url_for("demo.explanations_summary"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
-    return render_template(
-        "categories.html",
-        form=form
-    )
+    return render_template("categories.html", form=form)
 
-@demo_blueprint.route("/explanations_summary", methods=['GET', 'POST'])
+
+@demo_blueprint.route("/explanations_summary", methods=["GET", "POST"])
 def explanations_summary():
-    form = CategoriesForm(request.form)
-    form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form = ExplanationsSummary(request.form)
+    # features = Feature.query.all()
+    # form.selected_features = session.get("selected_features", [])
+    categories = session.get("categories", {})
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
+    # form.ranges_for_feature = session["ranges_for_feature"]
+    ranges_for_feature = session.get("ranges_for_feature", {})
+    range_groups_ages = ranges_for_feature.get('Age', [])
+
+    form.table_heads = [
+        "Patient ID",
+        "Age",
+        f"{form.subdomain.name} Predicted",
+        "Prediction or Confidence Score (Out of 100)",
+    ]
+
+    form.table_heads += [f"{name} Contribution" for name in categories]
+
+    all_case_values_query = CaseValue.query.filter(
+        CaseValue.user_data_id == session["user_data_id"]
+    )
+    max_patient_id = max([v.case_id for v in all_case_values_query.all()])
+    form.table_rows = []
+    for patient_id in range(max_patient_id + 1):
+        all_case_values_query_for_patient = all_case_values_query.filter(
+            CaseValue.case_id == patient_id
+        )
+        if not all_case_values_query_for_patient.all():
+            continue
+        age_feature = Feature.query.filter(Feature.name == "Age").first()
+        age_case_val = all_case_values_query_for_patient.filter(
+            CaseValue.feature_id == age_feature.id
+        ).first()
+        age = int(age_case_val.value)
+        for age_range in range_groups_ages:
+            min_age = int(age_range[0])
+            max_age = int(age_range[1])
+            if age >= min_age and age <= max_age:
+                age = f"{min_age}-{max_age}"
+                break
+        prediction_score = int(round(age_case_val.prediction, 2) * 100)
+        predicted = "No" if prediction_score < 50 else "Yes"
+        row = [patient_id, age, predicted, prediction_score]
+        explainers = []
+        for cat_name in categories:
+            sum_explainer = 0
+            for feature_name in categories[cat_name]:
+                feature = Feature.query.filter(Feature.name == feature_name).first()
+                case_val = all_case_values_query_for_patient.filter(
+                        CaseValue.feature_id == feature.id
+                    ).first()
+                sum_explainer += case_val.explainer
+            explainers += [round(sum_explainer, 4)]
+        # if not selected percentage
+        row += explainers
+        form.table_rows += [row]
+
     if form.validate_on_submit():
         if form.submit.data:
-            form.categories[form.category_name.data] = [k for k in request.form if request.form[k] == 'on']
+            form.categories[form.category_name.data] = [
+                k for k in request.form if request.form[k] == "on"
+            ]
         if form.next.data:
             session["categories"] = {}
+            # session["ranges_for_feature"] = ranges_for_feature
             return redirect(url_for("demo.categories"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
-    return render_template(
-        "explanations_summary.html",
-        form=form
-    )
+    return render_template("explanations_summary.html", form=form, range_groups_ages=range_groups_ages)

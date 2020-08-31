@@ -1,96 +1,109 @@
 {% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+{% endblock %}
+
 {% block content %}
 <!-- Header -->
 <style>
-    .mainHeader {
+  .mainHeader {
     height: 25vh;
     background-color: aqua;
-}
+  }
 
-.menuWrapper {
+  .menuWrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-right: 20px;
-}
+  }
 
-.menu {
+  .menu {
     display: flex;
     align-items: center;
-}
+  }
 
-.menu > ul{
+  .menu>ul {
     display: flex;
-}
+  }
 
-.menu > ul li{
+  .menu>ul li {
     margin-right: 5px;
     cursor: pointer;
-}
+  }
 
-.logo {
+  .logo {
     width: 15px;
     height: 15px;
     margin-right: 5px;
-}
+  }
 
-.healthHeader {
+  .healthHeader {
     padding: 10px 5px;
     background-color: blue;
     color: white;
-}
+  }
 
-.table {
+  .table {
     width: 1500px;
-    margin-bottom: 10%;
-    border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%;
-}
+    margin-bottom: 5%;
+    border: 3px ridge lightskyblue;
+    background: #FFFAFA;
+    width: 118.8%;
+  }
 
-.sidesWrapper {
+  .sidesWrapper {
     display: flex;
     justify-content: space-between;
-}
+  }
 
-.table .leftDiv {
+  .table .leftDiv {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
+  }
 
-.routeButton {
+  .routeButton {
     padding: 5px 20px;
     background-color: aqua;
     color: white;
     cursor: pointer;
-}
+  }
 
-.rightDiv {
+  .rightDiv {
     text-align: left;
-}
+    padding: 30px;
+  }
 
-.prediction {
+  .prediction {
     margin-right: 50px;
-}
+  }
 
-.explanationsButton {
+  .explanationsButton {
     background-color: yellow;
     color: grey;
-    padding: 5px 20px;
-}
+    padding: 5px 40px;
+    margin-left: 200px;
+  }
 
-.patientsTable {
+  .patientsTable {
     margin-top: 40px;
     max-width: 70vw;
-}
 
-.patientsTable > thead {
+  }
+
+  .patientsTable>thead {
     background-color: rgb(228, 227, 155);
-    border: 2px ridge rgb(204, 238, 159);
-}
-</style>
-<div id="header" class="ex-header"></div>
-<div class="container" style="margin-bottom: 5%; margin-left: 0%;">
-  <div class="ex-header-top-main bck" style="padding: 15px; text-align: left;
+    border: 3px solid yellow;
+  }
+
+  .bckcoloroption {
+   background-color: #FFF5EE;
+  }
+
+  .ex-header-top-main {
+    padding: 15px; text-align: left;
     font-family: 'serif';
     width: 148.5%;
     color: #FFF5EE;
@@ -98,7 +111,15 @@
     font-size: 250%;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
+    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
+  }
+
+</style>
+
+<div id="header"></div>
+<div>
+<div class="container" style="margin-bottom: 0%; margin-left: 0%;">
+  <div class="ex-header-top-main bck" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
     Healthcare – {{ form.subdomain.name }} Diagnosis
   </div>
   <!-- Flash Messages BEGIN -->
@@ -118,135 +139,65 @@
     {% endwith %}
   </div>
   <!-- Flash Messages END -->
-  <!-- <form class="form" role="form" action="{{ url_for('demo.explanations_summary') }}" method="post">
-  <div style="width: 125%;">
-  <table cellspacing="1" style="margin-bottom: 10%;
-    border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%;" height="520">
-    <thead>
-        <th></th>
-        <th><h5>Credit Score: View Explanations (Summary)</h5></th>
-    </thead>
-    <tbody>
-    <tr>
-        <td  style="padding:8px;">How to view Contributions:</td>
-        <td>
-            <div style="max-width: 100%; height: auto; overflow:hidden">
-                <div style="width: 100%;  float:left; width: 50%;">Prediction Score & Category Contributions:</div>
-                <div style="background-color: rgb(216, 214, 102); float:left; width: 30%; text-align: center; font-family: serif; font-size: 170%; color: #FFF5EE;">Explanations</div>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td style="padding:8px;">
-            <div style="width:70%; margin-bottom: 170px;">
-                <select class="form-control" id="feature" name="feature">
-                    <option selected value="Dropdown">{{feature}}</option>
-                    <option value="Dropdown">{{feature}}</option>
-                </select>
-            </div>
-        </td>
-        <td style="width: 70%;">
-            <table>
-                <thead style="background-color: rgb(228, 227, 155); border: 2px ridge rgb(204, 238, 159);">
-                    <th>Patient ID</th>
-                    <th style="text-align: center;">Age</th>
-                    <th style="text-align: center;">Diabetes
-                        Predicted</th>
-                    <th style="text-align: center;">Prediction or Confidence Score &ensp; (Out of 100)</th>
-                    <th>Personal & Fam History Contribution</th>
-                    <th>Blood Lab Values Contribution</th>
-                    <th>Clinical Measurements Contribution</th>
-                </thead>
-                <tbody style="text-align: center;">
-                    <tr><td>1</td></tr>
-                    <tr><td>2</td></tr>
-                    <tr><td>3</td></tr>
-                    <tr><td>4</td></tr>
-                    <tr><td>5</td></tr>
-                    <tr><td>6</td></tr>
-                    <tr><td>7</td></tr>
-                </tbody>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td><div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;"><a class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go Back</a></div></td>
-        <td><div style="margin-top: 10px; margin-bottom: 10px; text-align:right; padding: 8px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-</form>
-</div> -->
+
 <form class="form" role="form" action="{{ url_for('demo.explanations_summary') }}" method="post">
 <main>
-<div style="width: 125%;">
-<section class="table">
-    <div class="sidesWrapper">
-    <div class="leftDiv">
-        <div>
-        <h5>How to view Contributions:</h5>
-        <div style="width:70%; margin-bottom: 170px; padding:8px;">
-            <select class="form-control" id="feature" name="feature">
-                <option selected value="Dropdown">{{feature}}</option>
-                <option value="Dropdown">{{feature}}</option>
-            </select>
+    <div style="width: 125%;">
+      <section class="table">
+        <div class="sidesWrapper">
+          <div class="leftDiv">
+            <div style="padding: 38px;">
+              <h5>How to view Contributions: {{range_groups_ages}}</h5>
+              <div style="width:70%; margin-bottom: 170px; width: 110%;">
+                <select class="form-control" name="feature" style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);">
+                  <option class="bckcoloroption" selected value="Dropdown">Percentage of Contributions Per Row</option>
+                  <option class="bckcoloroption" value="Dropdown">Contribution Value</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="rightDiv">
+            <div style="padding: 8px;">
+              <header>
+                <h5>Credit Score: View Explanations (Summary)</h5>
+              </header>
+              <div>
+                <span class="prediction">Prediction Score & Category Contributions:</span>
+                <button class="explanationsButton">Explanations</button>
+              </div>
+            </div>
+            <table id="patientsTable" class="patientsTable table table-striped table-sm">
+              <thead>
+                {% for head in form.table_heads %}
+                <th style="text-align: center;">{{head}}</th>
+                {% endfor %}
+              </thead>
+              <tbody style="text-align: center;">
+                {% for row in form.table_rows %}
+                <tr>
+                  {% for cell in row %}
+                  <td>{{cell}}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
+        <div style="display: flex;
+  justify-content: space-between;">
+          <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a class="btn-solid-lg page-scroll"
+              href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go Back</a></div>
+          <div style="margin-top: 10px; margin-bottom: 10px; margin-right: 15px; text-align:right; padding: 12px;">
+            {{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div>
         </div>
+      </section>
     </div>
-
-    <div class="rightDiv">
-        <header><h5>Credit Score: View Explanations (Summary)</h5></header>
-        <header>
-        <span class="prediction">Prediction Score & Category Contributions:</span>
-        <button class="explanationsButton">Explanations</button>
-        </header>
-
-        <table class="patientsTable">
-        <thead>
-        <th>Patient ID</th>
-        <th style="text-align: center;">Age</th>
-        <th style="text-align: center;">Diabetes Predicted</th>
-        <th style="text-align: center;">
-            Prediction or Confidence Score &ensp; (Out of 100)
-        </th>
-        <th>Personal & Fam History Contribution</th>
-        <th>Blood Lab Values Contribution</th>
-        <th>Clinical Measurements Contribution</th>
-        </thead>
-        <tbody style="text-align: center;">
-        <tr>
-            <td>1</td>
-        </tr>
-        <tr>
-            <td>2</td>
-        </tr>
-        <tr>
-            <td>3</td>
-        </tr>
-        <tr>
-            <td>4</td>
-        </tr>
-        <tr>
-            <td>5</td>
-        </tr>
-        <tr>
-            <td>6</td>
-        </tr>
-        <tr>
-            <td>7</td>
-        </tr>
-        </tbody>
-        </table>
-    </div>
-    </div>
-    <div style="display: flex;
-    justify-content: space-between;">
-    <div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;"><a class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go Back</a></div>
-    <div style="margin-top: 10px; margin-bottom: 10px; text-align:right; padding: 8px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div>
-    </div>
-</section>
-</div>
-</main>
+  </main>
 </form>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/jquery.dataTables.min.js"></script>
 {% endblock %}
