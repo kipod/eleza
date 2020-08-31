@@ -1548,16 +1548,8 @@ a:hover.back-to-top {
 /***************************/
 /*     19. Extra Pages     */
 /***************************/
-.ex-header {
-	/* padding: 15px;
-	font-family: 'serif';
-	color: #FFF5EE;
-	font-style: normal;
-	font-size: 250%;
-	padding-top: 2rem;
-	padding-bottom: 2rem;
-	text-align: center; */
-	/* background: -webkit-linear-gradient(top, #00CED1, #00BFFF); */
+.ex-headert {
+
 }
 
 .ex-header-top-name {
@@ -1743,8 +1735,8 @@ a:hover.back-to-top {
 
 	/* Extra Pages */
 	.ex-header {
-		/* padding-top: 11rem;
-		padding-bottom: 9rem; */
+		padding-top: 11rem;
+		padding-bottom: 9rem;
 	}
 
 	.ex-basic-2 .text-container.dark {
@@ -2013,7 +2005,7 @@ a:hover.back-to-top {
 
 	/* Extra Pages */
 	.ex-header {
-		/* background: url('../images/ex-header-background.jpg') center center no-repeat; */
+		background: url('../images/ex-header-background.jpg') center center no-repeat;
 		background-size: cover;
 	}
 

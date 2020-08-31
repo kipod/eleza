@@ -46,11 +46,10 @@
   }
 
   .table {
-    width: 1500px;
     margin-bottom: 5%;
     border: 3px ridge lightskyblue;
     background: #FFFAFA;
-    width: 118.8%;
+    width: 100%;
   }
 
   .sidesWrapper {
@@ -84,7 +83,7 @@
     background-color: yellow;
     color: grey;
     padding: 5px 40px;
-    margin-left: 200px;
+    margin-left: 100px;
   }
 
   .patientsTable {
@@ -114,101 +113,103 @@
     padding-bottom: 1rem;
     background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
   }
+
+  .a {
+		background: url('C:/work/simple2b/eleza/pp/static/images') center center no-repeat;
+		background-size: cover;
+	}
 </style>
 
-<div id="header"></div>
-<div>
-  <div class="container" style="margin-bottom: 0%; margin-left: 0%;">
-    <div class="ex-header-top-main bck" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
-      Healthcare – {{ form.subdomain.name }} Diagnosis
+<div id="header" class="a"></div>
+<div class="container" style="margin-bottom: 0%; margin-left: 0%;">
+  <div class="ex-header-top-main bck" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
+    Healthcare – {{ form.subdomain.name }} Diagnosis
+  </div>
+  <!-- Flash Messages BEGIN -->
+  <div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismisible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+      </button>
+      {{ message }}
     </div>
-    <!-- Flash Messages BEGIN -->
-    <div>
-      {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-      {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismisible">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          <span class="sr-only">Close</span>
-        </button>
-        {{ message }}
-      </div>
-      {% endfor %}
-      {% endif %}
-      {% endwith %}
-    </div>
-    <!-- Flash Messages END -->
-
-    <form class="form" role="form" action="{{ url_for('demo.explanations_summary') }}" method="post">
-      <main>
-        <div style="width: 125%;">
-          <section class="table">
-            <div class="sidesWrapper">
-              <div class="leftDiv">
-                <div style="padding: 38px;">
-                  <h5>How to view Contributions: {{range_groups_ages}}</h5>
-                  <div style="width:70%; margin-bottom: 170px; width: 110%;">
-                    <select class="form-control" id="presentation_type" name="presentation_type"
-                      style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" onchange="this.form.submit()">
-                      {% if form.presentation_type == "Percents" %}
-                      <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
-                      <option class="bckcoloroption" value="Values">Contribution Value</option>
-                      {% else %}
-                      <option class="bckcoloroption" value="Percents">Percentage of Contributions Per Row</option>
-                      <option class="bckcoloroption" selected value="Values">Contribution Value</option>
-                      {% endif %}
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="rightDiv">
-                <div style="padding: 8px;">
-                  <header>
-                    <h5>Credit Score: View Explanations (Summary)</h5>
-                  </header>
-                  <div>
-                    <span class="prediction">Prediction Score & Category Contributions:</span>
-                    <button class="explanationsButton">Explanations</button>
-                  </div>
-                </div>
-                <table id="patientsTable" class="patientsTable table table-striped table-sm">
-                  <thead>
-                    {% for head in form.table_heads %}
-                    <th style="text-align: center;">{{head}}</th>
-                    {% endfor %}
-                  </thead>
-                  <tbody style="text-align: center;">
-                    {% for row in form.table_rows %}
-                    <tr>
-                      {% for cell in row %}
-                      {% if cell[1] %}
-                      <td style="background-color: {{cell[1]}};">{{cell[0]}}</td>
-                      {% else %}
-                      <td >{{cell[0]}}</td>
-                      {% endif %}
-                      {% endfor %}
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </div>
+  <!-- Flash Messages END -->
+</div>
+<form class="form" role="form" action="{{ url_for('demo.explanations_summary') }}" method="post">
+  <main>
+    <div style="width: 100%;">
+      <section class="table">
+        <div class="sidesWrapper">
+          <div class="leftDiv">
+            <div style="padding: 38px;">
+              <h5>How to view Contributions: {{range_groups_ages}}</h5>
+              <div style="width:70%; margin-bottom: 170px; width: 110%;">
+                <select class="form-control" id="presentation_type" name="presentation_type"
+                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" onchange="this.form.submit()">
+                  {% if form.presentation_type == "Percents" %}
+                  <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
+                  <option class="bckcoloroption" value="Values">Contribution Value</option>
+                  {% else %}
+                  <option class="bckcoloroption" value="Percents">Percentage of Contributions Per Row</option>
+                  <option class="bckcoloroption" selected value="Values">Contribution Value</option>
+                  {% endif %}
+                </select>
               </div>
             </div>
-            <div style="display: flex;
-  justify-content: space-between;">
-              <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
-                  class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go
-                  Back</a>
+          </div>
+          <div class="rightDiv">
+            <div style="padding: 8px;">
+              <header>
+                <h5>Credit Score: View Explanations (Summary)</h5>
+              </header>
+              <div>
+                <span class="prediction">Prediction Score & Category Contributions:</span>
+                <button class="explanationsButton">Explanations</button>
               </div>
-
             </div>
-          </section>
+            <table id="patientsTable" class="patientsTable table table-striped table-sm">
+              <thead>
+                {% for head in form.table_heads %}
+                <th style="text-align: center;">{{head}}</th>
+                {% endfor %}
+              </thead>
+              <tbody style="text-align: center;">
+                {% for row in form.table_rows %}
+                <tr>
+                  {% for cell in row %}
+                  {% if cell[1] %}
+                  <td style="background-color: {{cell[1]}};">{{cell[0]}}</td>
+                  {% else %}
+                  <td >{{cell[0]}}</td>
+                  {% endif %}
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </main>
-    </form>
+        <div style="display: flex; justify-content: space-between;"></div>
+          <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
+              class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go
+              Back</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</form>
 
-    {% endblock %}
+{% endblock %}
 
-    {% block scripts %}
-    <script src="/static/js/jquery.dataTables.min.js"></script>
-    {% endblock %}
+{% block scripts %}
+<script src="/static/js/jquery.dataTables.min.js"></script>
+{% endblock %}
