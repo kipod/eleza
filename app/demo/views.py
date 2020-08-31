@@ -2,12 +2,12 @@ from flask import render_template, Blueprint, request, session, redirect, url_fo
 from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType, CaseValue
 from app.contoller import predictive_power, import_data_from_file_stream
+from flask_wtf import FlaskForm
 from .forms import (
     SubdomainChoiceForm,
     SelectFeaturesForm,
     RangeGroupsForm,
     CategoriesForm,
-    ExplanationsSummary,
 )
 
 
@@ -142,7 +142,7 @@ def categories():
 
 @demo_blueprint.route("/explanations_summary", methods=["GET", "POST"])
 def explanations_summary():
-    form = ExplanationsSummary(request.form)
+    form = FlaskForm(request.form)
     # features = Feature.query.all()
     # form.selected_features = session.get("selected_features", [])
     categories = session.get("categories", {})
@@ -150,6 +150,11 @@ def explanations_summary():
     # form.ranges_for_feature = session["ranges_for_feature"]
     ranges_for_feature = session.get("ranges_for_feature", {})
     range_groups_ages = ranges_for_feature.get('Age', [])
+    form.presentation_type = 'Percents'
+    if form.validate_on_submit():
+        form.presentation_type = request.form['presentation_type']
+    elif form.is_submitted():
+        flash("Invalid data", "warning")
 
     form.table_heads = [
         "Patient ID",
@@ -184,7 +189,12 @@ def explanations_summary():
                 break
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         predicted = "No" if prediction_score < 50 else "Yes"
-        row = [patient_id, age, predicted, prediction_score]
+        prediction_score_color = "red"
+        if prediction_score > 45:
+            prediction_score_color = "yellow"
+            if prediction_score > 70:
+                prediction_score_color = "green"
+        row = [(patient_id, None), (age, None), (predicted, None), (prediction_score, prediction_score_color)]
         explainers = []
         for cat_name in categories:
             sum_explainer = 0
@@ -194,20 +204,14 @@ def explanations_summary():
                         CaseValue.feature_id == feature.id
                     ).first()
                 sum_explainer += case_val.explainer
-            explainers += [round(sum_explainer, 4)]
+            explainers += [sum_explainer]
         # if not selected percentage
-        row += explainers
+        if form.presentation_type == 'Percents':
+            hundred = sum(explainers)
+            cells = map(lambda val: (int(round(val*100/hundred, 0)), None), explainers)
+        else:
+            cells = map(lambda val: (round(val, 4), None), explainers)
+        row += cells
         form.table_rows += [row]
 
-    if form.validate_on_submit():
-        if form.submit.data:
-            form.categories[form.category_name.data] = [
-                k for k in request.form if request.form[k] == "on"
-            ]
-        if form.next.data:
-            session["categories"] = {}
-            # session["ranges_for_feature"] = ranges_for_feature
-            return redirect(url_for("demo.categories"))
-    elif form.is_submitted():
-        flash("Invalid data", "warning")
     return render_template("explanations_summary.html", form=form, range_groups_ages=range_groups_ages)
