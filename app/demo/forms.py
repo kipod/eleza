@@ -49,5 +49,6 @@ class CategoriesForm(FlaskForm):
     submit = SubmitField("Submit")
     next = SubmitField("Next")
 
-class ExplanationsSummaryForm(FlaskForm):
+class ExplanationsPerPatientForm(FlaskForm):
+    category_name_field = StringField("")
     next = SubmitField("Next")

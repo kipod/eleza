@@ -8,7 +8,7 @@ from .forms import (
     SelectFeaturesForm,
     RangeGroupsForm,
     CategoriesForm,
-    ExplanationsSummaryForm
+    ExplanationsPerPatientForm,
 )
 
 
@@ -144,17 +144,16 @@ def categories():
 @demo_blueprint.route("/explanations_summary", methods=["GET", "POST"])
 def explanations_summary():
     form = FlaskForm(request.form)
-    form_patient_id_click = ExplanationsSummaryForm(request.form)
     # features = Feature.query.all()
     # form.selected_features = session.get("selected_features", [])
     categories = session.get("categories", {})
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     # form.ranges_for_feature = session["ranges_for_feature"]
     ranges_for_feature = session.get("ranges_for_feature", {})
-    range_groups_ages = ranges_for_feature.get('Age', [])
-    form.presentation_type = 'Percents'
+    range_groups_ages = ranges_for_feature.get("Age", [])
+    form.presentation_type = "Percents"
     if form.validate_on_submit():
-        form.presentation_type = request.form['presentation_type']
+        form.presentation_type = request.form["presentation_type"]
     elif form.is_submitted():
         flash("Invalid data", "warning")
 
@@ -197,48 +196,66 @@ def explanations_summary():
             if prediction_score > 70:
                 prediction_score_color = "green"
 
-        patient_id_bgcolor = 'MediumSlateBlue'
-        # form_patient_id_click.patient_id_value =
-        row = [(patient_id, patient_id_bgcolor), (age, None), (predicted, None), (prediction_score, prediction_score_color)]
+        patient_id_bgcolor = "MediumSlateBlue"
+        row = [
+            (patient_id, patient_id_bgcolor),
+            (age, None),
+            (predicted, None),
+            (prediction_score, prediction_score_color),
+        ]
         explainers = []
         for cat_name in categories:
             sum_explainer = 0
             for feature_name in categories[cat_name]:
                 feature = Feature.query.filter(Feature.name == feature_name).first()
                 case_val = all_case_values_query_for_patient.filter(
-                        CaseValue.feature_id == feature.id
-                    ).first()
+                    CaseValue.feature_id == feature.id
+                ).first()
                 sum_explainer += case_val.explainer
             explainers += [sum_explainer]
         # if not selected percentage
         cells = None
 
-        if form.presentation_type == 'Percents':
+        if form.presentation_type == "Percents":
             hundred = sum(explainers)
-            values = list(map(lambda val: int(round(val*100/hundred, 0)), explainers))
+            values = list(
+                map(lambda val: int(round(val * 100 / hundred, 0)), explainers)
+            )
             max_val = max(values)
-            colors = list(map(lambda val: ('green' if val == max_val else None), values))
+            colors = list(
+                map(lambda val: ("green" if val == max_val else None), values)
+            )
             cells = list(zip(values, colors))
         else:
             values = list(map(lambda val: (round(val, 4)), explainers))
             max_val = max(values)
-            colors = list(map(lambda val: ('green' if val == max_val else None), values))
+            colors = list(
+                map(lambda val: ("green" if val == max_val else None), values)
+            )
             cells = list(zip(values, colors))
         row += cells
         form.table_rows += [row]
 
-    return render_template("explanations_summary.html", form=form, range_groups_ages=range_groups_ages,)
+    return render_template(
+        "explanations_summary.html", form=form, range_groups_ages=range_groups_ages,
+    )
 
 
 @demo_blueprint.route("/explanations_per_patient/<case_id>", methods=["GET", "POST"])
 def explanations_per_patient(case_id):
-    form = CategoriesForm(request.form)
+    # form = ExplanationsPerPatientForm(request.form)
+    form = FlaskForm(request.form)
     form.selected_features = session.get("selected_features", [])
     form.categories = session.get("categories", {})
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
-    # ranges_for_feature = session.get("ranges_for_feature", {})
+    ranges_for_feature = session.get("ranges_for_feature", {})
+    form.range_groups_ages = ranges_for_feature.get("Age", [])
+    all_case_values_query_for_patient = CaseValue.query.filter(
+        CaseValue.user_data_id == session["user_data_id"]
+    ).filter(CaseValue.case_id == case_id)
+
     if form.validate_on_submit():
         pass
     elif form.is_submitted():
         flash("Invalid data", "warning")
-    return render_template("categories.html", form=form)
+    return render_template("explanations_per_patient.html", form=form)
