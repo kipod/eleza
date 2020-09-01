@@ -143,7 +143,7 @@
   {% endwith %}
 </div>
   <!-- Flash Messages END -->
-<form class="form" role="form" action="{{ url_for('demo.explanations_summary') }}" method="post">
+<form class="form" role="form" action="{{ url_for('demo.explanations_per_patient', case_id=row[0][0]) }}" method="post">
   <main>
     <div style="width: 100%;">
       <section class="table">
