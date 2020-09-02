@@ -8,9 +8,13 @@ from .forms import (
     SelectFeaturesForm,
     RangeGroupsForm,
     CategoriesForm,
-    ExplanationsPerPatientForm,
 )
-from .controller import *
+from .controller import (
+    prediction_score,
+    predicted,
+    age_range_groups,
+    f,
+)
 
 
 demo_blueprint = Blueprint("demo", __name__)
@@ -145,11 +149,8 @@ def categories():
 @demo_blueprint.route("/explanations_summary", methods=["GET", "POST"])
 def explanations_summary():
     form = FlaskForm(request.form)
-    # features = Feature.query.all()
-    # form.selected_features = session.get("selected_features", [])
     categories = session.get("categories", {})
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
-    # form.ranges_for_feature = session["ranges_for_feature"]
     ranges_for_feature = session.get("ranges_for_feature", {})
     range_groups_ages = ranges_for_feature.get("Age", [])
     form.presentation_type = "Percents"
@@ -239,7 +240,6 @@ def explanations_summary():
 
 @demo_blueprint.route("/explanations_per_patient/<case_id>", methods=["GET", "POST"])
 def explanations_per_patient(case_id):
-    # form = ExplanationsPerPatientForm(request.form)
     form = FlaskForm(request.form)
     form.selected_features = session.get("selected_features", [])
     form.categories = session.get("categories", {})
@@ -250,21 +250,73 @@ def explanations_per_patient(case_id):
         CaseValue.user_data_id == session["user_data_id"]
     )
     all_case_values_query_for_patient = all_case_values_query.filter(
-            CaseValue.case_id == case_id
-        )
+        CaseValue.case_id == case_id
+    )
+    form.presentation_type = "Proportional to the Category Score"
+
+    sum_explainers_values = 0
+    for categories_feature in form.categories:
+        for feature in form.categories[categories_feature]:
+            feature_id = Feature.query.filter(Feature.name == feature).first().id
+            age_case_val_testing = all_case_values_query_for_patient.filter(
+                CaseValue.feature_id == feature_id
+            ).first()
+            sum_explainers_values += abs(age_case_val_testing.explainer)
+    form.table_heads = []
+    sum_explainer = {}
+    sum_explainer_abs = {}
+    for cat_name in form.categories:
+        sum_explainer[cat_name] = 0
+        sum_explainer_abs[cat_name] = 0
+        for feature_name in form.categories[cat_name]:
+            feature = Feature.query.filter(Feature.name == feature_name).first()
+            case_val = all_case_values_query_for_patient.filter(
+                CaseValue.feature_id == feature.id
+            ).first()
+            sum_explainer[cat_name] += case_val.explainer
+            sum_explainer_abs[cat_name] += abs(case_val.explainer)
+        form.table_heads += [cat_name, "Feature Contribution"]
+    form.table_rows = []
+    num_of_rows = max([len(form.categories[k]) for k in form.categories])
+    for cat_name in form.categories:
+        row_index = 0
+        for feature_name in form.categories[cat_name]:
+            if len(form.table_rows) <= row_index:
+                form.table_rows += [[]]
+            feature = Feature.query.filter(Feature.name == feature_name).first()
+            case_val = all_case_values_query_for_patient.filter(
+                CaseValue.feature_id == feature.id
+            ).first()
+            # (case_val.explainer / sum_explainer_abs[cat_name]) * 100,
+            one_square_val = sum(sum_explainer_abs.values()) / 12
+            square_num = int(round(abs(case_val.explainer) / one_square_val, 0))
+            form.table_rows[row_index] += [[feature_name, square_num]]
+            row_index += 1
+        for i in range(row_index, num_of_rows):
+            if len(form.table_rows) <= i:
+                form.table_rows += [[]]
+            form.table_rows[i] += [['', '']]
+
+    explainers = sum(sum_explainer.values())
+    # hundred = sum(explainers)
+    values = list(map(lambda val: int(round(val * 100 / hundred, 0)), explainers))
+    form.value_percent = max(values)
+
     age_feature = Feature.query.filter(Feature.name == "Age").first()
     age_case_val = all_case_values_query_for_patient.filter(
         CaseValue.feature_id == age_feature.id
     ).first()
+
+    form.max_len_value = max(len_value)
+    form.square_value = age_case_val.explainer / sum_explainers_values
     form.age = int(age_case_val.value)
     form.age = age_range_groups(range_groups_ages, form.age)
     form.case_id = case_id
     form.prediction_score = prediction_score(age_case_val.prediction)
     form.predicted = predicted(form.prediction_score)
 
-
     if form.validate_on_submit():
-        pass
+        form.presentation_type = request.form["presentation_type"]
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template("explanations_per_patient.html", form=form)

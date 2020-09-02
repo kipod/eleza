@@ -174,13 +174,12 @@
                                 style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);"
                                 onchange="this.form.submit()">
                                 {% if form.presentation_type == "Percents" %}
-                                <option class="bckcoloroption" selected value="Percents">Percentage of Contributions
-                                    Per Row</option>
-                                <option class="bckcoloroption" value="Values">Contribution Value</option>
+                                <option class="bckcoloroption" selected value="Proportional to the Category Score">Proportional to the Category Score</option>
+                                <option class="bckcoloroption" value="Proportional to the Total Confidence Score">Proportional to the Total Confidence Score</option>
                                 {% else %}
-                                <option class="bckcoloroption" value="Percents">Percentage of Contributions Per Row
+                                <option class="bckcoloroption" value="Proportional to the Category Score">Percentage of Contributions Per Row
                                 </option>
-                                <option class="bckcoloroption" selected value="Values">Contribution Value</option>
+                                <option class="bckcoloroption" selected value="Values">Proportional to the Total Confidence Score</option>
                                 {% endif %}
                             </select>
                         </div>
@@ -201,27 +200,38 @@
                     <div class="form-control" style="margin-top: 30px; width: 90%; height: 20%; font-weight: 600;">
                         Prediction or Confidence Score (Out of 100):
                         <div class="form-control" style="float:right; text-align:center; font-size:150%; color:brown;
-                        font-weight:600; background-color:#FFFAFA; width: 50%; margin-right: 60px;">
+                        font-weight:600; background-color:#FFFAFA; width: 50%; margin-right: 65px;">
                         {{form.prediction_score}}</div>
                     </div>
                 </div>
                 <div class="rightDiv">
                     <table class="patientsTable">
-                        <thead>
+                        <thead style="text-align: center;">
                             {% for categories_name in form.categories %}
-                            <th style="text-align: center;">
+                            <th>
                                 {{categories_name}}
+                                {{form.value_percent }}
                             </th>
                             <th>
                                 Feature Contribution
                             </th>
                             {% endfor %}
                         </thead>
-                        <tbody>
+                        <tbody style="background-color: rgb(207, 141, 93); color: floralwhite; text-align: center;">
+                            {% for i in range(form.max_len_value) %}
                             <tr>
+                                {% for categories_feature in form.categories %}
                                 <td>
+                                    {{form.categories[categories_feature]}}
                                 </td>
+                                {% if form.square_value > 1 %}
+                                <td>1</td>
+                                {% else %}
+                                <td></td>
+                                {% endif %}
+                                {% endfor %}
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
