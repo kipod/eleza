@@ -77,8 +77,8 @@
 
     .patientsTable {
         margin-top: 18px;
-        max-width: 70vw;
-        width: 56vh;
+        max-width: 90vw;
+        width: 85vh;
     }
 
     .patientsTable>thead {
@@ -100,7 +100,7 @@
         font-size: 250%;
         padding-top: 2.4rem;
         padding-bottom: 1rem;
-        margin-top: 150px;
+        /* margin-top: 150px; */
         background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
     }
 
@@ -108,7 +108,7 @@
         display: block;
         width: 35vh;
         margin-top: 38px;
-        margin-left: 55px;
+        margin-left: 35px;
     }
 
     .table .leftDiv .centerDiv {
@@ -123,9 +123,10 @@
     }
 
     .rightDiv {
-        width: 65vh;
+        width: 90vh;
         text-align: left;
-        padding: 20px;
+        padding: 10px;
+        margin-top: 10px;
     }
 
     .frame{
@@ -188,25 +189,33 @@
                 <div class="centerDiv div-style-font">
                     <div>
                         <div style="max-width: 100%;">
-                            <div class="form-control" style="width: 60%; font-weight: 600;">Patient ID: &emsp; 2</div>
+                            <div class="form-control" style="width: 65%; font-weight: 600;">Patient ID: &emsp; {{form.case_id}}</div>
                             <!-- <div style="width: 70%; text-align: center; padding: 5px;"></div> -->
                         </div>
                         <div style="max-width: 100%; margin-top: 15px;">
-                            <div class="form-control" style="width: 60%; height: 10%; font-weight: 600;">Age: &emsp; 20-30</div>
+                            <div class="form-control" style="width: 65%; height: 10%; font-weight: 600; text-align: left;">Age: &emsp; {{form.age}}</div>
                             <!-- <div style="width: 70%; text-align: center; padding:  5px;">20 - 30</div> -->
                         </div>
-                        <div class="form-control" style="margin-top: 15px; font-weight: 600; width: 80%;">Diabetes Predicted: &ensp; Yes</div>
+                        <div class="form-control" style="margin-top: 15px; font-weight: 600; width: 90%;">Diabetes Predicted: &ensp; {{form.predicted}}</div>
                     </div>
-                    <div class="form-control" style="margin-top: 35px; width: 80%; height: 20%; font-weight: 600;">
-                        Prediction or Confidence Score (Out of 100): &ensp; 75
+                    <div class="form-control" style="margin-top: 30px; width: 90%; height: 20%; font-weight: 600;">
+                        Prediction or Confidence Score (Out of 100):
+                        <div class="form-control" style="float:right; text-align:center; font-size:150%; color:brown;
+                        font-weight:600; background-color:#FFFAFA; width: 50%; margin-right: 60px;">
+                        {{form.prediction_score}}</div>
                     </div>
                 </div>
                 <div class="rightDiv">
                     <table class="patientsTable">
                         <thead>
-                            <th>
-
+                            {% for categories_name in form.categories %}
+                            <th style="text-align: center;">
+                                {{categories_name}}
                             </th>
+                            <th>
+                                Feature Contribution
+                            </th>
+                            {% endfor %}
                         </thead>
                         <tbody>
                             <tr>

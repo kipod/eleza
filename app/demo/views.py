@@ -10,6 +10,7 @@ from .forms import (
     CategoriesForm,
     ExplanationsPerPatientForm,
 )
+from .controller import *
 
 
 demo_blueprint = Blueprint("demo", __name__)
@@ -182,12 +183,7 @@ def explanations_summary():
             CaseValue.feature_id == age_feature.id
         ).first()
         age = int(age_case_val.value)
-        for age_range in range_groups_ages:
-            min_age = int(age_range[0])
-            max_age = int(age_range[1])
-            if age >= min_age and age <= max_age:
-                age = f"{min_age}-{max_age}"
-                break
+        age = age_range_groups(range_groups_ages, age)
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         predicted = "No" if prediction_score < 50 else "Yes"
         prediction_score_color = "red"
@@ -249,10 +245,23 @@ def explanations_per_patient(case_id):
     form.categories = session.get("categories", {})
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     ranges_for_feature = session.get("ranges_for_feature", {})
-    form.range_groups_ages = ranges_for_feature.get("Age", [])
-    all_case_values_query_for_patient = CaseValue.query.filter(
+    range_groups_ages = ranges_for_feature.get("Age", [])
+    all_case_values_query = CaseValue.query.filter(
         CaseValue.user_data_id == session["user_data_id"]
-    ).filter(CaseValue.case_id == case_id)
+    )
+    all_case_values_query_for_patient = all_case_values_query.filter(
+            CaseValue.case_id == case_id
+        )
+    age_feature = Feature.query.filter(Feature.name == "Age").first()
+    age_case_val = all_case_values_query_for_patient.filter(
+        CaseValue.feature_id == age_feature.id
+    ).first()
+    form.age = int(age_case_val.value)
+    form.age = age_range_groups(range_groups_ages, form.age)
+    form.case_id = case_id
+    form.prediction_score = prediction_score(age_case_val.prediction)
+    form.predicted = predicted(form.prediction_score)
+
 
     if form.validate_on_submit():
         pass
