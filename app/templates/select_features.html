@@ -36,7 +36,7 @@
             {% for feature in features %}
             <tr>
                 {% if feature.name == 'Age' %}
-                <td style="text-align:center;"><div><input class="form-control" type="checkbox"  checked name="{{feature.name}}"></div></td>
+                <td style="text-align:center;"><div><input class="form-control" type="checkbox"  checked name="{{feature.name}}" onclick="return false;"></div></td>
                 <td style="text-align:justify;"><div class="form-control">{{feature.name}}</div></td>
                 <td><div class="form-control" style="text-align: center;">{{pred_pow[feature.name]}}</div></td>
                 {% else %}

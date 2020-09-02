@@ -13,7 +13,7 @@ from .controller import (
     prediction_score,
     predicted,
     age_range_groups,
-    f,
+    gen_squares_code,
 )
 
 
@@ -254,14 +254,6 @@ def explanations_per_patient(case_id):
     )
     form.presentation_type = "Proportional to the Category Score"
 
-    sum_explainers_values = 0
-    for categories_feature in form.categories:
-        for feature in form.categories[categories_feature]:
-            feature_id = Feature.query.filter(Feature.name == feature).first().id
-            age_case_val_testing = all_case_values_query_for_patient.filter(
-                CaseValue.feature_id == feature_id
-            ).first()
-            sum_explainers_values += abs(age_case_val_testing.explainer)
     form.table_heads = []
     sum_explainer = {}
     sum_explainer_abs = {}
@@ -275,7 +267,7 @@ def explanations_per_patient(case_id):
             ).first()
             sum_explainer[cat_name] += case_val.explainer
             sum_explainer_abs[cat_name] += abs(case_val.explainer)
-        form.table_heads += [cat_name, "Feature Contribution"]
+        form.table_heads += [[cat_name, ], "Feature Contribution"]
     form.table_rows = []
     num_of_rows = max([len(form.categories[k]) for k in form.categories])
     for cat_name in form.categories:
@@ -290,25 +282,26 @@ def explanations_per_patient(case_id):
             # (case_val.explainer / sum_explainer_abs[cat_name]) * 100,
             one_square_val = sum(sum_explainer_abs.values()) / 12
             square_num = int(round(abs(case_val.explainer) / one_square_val, 0))
-            form.table_rows[row_index] += [[feature_name, square_num]]
+            form.table_rows[row_index] += [[feature_name, gen_squares_code(square_num)]]
             row_index += 1
         for i in range(row_index, num_of_rows):
             if len(form.table_rows) <= i:
                 form.table_rows += [[]]
-            form.table_rows[i] += [['', '']]
+            form.table_rows[i] += [["", ""]]
 
     explainers = sum(sum_explainer.values())
-    # hundred = sum(explainers)
-    values = list(map(lambda val: int(round(val * 100 / hundred, 0)), explainers))
+    values = list(
+        map(lambda val: int(round(val * 100 / explainers, 0)), sum_explainer.values())
+    )
     form.value_percent = max(values)
+    for i, percent in enumerate(values):
+        form.table_heads[2 * i] += [percent]
 
     age_feature = Feature.query.filter(Feature.name == "Age").first()
     age_case_val = all_case_values_query_for_patient.filter(
         CaseValue.feature_id == age_feature.id
     ).first()
 
-    form.max_len_value = max(len_value)
-    form.square_value = age_case_val.explainer / sum_explainers_values
     form.age = int(age_case_val.value)
     form.age = age_range_groups(range_groups_ages, form.age)
     form.case_id = case_id
@@ -319,4 +312,12 @@ def explanations_per_patient(case_id):
         form.presentation_type = request.form["presentation_type"]
     elif form.is_submitted():
         flash("Invalid data", "warning")
-    return render_template("explanations_per_patient.html", form=form)
+
+    def check_is_list(val):
+        return type(val) is list
+
+    return render_template(
+        "explanations_per_patient.html",
+        form=form,
+        check_is_list=check_is_list,
+    )

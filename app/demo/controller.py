@@ -18,5 +18,6 @@ def age_range_groups(range_groups_ages, age):
             break
     return age
 
-def f(x):
-    return len(x)
+
+def gen_squares_code(number):
+    return number
