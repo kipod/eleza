@@ -129,3 +129,9 @@
 font-family: 'arial';
 font-weight: 600;
 }
+
+.squareBtn{
+    height: 20px;
+    width: 20px;
+    background-color: #00BFFF;
+}
