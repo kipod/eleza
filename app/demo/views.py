@@ -633,6 +633,7 @@ def financial_explan_2_per_client(case_id):
 
     form.table_heads = ["Categories", "Characteristics", "Attributes", "Contributions"]
     form.table_rows = []
+    total_contrib = 0
     for cat_name in form.categories:
         sub_head = [cat_name, "", "", ""]
         form.table_rows += [sub_head]
@@ -645,6 +646,8 @@ def financial_explan_2_per_client(case_id):
             form.table_rows += [["", feature_name, case_val.value, round(case_val.explainer, 3)]]
             sum_contribution += case_val.explainer
         sub_head[3] = round(sum_contribution, 3)
+        total_contrib += sum_contribution
+    form.table_rows += [["Total", "", "", round(total_contrib, 3)]]
 
     return render_template(
         "financial_explan_2_per_client.html",
