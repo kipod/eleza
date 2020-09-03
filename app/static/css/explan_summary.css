@@ -48,11 +48,23 @@
     justify-content: space-between;
 }
 
+.table .leftDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
 .routeButton {
     padding: 5px 20px;
     background-color: aqua;
     color: white;
     cursor: pointer;
+}
+
+.rightDiv {
+    text-align: left;
+    padding: 30px;
 }
 
 .prediction {
@@ -67,9 +79,9 @@
 }
 
 .patientsTable {
-    margin-top: 18px;
-    max-width: 90vw;
-    width: 85vh;
+    margin-top: 40px;
+    max-width: 70vw;
+
 }
 
 .patientsTable>thead {
@@ -91,54 +103,5 @@
     font-size: 250%;
     padding-top: 2.4rem;
     padding-bottom: 1rem;
-    /* margin-top: 150px; */
     background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
-}
-
-.centerDiv {
-    display: block;
-    width: 35vh;
-    margin-top: 38px;
-    margin-left: 35px;
-}
-
-.table .leftDiv .centerDiv {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-}
-
-.leftDiv  {
-    width: 30vh;
-}
-
-.rightDiv {
-    width: 90vh;
-    text-align: left;
-    padding: 10px;
-    margin-top: 10px;
-}
-
-.rightDivExp2 {
-    text-align: left;
-    padding: 10px;
-    margin-top: 10px;
-    width: 90vh;
-}
-
-.frame{
-    float:left;
-    width: 50%;
-}
-
-.div-style-font{
-font-family: 'arial';
-font-weight: 600;
-}
-
-.squareBtn{
-    height: 20px;
-    width: 20px;
-    background-color: #00BFFF;
 }

@@ -6,8 +6,8 @@
 
 {% block content %}
 <!-- Header -->
-<div class="ex-header-top-main bck" title='Financial – Assessing {{ form.subdomain.name }} '>
-    Financial – Assessing {{ form.subdomain.name }}
+<div title='Financial – Assessing {{ form.subdomain.name }} '>
+    <div class="ex-header-top-main bck">Financial – Assessing {{ form.subdomain.name }}</div>
 <!-- Flash Messages BEGIN -->
 <div>
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -28,79 +28,38 @@
 <form class="form" role="form" action="{{ url_for('demo.financial_explan_per_client', case_id=form.case_id) }}"
   method="post">
   <main>
+    <h4>Credit Score: View Explanations</h4>
     <div style="width: 100%;">
       <section class="table">
         <div class="sidesWrapper">
-          <div class="leftDiv">
-            <div style="padding: 20px; margin-top: 10px;">
-              <h5> How to view Contributions of Features </h5>
-              <div style="width:70%; margin-bottom: 170px; width: 100%;">
-                <select class="form-control" id="presentation_type" name="presentation_type"
-                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF); width: 135%;" onchange="this.form.submit()">
-                  {% if form.presentation_type == "Proportional to the Total Confidence Score" %}
-                  <option class="bckcoloroption" selected value="Proportional to the Category Score">Proportional to the
-                    Category Score</option>
-                  <option class="bckcoloroption" value="Proportional to the Total Confidence Score">Proportional to the
-                    Total Confidence Score</option>
-                  {% else %}
-                  <option class="bckcoloroption" value="Proportional to the Category Score">Proportional to the
-                    Category Score
-                  </option>
-                  <option class="bckcoloroption" selected value="Proportional to the Total Confidence Score">Proportional to the Total Confidence Score
-                  </option>
-                  {% endif %}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="centerDiv div-style-font">
-            <div>
-              <div style="max-width: 100%;">
-                <div class="form-control" style="width: 65%; font-weight: 600;">Patient ID: &emsp;&emsp; {{form.case_id}}
-                </div>
-                <!-- <div style="width: 70%; text-align: center; padding: 5px;"></div> -->
-              </div>
-              <div style="max-width: 100%; margin-top: 15px;">
-                <div class="form-control" style="width: 65%; height: 10%; font-weight: 600; text-align: left;">Age:
-                  &emsp;&emsp; {{form.age}}</div>
-                <!-- <div style="width: 70%; text-align: center; padding:  5px;">20 - 30</div> -->
-              </div>
-              <div class="form-control" style="margin-top: 15px; font-weight: 600; width: 90%;">Diabetes Predicted:
-                &ensp;&emsp; {{form.predicted}}</div>
-            </div>
-            <div class="form-control" style="margin-top: 30px; width: 90%; height: 25%; font-weight: 600;">
-              Prediction or Confidence Score (Out of 100):
-              <font style="color:brown; font-size: 150%;"> &emsp;&emsp; {{form.prediction_score}}</font>
-            </div>
-          </div>
-          <div class="rightDiv">
-            <table class="patientsTable">
-              <thead style="text-align: center;">
+
+            <table>
+              <thead style="text-align: left; ">
                 {% for table_head in form.table_heads %}
-                <th>
-                  {% if check_is_list(table_head) %}
-                  {{table_head[0]}} <div style="color:brown;">({{table_head[1]}}%)</div>
-                  {% else %}
+                <th style="background-color: #FFE394;">
                   {{table_head}}
-                  {% endif %}
                 </th>
                 {% endfor %}
               </thead>
-              <tbody style="background-color: rgb(207, 141, 93); color: floralwhite; text-align: center;">
+              <tbody>
                 {% for table_row in form.table_rows %}
                 <tr>
-                  {% for index in table_row %}
-                  {% for value in index %}
-                  <td>
-                    {{value}}
+                  {% for cell in table_row %}
+                  {% if table_row[0] %}
+                  <td style="background-color: #F7D8D6;">
+                    <b>{{cell}}</b>
                   </td>
-                  {% endfor %}
+                  {% else %}
+                  <td>
+                    {{cell}}
+                  </td>
+                  {% endif %}
                   {% endfor %}
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
-          </div>
+
         </div>
         <div style="display: flex; justify-content: space-between;"></div>
         <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
