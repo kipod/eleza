@@ -6,9 +6,83 @@
 
 {% block content %}
 <!-- Header -->
+<style>
+ .maincontainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+
+.topcontainer {
+   display: flex;
+   text-align: center;
+   margin-top: 15px;
+   margin-left: 62vh;
+   height: 10%;
+ }
+
+.centercontainer  {
+    margin-left: 62vh;
+    margin-top: 30px;
+    height: 10%;
+    font-size: 130%;
+ }
+ /* .topcontainer .centercontainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+ } */
+
+.bottomcontainer  {
+    max-width: 100%;
+    padding: 20px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+.leftblock {
+    /* margin-right: 90vh; */
+    max-width: 30%;
+    width: 30%;
+  }
+
+.rightblock {
+    margin-left: 15vh;
+    max-width: 80%;
+    width: 70%;
+    margin-bottom: 30px;
+  }
+
+.clientTable {
+    /* margin-right: 40px; */
+    max-width: 90vw;
+    width: 20vh;
+    background-color: rgb(228, 227, 155);
+    border: 3px solid #00BFFF;
+  /* .leftblock .rightblock {
+    display: flex;
+    justify-content: space-between;
+  } */
+}
+.footer-buttons{
+  display: flex;
+  justify-content: space-between;
+}
+
+.s1 {
+
+}
+
+.s2 {
+
+}
+
+</style>
 <div class="ex-header-top-main bck" title='Financial – Assessing {{ form.subdomain.name }} '>
-    Financial – Assessing {{ form.subdomain.name }}
-<!-- Flash Messages BEGIN -->
+  Financial – Assessing {{ form.subdomain.name }}
+</div>
+      <!-- Flash Messages BEGIN -->
 <div>
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -30,91 +104,59 @@
   <main>
     <div style="width: 100%;">
       <section class="table">
-        <div class="sidesWrapper">
-          <div class="leftDiv">
-            <div style="padding: 20px; margin-top: 10px;">
-              <h5> How to view Contributions of Features </h5>
-              <div style="width:70%; margin-bottom: 170px; width: 100%;">
-                <select class="form-control" id="presentation_type" name="presentation_type"
-                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF); width: 135%;" onchange="this.form.submit()">
-                  {% if form.presentation_type == "Proportional to the Total Confidence Score" %}
-                  <option class="bckcoloroption" selected value="Proportional to the Category Score">Proportional to the
-                    Category Score</option>
-                  <option class="bckcoloroption" value="Proportional to the Total Confidence Score">Proportional to the
-                    Total Confidence Score</option>
-                  {% else %}
-                  <option class="bckcoloroption" value="Proportional to the Category Score">Proportional to the
-                    Category Score
-                  </option>
-                  <option class="bckcoloroption" selected value="Proportional to the Total Confidence Score">Proportional to the Total Confidence Score
-                  </option>
-                  {% endif %}
-                </select>
-              </div>
-            </div>
+        <div>
+          <div class="topcontainer">
+            <h3>
+              Credit Score: View Explanations
+            </h3>
           </div>
-          <div class="centerDiv div-style-font">
-            <div>
-              <div style="max-width: 100%;">
-                <div class="form-control" style="width: 65%; font-weight: 600;">Patient ID: &emsp;&emsp; {{form.case_id}}
-                </div>
-                <!-- <div style="width: 70%; text-align: center; padding: 5px;"></div> -->
-              </div>
-              <div style="max-width: 100%; margin-top: 15px;">
-                <div class="form-control" style="width: 65%; height: 10%; font-weight: 600; text-align: left;">Age:
-                  &emsp;&emsp; {{form.age}}</div>
-                <!-- <div style="width: 70%; text-align: center; padding:  5px;">20 - 30</div> -->
-              </div>
-              <div class="form-control" style="margin-top: 15px; font-weight: 600; width: 90%;">Diabetes Predicted:
-                &ensp;&emsp; {{form.predicted}}</div>
-            </div>
-            <div class="form-control" style="margin-top: 30px; width: 90%; height: 25%; font-weight: 600;">
-              Prediction or Confidence Score (Out of 100):
-              <font style="color:brown; font-size: 150%;"> &emsp;&emsp; {{form.prediction_score}}</font>
-            </div>
+          <div class="centercontainer">
           </div>
-          <div class="rightDiv">
-            <table class="patientsTable">
+          <div class="bottomcontainer">
+            <div> </div>
+            <div class="rightblock">
+              <table class="clientTable">
               <thead style="text-align: center;">
-                {% for table_head in form.table_heads %}
-                <th>
-                  {% if check_is_list(table_head) %}
-                  {{table_head[0]}} <div style="color:brown;">({{table_head[1]}}%)</div>
-                  {% else %}
-                  {{table_head}}
-                  {% endif %}
-                </th>
-                {% endfor %}
+                <th>Characteristics</th>
+                <th>Attributes</th>
+                <th>Contributions</th>
               </thead>
-              <tbody style="background-color: rgb(207, 141, 93); color: floralwhite; text-align: center;">
-                {% for table_row in form.table_rows %}
+              <tbody style="background-color: #FFFAFA; color: rgb(32, 28, 20); text-align: center;">
+              {% for row in form.table_rows %}
                 <tr>
-                  {% for index in table_row %}
-                  {% for value in index %}
-                  <td>
-                    {{value}}
-                  </td>
-                  {% endfor %}
-                  {% endfor %}
+                    {% if not row[1] %}
+                    {% for cell in row %}
+                    <td><b>{{cell}}</b></td>
+                    {% endfor %}
+                    {% else %}
+                    {% for cell in row %}
+                    <td>{{cell}}</td>
+                    {% endfor %}
+                    {% endif %}
                 </tr>
-                {% endfor %}
+              {% endfor %}
               </tbody>
-            </table>
+               </table>
+            </div>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between;"></div>
-        <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
+        <div class="footer-buttons">
+          <div class="s1" style="margin-top: 95px; padding: 20px;"><a
             class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_summary') }}"
-            style='font-size: 120%;'>Go
-            Back</a>
+            style='font-size: 135%;'>Go Back</a>
+          </div>
+          <div style="margin-top: 100px; padding: 20px;"><a
+            class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_summary') }}"
+            style='font-size: 135%;'>Next</a>
+          </div>
+          <!-- <div style="margin-top: 100px; padding: 20px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div> -->
         </div>
-    </div>
-    </section>
+      </section>
     </div>
   </main>
-  {{ form.all_case_values_query_for_patient }}
+  <!-- {{ form.all_case_values_query_for_patient }} -->
 </form>
-
+<!-- </div> -->
 {% endblock %}
 
 {% block scripts %}
