@@ -37,9 +37,9 @@
           <div class="leftDiv">
             <div style="padding: 38px;">
               <h5>How to view Contributions: </h5>
-              <div style="width:70%; margin-bottom: 170px; width: 100%;">
+              <div style="width:100%;">
                 <select class="form-control" id="presentation_type" name="presentation_type"
-                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" onchange="this.form.submit()">
+                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF); width: 100%;" onchange="this.form.submit()">
                   {% if form.presentation_type == "Percents" %}
                   <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
                   <option class="bckcoloroption" value="Values">Contribution Value</option>
@@ -86,7 +86,7 @@
         </div>
         <div style="display: flex; justify-content: space-between;"></div>
           <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
-              class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go
+              class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 150%;'>Go
               Back</a>
           </div>
         </div>
