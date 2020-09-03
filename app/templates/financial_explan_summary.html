@@ -70,7 +70,7 @@
               <tbody style="text-align: center;">
                 {% for row in form.table_rows %}
                 <tr>
-                  <td style="background-color: {{row[0][1]}};"><a style="color: #F0E68C;" href="{{url_for('demo.financial_explan_2_per_client', case_id=row[0][0])}}">{{row[0][0]}}</a></td>
+                  <td style="background-color: {{row[0][1]}};"><a style="color: #F0E68C;" href="{{url_for('demo.financial_explan_per_client', case_id=row[0][0])}}">{{row[0][0]}}</a></td>
                   {% for cell in row[1:] %}
                   {% if cell[1] %}
                   <td style="background-color: {{cell[1]}};">{{cell[0]}}</td>
@@ -86,8 +86,7 @@
         </div>
         <div style="display: flex; justify-content: space-between;"></div>
           <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
-              class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go
-              Back</a>
+              class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go Back</a>
           </div>
         </div>
       </section>

@@ -524,7 +524,7 @@ def financial_explan_summary():
     )
 
 
-@demo_blueprint.route("/financial_explan_per_client/<case_id>", methods=["GET", "POST"])
+@demo_blueprint.route("/financial_explan_per_client/<case_id>", methods=["GET"])
 def financial_explan_per_client(case_id):
     form = FinancialSelectFeatures(request.form)
     form.case_id = case_id
@@ -549,7 +549,7 @@ def financial_explan_per_client(case_id):
                 CaseValue.feature_id == feature.id
             ).first()
             feature_values.append(feature_name)
-            feature_values.append(case_val.value)
+            feature_values.append(str(case_val.value))
             feature_values.append(round(case_val.explainer * 100, 3))
             sum_explainers += (case_val.explainer * 100)
             if len(feature_name) >= 2:
@@ -566,11 +566,10 @@ def financial_explan_per_client(case_id):
 @demo_blueprint.route("/financial_explan_2_per_client/<case_id>", methods=["GET"])
 def financial_explan_2_per_client(case_id):
     form = FlaskForm(request.form)
-    # form.selected_features = session.get("selected_features", [])
+    form.case_id = case_id
     form.categories = session.get("categories", {})
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
-    ranges_for_feature = session.get("ranges_for_feature", {})
-    # range_groups_ages = ranges_for_feature.get("Age", [])
+    # ranges_for_feature = session.get("ranges_for_feature", {})
     all_case_values_query = CaseValue.query.filter(
         CaseValue.user_data_id == session["user_data_id"]
     )
