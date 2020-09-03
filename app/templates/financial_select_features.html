@@ -12,14 +12,14 @@
     font-size: 250%;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Financial – {{ form.subdomain.name }} Diagnosis'>
-        Financial – {{ form.subdomain.name }} Diagnosis
+    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Financial – Assessing {{ form.subdomain.name }} '>
+        Financial – Assessing {{ form.subdomain.name }}
     </div>
     <h5>
-        Select (keep) only relevant attributes:
+        Select (keep) only relevant attributes from individual score cards:
     </h5>
     <h5>
-        Summarized for all patients, the attributes are listed from having the highest to lowest predictive power:
+        Summarized for all applicants, the attributes are listed from having the highest to lowest predictive power:
     </h5>
     <form class="form" role="form" action="{{ url_for('demo.financial_select_features') }}" method="post">
         {{ form.csrf_token }}
