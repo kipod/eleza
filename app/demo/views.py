@@ -561,3 +561,42 @@ def financial_explan_per_client(case_id):
         "financial_explan_per_client.html",
         form=form
     )
+
+
+@demo_blueprint.route("/financial_explan_2_per_client/<case_id>", methods=["GET"])
+def financial_explan_2_per_client(case_id):
+    form = FlaskForm(request.form)
+    # form.selected_features = session.get("selected_features", [])
+    form.categories = session.get("categories", {})
+    form.subdomain = Subdomain.query.get(session.get("subdomain", None))
+    ranges_for_feature = session.get("ranges_for_feature", {})
+    # range_groups_ages = ranges_for_feature.get("Age", [])
+    all_case_values_query = CaseValue.query.filter(
+        CaseValue.user_data_id == session["user_data_id"]
+    )
+    all_case_values_query_for_patient = all_case_values_query.filter(
+        CaseValue.case_id == case_id
+    )
+
+    form.table_heads = ["Categories", "Characteristics", "Attributes", "Contributions"]
+    form.table_rows = []
+    total_contrib = 0
+    for cat_name in form.categories:
+        sub_head = [cat_name, "", "", ""]
+        form.table_rows += [sub_head]
+        sum_contribution = 0
+        for feature_name in form.categories[cat_name]:
+            feature = Feature.query.filter(Feature.name == feature_name).first()
+            case_val = all_case_values_query_for_patient.filter(
+                CaseValue.feature_id == feature.id
+            ).first()
+            form.table_rows += [["", feature_name, case_val.value, round(case_val.explainer, 3)]]
+            sum_contribution += case_val.explainer
+        sub_head[3] = round(sum_contribution, 3)
+        total_contrib += sum_contribution
+    form.table_rows += [["Total", "", "", round(total_contrib, 3)]]
+
+    return render_template(
+        "financial_explan_2_per_client.html",
+        form=form
+    )
