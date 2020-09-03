@@ -139,6 +139,9 @@
           {% else %}
           <div class="tab-pane fade" id="pills-fin" role="tabpanel" aria-labelledby="pills-fin-tab">
           {% endif %}
+          <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            <input id="domain" name="domain" type="hidden" value="financial">
             <h3 style="margin-top: 10px;">
               Please enter required information:
             </h3>
@@ -193,7 +196,7 @@
                 </td>
               </tr>
             </table>
-
+          </form>
           </div>
           <div class="tab-pane fade" id="pills-edu" role="tabpanel" aria-labelledby="pills-edu-tab">
           </div>

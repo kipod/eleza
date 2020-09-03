@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<style>
+  .mainHeader {
+    height: 25vh;
+    background-color: aqua;
+  }
+
+  .menuWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
+  }
+
+  .menu {
+    display: flex;
+    align-items: center;
+  }
+
+  .menu>ul {
+    display: flex;
+  }
+
+  .menu>ul li {
+    margin-right: 5px;
+    cursor: pointer;
+  }
+
+  .logo {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+  }
+
+  .healthHeader {
+    padding: 10px 5px;
+    background-color: blue;
+    color: white;
+  }
+
+  .table {
+    margin-bottom: 5%;
+    border: 3px ridge lightskyblue;
+    background: #FFFAFA;
+    width: 100%;
+  }
+
+  .sidesWrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .table .leftDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+  }
+
+  .routeButton {
+    padding: 5px 20px;
+    background-color: aqua;
+    color: white;
+    cursor: pointer;
+  }
+
+  .rightDiv {
+    text-align: left;
+    padding: 30px;
+  }
+
+  .prediction {
+    margin-right: 50px;
+  }
+
+  .explanationsButton {
+    background-color: yellow;
+    color: grey;
+    padding: 5px 40px;
+    margin-left: 100px;
+  }
+
+  .patientsTable {
+    margin-top: 40px;
+    max-width: 70vw;
+
+  }
+
+  .patientsTable>thead {
+    background-color: rgb(228, 227, 155);
+    border: 3px solid yellow;
+  }
+
+  .bckcoloroption {
+    background-color: #FFF5EE;
+  }
+
+  .ex-header-top-main {
+    padding: 15px;
+    text-align: left;
+    font-family: 'serif';
+    width: 100%;
+    color: #FFF5EE;
+    font-style: normal;
+    font-size: 250%;
+    padding-top: 2.4rem;
+    padding-bottom: 1rem;
+    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
+  }
+
+</style>
+
+<!-- <div class="container" style="margin-bottom: 0%; margin-left: 0%;"></div> -->
+<div class="ex-header-top-main bck" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
+  Healthcare – {{ form.subdomain.name }} Diagnosis
+</div>
+  <!-- Flash Messages BEGIN -->
+<div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }} alert-dismisible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+</div>
+  <!-- Flash Messages END -->
+<form class="form" role="form" action="{{ url_for('demo.financial_explan_summary') }}" method="post">
+  <main>
+    <div style="width: 100%;">
+      <section class="table">
+        <div class="sidesWrapper">
+          <div class="leftDiv">
+            <div style="padding: 38px;">
+              <h5>How to view Contributions: </h5>
+              <div style="width:70%; margin-bottom: 170px; width: 100%;">
+                <select class="form-control" id="presentation_type" name="presentation_type"
+                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" onchange="this.form.submit()">
+                  {% if form.presentation_type == "Percents" %}
+                  <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
+                  <option class="bckcoloroption" value="Values">Contribution Value</option>
+                  {% else %}
+                  <option class="bckcoloroption" value="Percents">Percentage of Contributions Per Row</option>
+                  <option class="bckcoloroption" selected value="Values">Contribution Value</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="rightDiv">
+            <div style="padding: 8px;">
+              <header>
+                <h5>Credit Score: View Explanations (Summary)</h5>
+              </header>
+              <div>
+                <span class="prediction">Prediction Score & Category Contributions:</span>
+                <button class="explanationsButton">Explanations</button>
+              </div>
+            </div>
+            <table id="patientsTable" class="patientsTable table table-striped table-sm">
+              <thead>
+                {% for head in form.table_heads %}
+                <th style="text-align: center;">{{head}}</th>
+                {% endfor %}
+              </thead>
+              <tbody style="text-align: center;">
+                {% for row in form.table_rows %}
+                <tr>
+                  <td style="background-color: {{row[0][1]}};"><a style="color: #F0E68C;" href="{{url_for('demo.financial_explan_per_patient', case_id=row[0][0])}}">{{row[0][0]}}</a></td>
+                  {% for cell in row[1:] %}
+                  {% if cell[1] %}
+                  <td style="background-color: {{cell[1]}};">{{cell[0]}}</td>
+                  {% else %}
+                  <td >{{cell[0]}}</td>
+                  {% endif %}
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between;"></div>
+          <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
+              class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 120%;'>Go
+              Back</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</form>
+
+{% endblock %}
