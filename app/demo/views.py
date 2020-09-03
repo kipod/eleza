@@ -8,6 +8,7 @@ from .forms import (
     SelectFeaturesForm,
     RangeGroupsForm,
     CategoriesForm,
+    FinancialSelectFeatures,
 )
 from .controller import (
     prediction_score,
@@ -51,11 +52,14 @@ def demo():
         session["user_data_id"] = user_data.id
         if form.domain.data == Subdomain.Domain.healthcare.name:
             return redirect(url_for("demo.select_features"))
+        if form.domain.data == Subdomain.Domain.financial.name:
+            return redirect(url_for("demo.financial_select_features"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
 
     return render_template("demo.html", form=form)
 
+# Begin healthcare domain!
 
 @demo_blueprint.route("/features", methods=["GET", "POST"])
 def select_features():
@@ -252,7 +256,12 @@ def explanations_per_patient(case_id):
     all_case_values_query_for_patient = all_case_values_query.filter(
         CaseValue.case_id == case_id
     )
-    form.presentation_type = "Proportional to the Category Score"
+    form.presentation_type = "Proportional to the Total Confidence Score"
+
+    if form.validate_on_submit():
+        form.presentation_type = request.form["presentation_type"]
+    elif form.is_submitted():
+        flash("Invalid data", "warning")
 
     form.table_heads = []
     sum_explainer = {}
@@ -279,10 +288,10 @@ def explanations_per_patient(case_id):
             case_val = all_case_values_query_for_patient.filter(
                 CaseValue.feature_id == feature.id
             ).first()
-            # (case_val.explainer / sum_explainer_abs[cat_name]) * 100,
-            one_square_val = sum(sum_explainer_abs.values()) / 12
-            square_num = int(round(abs(case_val.explainer) / one_square_val, 0))
-            form.table_rows[row_index] += [[feature_name, gen_squares_code(square_num)]]
+            if form.presentation_type == "Proportional to the Total Confidence Score":
+                one_square_val = sum(sum_explainer_abs.values()) / 12
+                square_num = int(round(abs(case_val.explainer) / one_square_val, 0))
+                form.table_rows[row_index] += [[feature_name, gen_squares_code(square_num)]]
             row_index += 1
         for i in range(row_index, num_of_rows):
             if len(form.table_rows) <= i:
@@ -308,11 +317,6 @@ def explanations_per_patient(case_id):
     form.prediction_score = prediction_score(age_case_val.prediction)
     form.predicted = predicted(form.prediction_score)
 
-    if form.validate_on_submit():
-        form.presentation_type = request.form["presentation_type"]
-    elif form.is_submitted():
-        flash("Invalid data", "warning")
-
     def check_is_list(val):
         return type(val) is list
 
@@ -320,4 +324,30 @@ def explanations_per_patient(case_id):
         "explanations_per_patient.html",
         form=form,
         check_is_list=check_is_list,
+    )
+
+# Begin financial domain!
+
+@demo_blueprint.route("/financial_select_features", methods=["GET", "POST"])
+def financial_select_features():
+    form = FinancialSelectFeatures(request.form)
+    features = Feature.query.all()
+    form.subdomain = Subdomain.query.get(session.get("subdomain", None))
+    pred_pow = predictive_power(
+        form.subdomain, user_data_id=session.get("user_data_id")
+    )
+    for k in pred_pow:
+        pred_pow[k] = round(pred_pow[k], 2)
+    if form.validate_on_submit():
+        selected_features = []
+        for name in request.form:
+            if request.form[name] == "on":
+                selected_features += [name]
+        session["selected_features"] = selected_features
+        session["ranges_for_feature"] = {}
+        return redirect(url_for("demo.range_groups"))
+    elif form.is_submitted():
+        flash("Invalid data", "warning")
+    return render_template(
+        "financial_select_features.html", features=features, pred_pow=pred_pow, form=form,
     )

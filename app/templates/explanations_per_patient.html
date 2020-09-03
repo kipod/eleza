@@ -37,17 +37,17 @@
               <h5> How to view Contributions of Features </h5>
               <div style="width:70%; margin-bottom: 170px; width: 100%;">
                 <select class="form-control" id="presentation_type" name="presentation_type"
-                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" onchange="this.form.submit()">
-                  {% if form.presentation_type == "Percents" %}
+                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF); width: 135%;" onchange="this.form.submit()">
+                  {% if form.presentation_type == "Proportional to the Total Confidence Score" %}
                   <option class="bckcoloroption" selected value="Proportional to the Category Score">Proportional to the
                     Category Score</option>
                   <option class="bckcoloroption" value="Proportional to the Total Confidence Score">Proportional to the
                     Total Confidence Score</option>
                   {% else %}
-                  <option class="bckcoloroption" value="Proportional to the Category Score">Percentage of Contributions
-                    Per Row
+                  <option class="bckcoloroption" value="Proportional to the Category Score">Proportional to the
+                    Category Score
                   </option>
-                  <option class="bckcoloroption" selected value="Values">Proportional to the Total Confidence Score
+                  <option class="bckcoloroption" selected value="Proportional to the Total Confidence Score">Proportional to the Total Confidence Score
                   </option>
                   {% endif %}
                 </select>
@@ -57,23 +57,21 @@
           <div class="centerDiv div-style-font">
             <div>
               <div style="max-width: 100%;">
-                <div class="form-control" style="width: 65%; font-weight: 600;">Patient ID: &emsp; {{form.case_id}}
+                <div class="form-control" style="width: 65%; font-weight: 600;">Patient ID: &emsp;&emsp; {{form.case_id}}
                 </div>
                 <!-- <div style="width: 70%; text-align: center; padding: 5px;"></div> -->
               </div>
               <div style="max-width: 100%; margin-top: 15px;">
                 <div class="form-control" style="width: 65%; height: 10%; font-weight: 600; text-align: left;">Age:
-                  &emsp; {{form.age}}</div>
+                  &emsp;&emsp; {{form.age}}</div>
                 <!-- <div style="width: 70%; text-align: center; padding:  5px;">20 - 30</div> -->
               </div>
               <div class="form-control" style="margin-top: 15px; font-weight: 600; width: 90%;">Diabetes Predicted:
-                &ensp; {{form.predicted}}</div>
+                &ensp;&emsp; {{form.predicted}}</div>
             </div>
-            <div class="form-control" style="margin-top: 30px; width: 90%; height: 20%; font-weight: 600;">
+            <div class="form-control" style="margin-top: 30px; width: 90%; height: 25%; font-weight: 600;">
               Prediction or Confidence Score (Out of 100):
-              <div class="form-control" style="float:right; text-align:center; font-size:150%; color:brown;
-                        font-weight:600; background-color:#FFFAFA; width: 50%; margin-right: 65px;">
-                {{form.prediction_score}}</div>
+              <font style="color:brown; font-size: 150%;"> &emsp;&emsp; {{form.prediction_score}}</font>
             </div>
           </div>
           <div class="rightDiv">
