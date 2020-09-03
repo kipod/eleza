@@ -120,7 +120,6 @@
                 <tr>
                   <td>
                     {{ form.explainer_file.label(class="form-control")}}
-                    <!-- <p>Select Explainer File</p> -->
                   </td>
                   <td>
                     {{ form.explainer_file(class="form-control") }}
@@ -146,31 +145,51 @@
             <table class="table table-hover table-borderless" style="margin-top: 50px;">
               <tr>
                 <td>
-                  <p>Type of application subdomain:</p>
+                  {{ form.subdomain_id.label(class="form-control") }}
                 </td>
                 <td>
-                  <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                    Dropdown
-                  </button>
+                  <select class="form-control" id="subdomain_id" name="subdomain_id">
+                    {% for subdomain in form.subdomains %}
+                    {% if subdomain.domain.name == "financial" %}
+                    <option value="{{subdomain.id}}">{{subdomain.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                  <td>
+                    {{ form.bkg_file.label(class="form-control") }}
+                  </td>
+                  <td>
+                    {{ form.bkg_file(class="form-control") }}
+                  </td>
+              </tr>
+              <tr>
+                <td>
+                  {{ form.model_type.label(class="form-control") }}
+                </td>
+                <td>
+                  <select class="form-control" id="model_type" name="model_type">
+                    {% for model in form.models %}
+                    <option value="{{model.name}}">{{model.name}}</option>
+                    {% endfor %}
+                  </select>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <p>Select Model Type</p>
+                  {{ form.explainer_file.label(class="form-control")}}
                 </td>
                 <td>
-                  <button class="btn btn-primary" style="width: 200px; background: #999898;">
-                    Dropdown
-                  </button>
+                  {{ form.explainer_file(class="form-control") }}
                 </td>
               </tr>
               <tr>
                 <td></td>
                 <td>
-                  <a class="btn btn-primary" style="width: 200px;"
-                    href="#">
-                    Next
-                  </a>
+                  <div style="margin-top: 10px; margin-bottom: 10px; text-align:right; padding: 8px;">
+                  {{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div>
                 </td>
               </tr>
             </table>

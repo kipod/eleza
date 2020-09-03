@@ -22,7 +22,11 @@ def db_fill_data(import_values=True):
     Subdomain(domain=Subdomain.Domain.healthcare, name="Pharma").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Genomics").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Cardiac").save(False)
-    Subdomain(domain=Subdomain.Domain.financial, name="Credit").save(False)
+    Subdomain(domain=Subdomain.Domain.financial, name="Credit Application").save(False)
+    Subdomain(domain=Subdomain.Domain.financial, name="Insurance Claims").save(False)
+    Subdomain(domain=Subdomain.Domain.financial, name="Investment Portfolios").save(False)
+    Subdomain(domain=Subdomain.Domain.financial, name="Financial Instruments").save(False)
+
     ModelType(name="Model1").save(False)
     ModelType(name="Model2").save(False)
     ModelType(name="Model3").save(False)
