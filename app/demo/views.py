@@ -228,6 +228,7 @@ def explanations_summary():
             colors = list(
                 map(lambda val: ("green" if val == max_val else None), values)
             )
+            values = map(lambda val: f'{val}%', values)
             cells = list(zip(values, colors))
         else:
             values = list(map(lambda val: (round(val, 4)), explainers))
@@ -444,9 +445,9 @@ def financial_explan_summary():
         flash("Invalid data", "warning")
 
     form.table_heads = [
-        "Patient ID",
+        "Client ID",
         "Age",
-        f"{form.subdomain.name} Predicted",
+        "Risk of default",
         "Prediction or Confidence Score (Out of 100)",
     ]
 
@@ -470,7 +471,7 @@ def financial_explan_summary():
         age = int(age_case_val.value)
         age = age_range_groups(range_groups_ages, age)
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
-        predicted = "No" if prediction_score < 50 else "Yes"
+        predicted = "No" if prediction_score < 10 else "Yes"
         prediction_score_color = "red"
         if prediction_score > 45:
             prediction_score_color = "yellow"
@@ -506,9 +507,10 @@ def financial_explan_summary():
             colors = list(
                 map(lambda val: ("green" if val == max_val else None), values)
             )
+            values = map(lambda val: f'{val}%', values)
             cells = list(zip(values, colors))
         else:
-            values = list(map(lambda val: (round(val, 4)), explainers))
+            values = list(map(lambda val: (round(val*100, 2)), explainers))
             max_val = max(values)
             colors = list(
                 map(lambda val: ("green" if val == max_val else None), values)
@@ -522,8 +524,8 @@ def financial_explan_summary():
     )
 
 
-@demo_blueprint.route("/financial_explan_per_patient/<case_id>", methods=["GET", "POST"])
-def financial_explan_per_patient(case_id):
+@demo_blueprint.route("/financial_explan_per_client/<case_id>", methods=["GET", "POST"])
+def financial_explan_per_client(case_id):
     form = FlaskForm(request.form)
     form.selected_features = session.get("selected_features", [])
     form.categories = session.get("categories", {})
@@ -608,7 +610,7 @@ def financial_explan_per_patient(case_id):
         return type(val) is list
 
     return render_template(
-        "financial_explan_per_patient.html",
+        "financial_explan_per_client.html",
         form=form,
         check_is_list=check_is_list,
     )
