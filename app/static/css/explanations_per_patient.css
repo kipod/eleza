@@ -43,10 +43,10 @@
     width: 100%;
 }
 
-.sidesWrapper {
+/* .sidesWrapper {
     display: flex;
     justify-content: space-around;
-}
+} */
 
 .routeButton {
     padding: 5px 20px;
@@ -95,7 +95,7 @@
     background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
 }
 
-.centerDiv {
+.centerDiv {~
     display: block;
     width: 35vh;
     margin-top: 38px;
