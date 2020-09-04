@@ -105,7 +105,7 @@ def range_groups():
             .filter(CaseValue.feature == feature)
             .all()
         ]
-        form.ranges[feature_name] = (round(min(all_values), 3), (max(all_values), 3))
+        form.ranges[feature_name] = (round(min(all_values), 2), round(max(all_values), 2))
     if form.validate_on_submit():
         if form.next.data:
             session["categories"] = {}
