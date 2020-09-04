@@ -7,7 +7,116 @@
 
 {% block content %}
 <!-- Header -->
+<!-- fix problem with loading from static css -->
+<style>
+  .healthHeader {
+    padding: 10px 5px;
+    background-color: blue;
+    color: white;
+}
 
+.table {
+    border: 3px ridge lightskyblue;
+    background: #FFFAFA;
+    width: 100%;
+    height: 100%;
+}
+
+.sidesWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.routeButton {
+    padding: 5px 20px;
+    background-color: aqua;
+    color: white;
+    cursor: pointer;
+}
+
+.prediction {
+    margin-right: 50px;
+}
+
+.explanations {
+    background-color: rgb(228, 180, 23);
+    color: grey;
+    padding: 3px 60px;
+    margin-left: 450px;
+    border: 2px solid rgb(96, 195, 241);
+}
+
+.patientsTable {
+    margin-top: 18px;
+    max-width: 90vw;
+    width: 85vh;
+}
+
+.patientsTable>thead {
+    background-color: rgb(247, 245, 156);
+    border: 3px solid yellow;
+}
+
+.bckcoloroption {
+    background-color: #FFF5EE;
+}
+
+.ex-header-top-main {
+    padding: 15px;
+    text-align: left;
+    font-family: 'serif';
+    width: 100%;
+    color: #FFF5EE;
+    font-style: normal;
+    font-size: 250%;
+    padding-top: 2.6rem;
+    padding-bottom: 1rem;
+
+    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
+}
+
+.centerDiv {~
+    display: block;
+    width: 35vh;
+    margin-top: 38px;
+    margin-left: 35px;
+}
+
+.table .leftDiv .centerDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
+.leftDiv  {
+    width: 100vh;
+}
+
+.rightDiv {
+    width: 170vh;
+    text-align: left;
+    padding: 10px;
+    margin-top: 10px;
+    margin-right: 562px;
+}
+
+.frame{
+    float:left;
+    width: 50%;
+}
+
+.div-style-font{
+font-family: 'arial';
+font-weight: 600;
+}
+
+.dropdown {
+  background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
+  width: 90%;
+}
+
+</style>
 <!-- <div class="container" style="margin-bottom: 0%; margin-left: 0%;"></div> -->
 <div class="ex-header-top-main bck" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
   Healthcare – {{ form.subdomain.name }} Diagnosis
@@ -30,16 +139,15 @@
 </div>
   <!-- Flash Messages END -->
 <form class="form" role="form" action="{{ url_for('demo.explanations_summary') }}" method="post">
-  <main>
+  <main class="table">
     <div style="width: 100%;">
-      <section class="table">
+      <section >
         <div class="sidesWrapper">
           <div class="leftDiv">
-            <div style="padding: 38px;">
+            <div style="padding: 38px; margin-top: 35px;">
               <h5>How to view Contributions: </h5>
               <div style="width:100%;">
-                <select class="form-control" id="presentation_type" name="presentation_type"
-                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF); width: 100%;" onchange="this.form.submit()">
+                <select class="form-control dropdown" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
                   {% if form.presentation_type == "Percents" %}
                   <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
                   <option class="bckcoloroption" value="Values">Contribution Value</option>
@@ -52,14 +160,14 @@
             </div>
           </div>
           <div class="rightDiv">
-            <div style="padding: 8px;">
-              <header>
+            <div>
+              <header style="padding: 5px;">
                 <h5>Credit Score: View Explanations (Summary)</h5>
               </header>
               <div>
-                <span class="prediction">Prediction Score & Category Contributions:</span>
-                <button class="explanationsButton">Explanations</button>
+                <span class="prediction"  style="padding: 5px;">Prediction Score & Category Contributions:</span>
               </div>
+              <div><span class="explanations div-style-font">Explanations</span></div>
             </div>
             <table id="patientsTable" class="patientsTable table table-striped table-sm">
               <thead>
@@ -85,7 +193,7 @@
           </div>
         </div>
         <div style="display: flex; justify-content: space-between;"></div>
-          <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
+          <div style="margin-top: 10px; margin-bottom: 35px; margin-left: 15px; padding: 12px;"><a
               class="btn-solid-lg page-scroll" href="{{ url_for('demo.categories') }}" style='font-size: 150%;'>Go
               Back</a>
           </div>
