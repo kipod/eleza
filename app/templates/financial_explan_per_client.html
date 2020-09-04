@@ -56,8 +56,8 @@
 
 .clientTable {
     /* margin-right: 40px; */
-    max-width: 90vw;
-    width: 20vh;
+    /* max-width: 90vw;
+    width: 20vh; */
     background-color: rgb(228, 227, 155);
     border: 3px solid #00BFFF;
   /* .leftblock .rightblock {
@@ -69,7 +69,6 @@
   display: flex;
   justify-content: space-between;
 }
-
 
 </style>
 <div class="ex-header-top-main bck" title='Financial – Assessing {{ form.subdomain.name }} '>
@@ -109,12 +108,12 @@
             <div> </div>
             <div class="rightblock">
               <table class="clientTable">
-              <thead style="text-align: center;">
+              <thead style="text-align: left;">
                 <th>Characteristics</th>
                 <th>Attributes</th>
                 <th>Contributions</th>
               </thead>
-              <tbody style="background-color: #FFFAFA; color: rgb(32, 28, 20); text-align: center;">
+              <tbody style="background-color: #FFFAFA; color: rgb(32, 28, 20); text-align: left;">
               {% for row in form.table_rows %}
                 <tr>
                     {% if not row[1] %}
@@ -139,7 +138,7 @@
             style='font-size: 135%;'>Go Back</a>
           </div>
           <div style="margin-top: 100px; padding: 20px;"><a
-            class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_summary') }}"
+            class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_2_per_client', case_id=form.case_id) }}"
             style='font-size: 135%;'>Next</a>
           </div>
           <!-- <div style="margin-top: 100px; padding: 20px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div> -->

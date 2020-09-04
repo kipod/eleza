@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/explanations_per_patient.css">
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div title='Financial – Assessing {{ form.subdomain.name }} '>
+    <div class="ex-header-top-main bck">Financial – Assessing {{ form.subdomain.name }}</div>
+<!-- Flash Messages BEGIN -->
+<div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }} alert-dismisible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+</div>
+<!-- Flash Messages END -->
+<form class="form" role="form" action="{{ url_for('demo.financial_explan_per_client', case_id=form.case_id) }}"
+  method="post">
+  <main>
+    <h4>Credit Score: View Explanations</h4>
+    <div style="width: 100%;">
+      <section class="table">
+        <div class="sidesWrapper">
+
+            <table>
+              <thead style="text-align: left; ">
+                {% for table_head in form.table_heads %}
+                <th style="background-color: #FFE394;">
+                  {{table_head}}
+                </th>
+                {% endfor %}
+              </thead>
+              <tbody>
+                {% for table_row in form.table_rows %}
+                <tr>
+                  {% for cell in table_row %}
+                  {% if table_row[0] %}
+                  <td style="background-color: #F7D8D6;">
+                    <b>{{cell}}</b>
+                  </td>
+                  {% else %}
+                  <td>
+                    {{cell}}
+                  </td>
+                  {% endif %}
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+        </div>
+        <div style="display: flex; justify-content: space-between;"></div>
+        <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
+            class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_per_client', case_id=form.case_id) }}"
+            style='font-size: 120%;'>Go Back</a>
+        </div>
+    </div>
+    </section>
+    </div>
+  </main>
+  {{ form.all_case_values_query_for_patient }}
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

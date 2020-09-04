@@ -93,7 +93,13 @@
                   {% for index in table_row %}
                   {% for value in index %}
                   <td>
+                    {% if "{}".format(value).isnumeric() %}
+                    {% for _ in range(value)%}
+                    <button class="squareBtn"></button>
+                    {% endfor %}
+                    {% else %}
                     {{value}}
+                    {% endif %}
                   </td>
                   {% endfor %}
                   {% endfor %}
