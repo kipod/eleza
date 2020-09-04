@@ -82,6 +82,7 @@
     margin-left: 35px;
 }
 
+
 .table .leftDiv .centerDiv {
     display: flex;
     flex-direction: row;
@@ -89,16 +90,13 @@
 
 }
 
-.leftDiv  {
-    width: 100vh;
-}
 
 .rightDiv {
     width: 170vh;
-    text-align: left;
+    text-align: left;s
     padding: 10px;
     margin-top: 10px;
-    margin-right: 562px;
+    margin-left: 50px;
 }
 
 .frame{
@@ -143,10 +141,16 @@ font-weight: 600;
     <div style="width: 100%;">
       <section >
         <div class="sidesWrapper">
-          <div class="leftDiv">
-            <div style="padding: 38px; margin-top: 35px;">
+          <div class="rightDiv">
+            <div>
+              <header>
+                <h5>Credit Score: View Explanations (Summary)</h5>
+              </header>
+              <div>
+                <span class="prediction"  style="padding: 5px;"><h5>Prediction Score & Category Contributions:</h5></span>
+              </div>
               <h5>How to view Contributions: </h5>
-              <div style="width:100%;">
+              <div style="width:65%;">
                 <select class="form-control dropdown" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
                   {% if form.presentation_type == "Percents" %}
                   <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
@@ -157,17 +161,7 @@ font-weight: 600;
                   {% endif %}
                 </select>
               </div>
-            </div>
-          </div>
-          <div class="rightDiv">
-            <div>
-              <header style="padding: 5px;">
-                <h5>Credit Score: View Explanations (Summary)</h5>
-              </header>
-              <div>
-                <span class="prediction"  style="padding: 5px;">Prediction Score & Category Contributions:</span>
-              </div>
-              <div><span class="explanations div-style-font">Explanations</span></div>
+              <div><span class="explanations div-style-font" style="width: 10%">Explanations</span></div>
             </div>
             <table id="patientsTable" class="patientsTable table table-striped table-sm">
               <thead>
@@ -208,3 +202,22 @@ font-weight: 600;
 {% block scripts %}
 <script src="/static/js/jquery.dataTables.min.js"></script>
 {% endblock %}
+
+
+
+<!-- <class class="leftDiv"></class>
+            <div style="padding: 38px; margin-top: 35px;">
+              <h5>How to view Contributions: </h5>
+              <div style="width:100%;">
+                <select class="form-control dropdown" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
+                  {% if form.presentation_type == "Percents" %}
+                  <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
+                  <option class="bckcoloroption" value="Values">Contribution Value</option>
+                  {% else %}
+                  <option class="bckcoloroption" value="Percents">Percentage of Contributions Per Row</option>
+                  <option class="bckcoloroption" selected value="Values">Contribution Value</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div> -->
