@@ -6,3 +6,11 @@
 .nav-pills .nav-link.active {
 	background-color: #00bfd8;
 }
+
+.bold_text:hover {
+    font-weight: 600;
+}
+
+.bold_text_default {
+    font-weight: 600;
+}

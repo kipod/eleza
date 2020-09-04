@@ -144,6 +144,9 @@ def categories():
             ]
             session["categories"] = form.categories
         if form.next.data:
+            if not form.categories:
+                flash("Need define at least one category", "danger")
+                return render_template("categories.html", form=form)
             session["categories"] = form.categories
             # {}
             return redirect(url_for("demo.explanations_summary"))
@@ -421,6 +424,9 @@ def financial_categories():
             ]
             session["categories"] = form.categories
         if form.next.data:
+            if not form.categories:
+                flash("Need define at least one category", "danger")
+                return render_template("categories.html", form=form)
             session["categories"] = form.categories
             # {}
             return redirect(url_for("demo.financial_explan_summary"))
