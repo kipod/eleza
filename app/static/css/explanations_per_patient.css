@@ -1,4 +1,4 @@
-.mainHeader {
+/* .mainHeader {
     height: 25vh;
     background-color: aqua;
 }
@@ -28,7 +28,7 @@
     width: 15px;
     height: 15px;
     margin-right: 5px;
-}
+} */
 
 .healthHeader {
     padding: 10px 5px;
@@ -43,10 +43,10 @@
     width: 100%;
 }
 
-.sidesWrapper {
+/* .sidesWrapper {
     display: flex;
-    justify-content: space-between;
-}
+    justify-content: space-around;
+} */
 
 .routeButton {
     padding: 5px 20px;
@@ -95,29 +95,30 @@
     background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
 }
 
-.centerDiv {
+.centerDiv {~
     display: block;
     width: 35vh;
     margin-top: 38px;
     margin-left: 35px;
 }
 
-.table .leftDiv .centerDiv {
+/* .table .leftDiv .centerDiv {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-around;
 
-}
+} */
 
 .leftDiv  {
-    width: 30vh;
+    width: 100px;
 }
 
 .rightDiv {
-    width: 90vh;
+    width: 120vh;
     text-align: left;
     padding: 10px;
     margin-top: 10px;
+    margin-right: 1000px;
 }
 
 .rightDivExp2 {

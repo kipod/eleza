@@ -2,6 +2,18 @@
 
 {% block content %}
 <!-- Header -->
+<!-- fix problem with loading from static css -->
+<style>
+  .bold_text:hover {
+    font-weight: 600;
+   }
+
+  .bold_text_default {
+    font-weight: 600;
+  }
+
+</style>
+
 <div id="header" class="ex-header"></div>
 
 <!-- <div id="header" class="container ex-header" style="margin-bottom: 5%;"> -->
@@ -85,10 +97,10 @@
               <table class="table table-hover table-borderless" style="margin-top: 50px;">
                 <tr>
                   <td>
-                    {{ form.subdomain_id.label(class="form-control") }}
+                    <h5 class="bold_text_default">Type of application subdomain: </h5>
                   </td>
                   <td>
-                    <select class="form-control" id="subdomain_id" name="subdomain_id">
+                    <select class="form-control" id="subdomain_id" name="subdomain_id" style="font-size: 105%;">
                       {% for subdomain in form.subdomains %}
                       {% if subdomain.domain.name == "healthcare" %}
                       <option value="{{subdomain.id}}">{{subdomain.name}}</option>
@@ -99,18 +111,18 @@
                 </tr>
                 <tr>
                   <td>
-                    {{ form.bkg_file.label(class="form-control") }}
+                    <h5 class="bold_text_default">Select Background Dataset File (.csv): </h5>
                   </td>
                   <td>
-                    {{ form.bkg_file(class="form-control") }}
+                    {{ form.bkg_file(class="form-control", style='font-size: 105%;') }}
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    {{ form.model_type.label(class="form-control") }}
+                    <h5 class="bold_text_default">Select Model Type: </h5>
                   </td>
                   <td>
-                    <select class="form-control" id="model_type" name="model_type">
+                    <select class="form-control" id="model_type" name="model_type" style="font-size: 105%;">
                       {% for model in form.models %}
                       <option value="{{model.name}}">{{model.name}}</option>
                       {% endfor %}
@@ -119,16 +131,16 @@
                 </tr>
                 <tr>
                   <td>
-                    {{ form.explainer_file.label(class="form-control")}}
+                    <h5 class="bold_text_default">Select Explainer File (.csv):</h5>
                   </td>
                   <td>
-                    {{ form.explainer_file(class="form-control") }}
+                    {{ form.explainer_file(class="form-control", style='font-size: 105%;') }}
                   </td>
                 </tr>
                 <tr>
                   <td></td>
                   <td>
-                    {{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}
+                    {{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }}
                   </td>
                 </tr>
               </table>
@@ -148,10 +160,10 @@
             <table class="table table-hover table-borderless" style="margin-top: 50px;">
               <tr>
                 <td>
-                  {{ form.subdomain_id.label(class="form-control") }}
+                  <h5 class="bold_text_default">Type of application subdomain: </h5>
                 </td>
                 <td>
-                  <select class="form-control" id="subdomain_id" name="subdomain_id">
+                  <select class="form-control" id="subdomain_id" name="subdomain_id" style='font-size: 105%;'>
                     {% for subdomain in form.subdomains %}
                     {% if subdomain.domain.name == "financial" %}
                     <option value="{{subdomain.id}}">{{subdomain.name}}</option>
@@ -162,18 +174,18 @@
               </tr>
               <tr>
                   <td>
-                    {{ form.bkg_file.label(class="form-control") }}
+                    <h5 class="bold_text_default">Select Background Dataset File (.csv): </h5>
                   </td>
                   <td>
-                    {{ form.bkg_file(class="form-control") }}
+                    {{ form.bkg_file(class="form-control", style='font-size: 105%;') }}
                   </td>
               </tr>
               <tr>
                 <td>
-                  {{ form.model_type.label(class="form-control") }}
+                  <h5 class="bold_text_default">Select Model Type: </h5>
                 </td>
                 <td>
-                  <select class="form-control" id="model_type" name="model_type">
+                  <select class="form-control" id="model_type" name="model_type" style='font-size: 105%;'>
                     {% for model in form.models %}
                     <option value="{{model.name}}">{{model.name}}</option>
                     {% endfor %}
@@ -182,17 +194,17 @@
               </tr>
               <tr>
                 <td>
-                  {{ form.explainer_file.label(class="form-control")}}
+                  <h5 class="bold_text_default">Select Explainer File (.csv):</h5>
                 </td>
                 <td>
-                  {{ form.explainer_file(class="form-control") }}
+                  {{ form.explainer_file(class="form-control", style='font-size: 105%;') }}
                 </td>
               </tr>
               <tr>
                 <td></td>
                 <td>
-                  <div style="margin-top: 10px; margin-bottom: 10px; text-align:right; padding: 8px;">
-                  {{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div>
+                  <div>
+                  {{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }}</div>
                 </td>
               </tr>
             </table>
