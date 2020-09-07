@@ -105,16 +105,33 @@ def range_groups():
             .filter(CaseValue.feature == feature)
             .all()
         ]
-        form.ranges[feature_name] = (round(min(all_values), 2), round(max(all_values), 2))
+        form.ranges[feature_name] = (
+            round(min(all_values), 2),
+            round(max(all_values), 2),
+        )
     if form.validate_on_submit():
         if form.next.data:
             session["categories"] = {}
             return redirect(url_for("demo.categories"))
         try:
             if form.feature.data in ranges_for_feature:
-                ranges_for_feature[form.feature.data] += [
-                    (float(form.range_from.data), float(form.range_to.data))
-                ]
+                min_val_of_range_from = form.ranges[form.feature.data][0]
+                max_val_of_range_from = form.ranges[form.feature.data][1]
+                # if float(form.range_from.data) < min_value_of_range_from:
+                #     form.range_from.data = min_value_of_range_from
+                #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
+                if (float(form.range_to.data) > max_val_of_range_from) or float(
+                    form.range_from.data
+                ) < min_val_of_range_from:
+                    form.range_from.data = min_val_of_range_from
+                    form.range_to.data = max_val_of_range_from
+                    ranges_for_feature[form.feature.data] += [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
+                else:
+                    ranges_for_feature[form.feature.data] += [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
             else:
                 ranges_for_feature[form.feature.data] = [
                     (float(form.range_from.data), float(form.range_to.data))
@@ -231,7 +248,7 @@ def explanations_summary():
             colors = list(
                 map(lambda val: ("green" if val == max_val else None), values)
             )
-            values = map(lambda val: f'{val}%', values)
+            values = map(lambda val: f"{val}%", values)
             cells = list(zip(values, colors))
         else:
             values = list(map(lambda val: (round(val, 3)), explainers))
@@ -282,7 +299,7 @@ def explanations_per_patient(case_id):
             ).first()
             sum_explainer[cat_name] += case_val.explainer
             sum_explainer_abs[cat_name] += abs(case_val.explainer)
-        form.table_heads += [[cat_name, ], "Feature Contribution"]
+        form.table_heads += [[cat_name,], "Feature Contribution"]
     form.table_rows = []
     num_of_rows = max([len(form.categories[k]) for k in form.categories])
     for cat_name in form.categories:
@@ -297,14 +314,20 @@ def explanations_per_patient(case_id):
             if form.presentation_type == "Proportional to the Total Confidence Score":
                 one_square_val = sum(sum_explainer_abs.values()) / 12
                 square_num = int(round(abs(case_val.explainer) / one_square_val, 0))
-                form.table_rows[row_index] += [[feature_name, gen_squares_code(square_num)]]
+                form.table_rows[row_index] += [
+                    [feature_name, gen_squares_code(square_num)]
+                ]
             else:
                 each_category_squares = 12 / len(form.categories)
                 value_of_square = int(round(100 / each_category_squares, 0))
                 sum_explainer_category = sum_explainer_abs[cat_name]
-                feature_explainer = int((case_val.explainer / sum_explainer_category) * 100)
+                feature_explainer = int(
+                    (case_val.explainer / sum_explainer_category) * 100
+                )
                 feature_squares = int(round((feature_explainer / value_of_square), 0))
-                form.table_rows[row_index] += [[feature_name, gen_squares_code(feature_squares)]]
+                form.table_rows[row_index] += [
+                    [feature_name, gen_squares_code(feature_squares)]
+                ]
             row_index += 1
         for i in range(row_index, num_of_rows):
             if len(form.table_rows) <= i:
@@ -334,10 +357,9 @@ def explanations_per_patient(case_id):
         return type(val) is list
 
     return render_template(
-        "explanations_per_patient.html",
-        form=form,
-        check_is_list=check_is_list,
+        "explanations_per_patient.html", form=form, check_is_list=check_is_list,
     )
+
 
 # Begin financial domain!
 
@@ -364,7 +386,10 @@ def financial_select_features():
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template(
-        "financial_select_features.html", features=features, pred_pow=pred_pow, form=form,
+        "financial_select_features.html",
+        features=features,
+        pred_pow=pred_pow,
+        form=form,
     )
 
 
@@ -385,7 +410,10 @@ def financial_range_groups():
             .filter(CaseValue.feature == feature)
             .all()
         ]
-        form.ranges[feature_name] = (round(min(all_values), 3), round(max(all_values), 3))
+        form.ranges[feature_name] = (
+            round(min(all_values), 3),
+            round(max(all_values), 3),
+        )
     if form.validate_on_submit():
         if form.next.data:
             session["categories"] = {}
@@ -433,6 +461,7 @@ def financial_categories():
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template("financial_categories.html", form=form)
+
 
 # financial_explan_summary
 
@@ -513,10 +542,10 @@ def financial_explan_summary():
             colors = list(
                 map(lambda val: ("green" if val == max_val else None), values)
             )
-            values = map(lambda val: f'{val}%', values)
+            values = map(lambda val: f"{val}%", values)
             cells = list(zip(values, colors))
         else:
-            values = list(map(lambda val: (round(val*100, 2)), explainers))
+            values = list(map(lambda val: (round(val * 100, 2)), explainers))
             max_val = max(values)
             colors = list(
                 map(lambda val: ("green" if val == max_val else None), values)
@@ -557,16 +586,13 @@ def financial_explan_per_client(case_id):
             feature_values.append(feature_name)
             feature_values.append(str(case_val.value))
             feature_values.append(round(case_val.explainer * 100, 3))
-            sum_explainers += (case_val.explainer * 100)
+            sum_explainers += case_val.explainer * 100
             if len(feature_name) >= 2:
                 form.table_rows += [feature_values]
                 feature_values = []
     form.table_rows += [["Total", "", round(sum_explainers, 3)]]
 
-    return render_template(
-        "financial_explan_per_client.html",
-        form=form
-    )
+    return render_template("financial_explan_per_client.html", form=form)
 
 
 @demo_blueprint.route("/financial_explan_2_per_client/<case_id>", methods=["GET"])
@@ -595,13 +621,18 @@ def financial_explan_2_per_client(case_id):
             case_val = all_case_values_query_for_patient.filter(
                 CaseValue.feature_id == feature.id
             ).first()
-            form.table_rows += [["", feature_name, round(case_val.value, 3), round(case_val.explainer, 3)]]
+            form.table_rows += [
+                [
+                    "",
+                    feature_name,
+                    round(case_val.value, 3),
+                    round(case_val.explainer, 3),
+                ]
+            ]
             sum_contribution += case_val.explainer
         sub_head[3] = round(sum_contribution, 3)
         total_contrib += sum_contribution
     form.table_rows += [["Total", "", "", round(total_contrib, 3)]]
 
-    return render_template(
-        "financial_explan_2_per_client.html",
-        form=form
-    )
+    return render_template("financial_explan_2_per_client.html", form=form)
+
