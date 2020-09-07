@@ -234,7 +234,7 @@ def explanations_summary():
             values = map(lambda val: f'{val}%', values)
             cells = list(zip(values, colors))
         else:
-            values = list(map(lambda val: (round(val, 4)), explainers))
+            values = list(map(lambda val: (round(val, 3)), explainers))
             max_val = max(values)
             colors = list(
                 map(lambda val: ("green" if val == max_val else None), values)

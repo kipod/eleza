@@ -2,22 +2,30 @@
 {% block content %}
 <!-- Header -->
 
-<div id="header" class="ex-header"></div>
-<div class="container" style="margin-bottom: 5%; margin-left: 0%;">
-  <div class="ex-header-top-main" style="padding: 15px; text-align: left;
-    font-family: 'serif';
-    width: 1318px;
-    color: #FFF5EE;
-    font-style: normal;
-    font-size: 250%;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
-    Healthcare – {{ form.subdomain.name }} Diagnosis
-  </div>
-  <h4>
-    Categorize Features
-  </h4>
+<style>
+.ex-header-top-main {
+  padding: 15px;
+  text-align: left;
+  font-family: 'serif';
+  width: 100%;
+  color: #FFF5EE;
+  font-style: normal;
+  font-size: 250%;
+  padding-top: 2.6rem;
+  padding-bottom: 1rem;
+
+  background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
+}
+</style>
+
+<!-- <div id="header" class="ex-header"></div> -->
+<!-- <div class="container" style="margin-bottom: 5%; margin-left: 0%;"> -->
+<div class="ex-header-top-main" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
+  Healthcare – {{ form.subdomain.name }} Diagnosis
+</div>
+<h4>
+  Categorize Features
+</h4>
   <!-- Flash Messages BEGIN -->
 <div>
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -35,63 +43,63 @@
   {% endwith %}
 </div>
 <!-- Flash Messages END -->
-  <form class="form" role="form" action="{{ url_for('demo.categories') }}" method="post">
-    {{ form.csrf_token }}
-  <table cellspacing="1" style="
-      margin-bottom: 20%;
-      background: #FFFAFA;
-      width: 100%;
-      border-collapse: collapse;" height="520">
-    <tbody>
-      <tr>
-        <td>
-          <div>
-            <h4 style="padding: 8px;">Create a category:</h4><br>
-            <table>
+<form class="form" role="form" action="{{ url_for('demo.categories') }}" method="post">
+  {{ form.csrf_token }}
+<table cellspacing="1" style="
+    margin-bottom: 20%;
+    background: #FFFAFA;
+    width: 100%;
+    border-collapse: collapse;" height="520">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h4 style="padding: 8px;">Create a category:</h4><br>
+          <table>
+            <tr>
+              <td  style="padding: 8px;"><h5>{{ form.category_name.label }}</h5></td>
+              <td>{{ form.category_name(class="form-control") }}</td>
+            </tr>
+          </table>
+          <table>
+            <thead>
+              <th  style="padding: 8px;">Select</th>
+              <th  style="padding: 8px;">Feature</th>
+            </thead>
+            <tbody>
+              {% for feature in form.selected_features %}
               <tr>
-                <td  style="padding: 8px;"><h5>{{ form.category_name.label }}</h5></td>
-                <td>{{ form.category_name(class="form-control") }}</td>
+                <td style="text-align:left;"><input class="form-control" type="checkbox" name="{{feature}}"></td>
+                <td style="text-align:left;"><h5>{{feature}}</h5></td>
               </tr>
-            </table>
-            <table>
-              <thead>
-                <th  style="padding: 8px;">Select</th>
-                <th  style="padding: 8px;">Feature</th>
-              </thead>
-              <tbody>
-                {% for feature in form.selected_features %}
-                <tr>
-                  <td style="text-align:left;"><input class="form-control" type="checkbox" name="{{feature}}"></td>
-                  <td style="text-align:left;"><h5>{{feature}}</h5></td>
-                </tr>
-                {% endfor %}
-                <tr>
-                  <td></td>
-                  <td><div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;">{{ form.submit(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </td>
-        <td style="border: 3px outset lightskyblue;">
-          <div>
-            {% for category in form.categories %}
-            <h5>{{category}}</h5>
-            <ul>
-              {% for feature in form.categories[category] %}
-              <li>{{feature}}</li>
               {% endfor %}
-            </ul>
+              <tr>
+                <td></td>
+                <td><div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;">{{ form.submit(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+      <td style="border: 3px outset lightskyblue;">
+        <div>
+          {% for category in form.categories %}
+          <h5>{{category}}</h5>
+          <ul>
+            {% for feature in form.categories[category] %}
+            <li>{{feature}}</li>
             {% endfor %}
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td><div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;"><a class="btn-solid-lg page-scroll" href="{{ url_for('demo.range_groups') }}" style='font-size: 150%;'>Go Back</a></div></td>
-        <td><div style="margin-top: 10px; margin-bottom: 10px; text-align:right; padding: 8px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
-      </tr>
-    </tbody>
-  </table>
-  </form>
-</div>
+          </ul>
+          {% endfor %}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;"><a class="btn-solid-lg page-scroll" href="{{ url_for('demo.range_groups') }}" style='font-size: 150%;'>Go Back</a></div></td>
+      <td><div style="margin-top: 10px; margin-bottom: 10px; text-align:right; padding: 8px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+<!-- </div> -->
 {% endblock %}

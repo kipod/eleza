@@ -112,6 +112,7 @@
 }
 
 .div-style-font{
+font-size: 110%;
 font-family: 'arial';
 font-weight: 600;
 }
@@ -129,8 +130,8 @@ font-weight: 600;
 
 </style>
 <!-- Header -->
-<div class="ex-header-top-main bck" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
-  Healthcare – {{ form.subdomain.name }} Diagnosis
+<div class="ex-header-top-main bck" title='Financial – Assessing {{ form.subdomain.name }}'>
+  Financial – Assessing {{ form.subdomain.name }}
 </div>
 <!-- Flash Messages BEGIN -->
 <div>
@@ -175,7 +176,7 @@ font-weight: 600;
           <div class="centerDiv div-style-font">
             <div>
               <div style="max-width: 100%;">
-                <div style="width: 65%; font-weight: 600;">Patient ID: &emsp;&emsp; {{form.case_id}}
+                <div style="width: 65%; font-weight: 600;"> Patient ID: &emsp;&emsp; {{form.case_id}}
                 </div>
                 <!-- <div style="width: 70%; text-align: center; padding: 5px;"></div> -->
               </div>
@@ -189,7 +190,7 @@ font-weight: 600;
             </div>
             <div style="margin-top: 30px; width: 90%; height: 25%; font-weight: 600;">
               Prediction or Confidence Score (Out of 100):
-              <font style="color:brown; font-size: 150%;"> &emsp;&emsp; {{form.prediction_score}}</font>
+              <font style="color:brown; font-size: 140%;"> &emsp;&emsp; {{form.prediction_score}}</font>
             </div>
           </div>
           <div class="rightDiv">
@@ -230,7 +231,7 @@ font-weight: 600;
         <div style="display: flex; justify-content: space-between;"></div>
         <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
             class="btn-solid-lg page-scroll" href="{{ url_for('demo.explanations_summary') }}"
-            style='font-size: 120%;'>Go
+            style='font-size: 150%;'>Go
             Back</a>
         </div>
     </div>
