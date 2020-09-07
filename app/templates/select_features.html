@@ -36,13 +36,13 @@
             {% for feature in features %}
             <tr>
                 {% if feature.name == 'Age' %}
-                <td style="text-align:center;"><div><input class="form-control" type="checkbox"  checked name="{{feature.name}}" onclick="return false;"></div></td>
+                <td style="text-align:center;"><div><input class="form-control" type="checkbox" checked name="{{feature.name}}" onclick="return false;"></div></td>
                 <td style="text-align:justify;"><h5 class="bold_text_default">{{feature.name}}</h5></td>
                 <td><div class="form-control" style="text-align: center;">{{pred_pow[feature.name]}}</div></td>
                 {% else %}
-                <td style="text-align:center;"><div><input class="form-control" type="checkbox" name="{{feature.name}}"></div></td>
+                <td style="text-align:center;"><div><input class="form-control" type="checkbox" checked name="{{feature.name}}"></div></td>
                 <td style="text-align:justify;"><h5 class="bold_text_default">{{feature.name}}</h5></td>
-                <td><div class="form-control" style="text-align: center;">{{pred_pow[feature.name]}}</div></td>
+                <td><div style="text-align: center;">{{pred_pow[feature.name]}}</div></td>
                 {% endif %}
             </tr>
             {% endfor %}
