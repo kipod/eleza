@@ -16,6 +16,11 @@
 
   background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
 }
+
+.th_ > h5 {
+  font-weight: 600;
+}
+
 </style>
 
 <!-- <div id="header" class="ex-header"></div> -->
@@ -52,19 +57,32 @@
     border-collapse: collapse;" height="520">
   <tbody>
     <tr>
+    <td>
+      <br>
+      <h4 style="padding: 8px;">Create a category:</h4>
+    </td>
+    <td><br></td>
+    </tr>
+    <tr>
       <td>
         <div>
-          <h4 style="padding: 8px;">Create a category:</h4><br>
-          <table>
-            <tr>
-              <td  style="padding: 8px;"><h5>{{ form.category_name.label }}</h5></td>
-              <td>{{ form.category_name(class="form-control") }}</td>
-            </tr>
-          </table>
+        <table>
+          <tr>
+            <td  style="padding: 8px;"><h5>{{ form.category_name.label }}</h5></td>
+            <td>{{ form.category_name(class="form-control") }}</td>
+          </tr>
+        </table>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <div>
+      <td>
+        <div>
           <table>
             <thead>
-              <th  style="padding: 8px;">Select</th>
-              <th  style="padding: 8px;">Feature</th>
+              <th class="th_" style="padding: 10px;"><h5>Select</h5></th>
+              <th class="th_" style="padding: 10px;"><h5>Feature</h5></th>
             </thead>
             <tbody>
               {% for feature in form.selected_features %}
@@ -81,6 +99,7 @@
           </table>
         </div>
       </td>
+      </div>
       <td style="border: 3px outset lightskyblue;" valign="top">
         <div>
           {% for category in form.categories %}

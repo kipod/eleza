@@ -56,8 +56,61 @@
           <div class="tab-pane fade" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
           {% endif %}
             <h3 style="margin-top: 10px;">
-              Some general information
+              <!-- Some general information -->
+              Eleza Demo
             </h3>
+            <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post" enctype="multipart/form-data">
+              {{ form.csrf_token }}
+              <input id="domain" name="domain" type="hidden" value="healthcare">
+              <table class="table table-hover table-borderless" style="margin-top: 50px;">
+                <tr>
+                  <td>
+                    <h5 class="bold_text_default">Type of application subdomain: </h5>
+                  </td>
+                  <td>
+                    <select class="form-control" id="subdomain_id" name="subdomain_id" style="font-size: 105%;">
+                      {% for type_application in form.general_type_applicat %}
+                      <option>{{type_application}}</option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h5 class="bold_text_default">Select Background Dataset File (.csv): </h5>
+                  </td>
+                  <td>
+                    {{ form.bkg_file(class="form-control", style='font-size: 105%;') }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h5 class="bold_text_default">Select Model Type: </h5>
+                  </td>
+                  <td>
+                    <select class="form-control" id="model_type" name="model_type" style="font-size: 105%;">
+                      {% for model in form.models %}
+                      <option value="{{model.name}}">{{model.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h5 class="bold_text_default">Select Explainer File (.csv):</h5>
+                  </td>
+                  <td>
+                    {{ form.explainer_file(class="form-control", style='font-size: 105%;') }}
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <!-- {{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }} -->
+                  </td>
+                </tr>
+              </table>
+            </form>
           </div>
           {% if form.active_domain == "healthcare" %}
           <div class="tab-pane fade show active" id="pills-health" role="tabpanel" aria-labelledby="pills-health-tab">

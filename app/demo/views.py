@@ -31,6 +31,9 @@ def demo():
     form.model_type.choices = [(m.name, m.name) for m in form.models]
     form.active_domain = session.get("active_domain", "general")
 
+    # maybe need fix -?
+    form.general_type_applicat = ["Type1", "Type2", "Type3", "Type4", "Type5"]
+
     if form.validate_on_submit():
         session["subdomain"] = form.subdomain_id.data
         session["model_type"] = form.model_type.data
@@ -114,17 +117,19 @@ def range_groups():
             session["categories"] = {}
             return redirect(url_for("demo.categories"))
         try:
+            min_val_of_range_from = form.ranges[form.feature.data][0]
+            max_val_of_range_from = form.ranges[form.feature.data][1]
             if form.feature.data in ranges_for_feature:
-                min_val_of_range_from = form.ranges[form.feature.data][0]
-                max_val_of_range_from = form.ranges[form.feature.data][1]
                 # if float(form.range_from.data) < min_value_of_range_from:
                 #     form.range_from.data = min_value_of_range_from
                 #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
                 if (float(form.range_to.data) > max_val_of_range_from) or float(
                     form.range_from.data
                 ) < min_val_of_range_from:
-                    form.range_from.data = min_val_of_range_from
-                    form.range_to.data = max_val_of_range_from
+                    if float(form.range_from.data) < min_val_of_range_from:
+                        form.range_from.data = min_val_of_range_from
+                    if float(form.range_to.data) > max_val_of_range_from:
+                        form.range_to.data = max_val_of_range_from
                     ranges_for_feature[form.feature.data] += [
                         (float(form.range_from.data), float(form.range_to.data))
                     ]
@@ -133,9 +138,26 @@ def range_groups():
                         (float(form.range_from.data), float(form.range_to.data))
                     ]
             else:
-                ranges_for_feature[form.feature.data] = [
-                    (float(form.range_from.data), float(form.range_to.data))
-                ]
+                if (
+                    min_val_of_range_from
+                    > float(form.range_to.data) or float(form.range_to.data)
+                    > max_val_of_range_from
+                ) or float(form.range_from.data) < min_val_of_range_from:
+                    if float(form.range_from.data) < min_val_of_range_from:
+                        form.range_from.data = min_val_of_range_from
+                    if (
+                        min_val_of_range_from
+                        > float(form.range_to.data) or float(form.range_to.data)
+                        > max_val_of_range_from
+                    ):
+                        form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] = [
+                            (float(form.range_from.data), float(form.range_to.data))
+                        ]
+                else:
+                    ranges_for_feature[form.feature.data] = [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
             session["ranges_for_feature"] = ranges_for_feature
         except ValueError:
             flash("Invalid data", "warning")
@@ -169,7 +191,13 @@ def categories():
             return redirect(url_for("demo.explanations_summary"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
-    return render_template("categories.html", form=form)
+
+    # def reversed_function(argument):
+    #     return reversed(argument)
+
+    return render_template(
+        "categories.html", form=form
+    )
 
 
 @demo_blueprint.route("/explanations_summary", methods=["GET", "POST"])
