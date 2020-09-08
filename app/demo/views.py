@@ -1,3 +1,4 @@
+import json
 from flask import render_template, Blueprint, request, session, redirect, url_for, flash
 from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType, CaseValue
@@ -114,7 +115,7 @@ def range_groups():
         )
     if form.validate_on_submit():
         if form.next.data:
-            session["categories"] = {}
+            session["categories"] = "{}"
             return redirect(url_for("demo.categories"))
         try:
             min_val_of_range_from = form.ranges[form.feature.data][0]
@@ -123,12 +124,16 @@ def range_groups():
                 # if float(form.range_from.data) < min_value_of_range_from:
                 #     form.range_from.data = min_value_of_range_from
                 #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
-                if (float(form.range_to.data) > max_val_of_range_from) or float(
-                    form.range_from.data
-                ) < min_val_of_range_from:
+                if (
+                    min_val_of_range_from > float(form.range_to.data)
+                    or float(form.range_to.data) > max_val_of_range_from
+                ) or float(form.range_from.data) < min_val_of_range_from:
                     if float(form.range_from.data) < min_val_of_range_from:
                         form.range_from.data = min_val_of_range_from
-                    if float(form.range_to.data) > max_val_of_range_from:
+                    if (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    ):
                         form.range_to.data = max_val_of_range_from
                     ranges_for_feature[form.feature.data] += [
                         (float(form.range_from.data), float(form.range_to.data))
@@ -139,16 +144,14 @@ def range_groups():
                     ]
             else:
                 if (
-                    min_val_of_range_from
-                    > float(form.range_to.data) or float(form.range_to.data)
-                    > max_val_of_range_from
+                    min_val_of_range_from > float(form.range_to.data)
+                    or float(form.range_to.data) > max_val_of_range_from
                 ) or float(form.range_from.data) < min_val_of_range_from:
                     if float(form.range_from.data) < min_val_of_range_from:
                         form.range_from.data = min_val_of_range_from
                     if (
-                        min_val_of_range_from
-                        > float(form.range_to.data) or float(form.range_to.data)
-                        > max_val_of_range_from
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
                     ):
                         form.range_to.data = max_val_of_range_from
                         ranges_for_feature[form.feature.data] = [
@@ -173,7 +176,7 @@ def range_groups():
 def categories():
     form = CategoriesForm(request.form)
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     # ranges_for_feature = session.get("ranges_for_feature", {})
     if form.validate_on_submit():
@@ -181,12 +184,12 @@ def categories():
             form.categories[form.category_name.data] = [
                 k for k in request.form if request.form[k] == "on"
             ]
-            session["categories"] = form.categories
+            session["categories"] = json.dumps(form.categories)
         if form.next.data:
             if not form.categories:
                 flash("Need define at least one category", "danger")
                 return render_template("categories.html", form=form)
-            session["categories"] = form.categories
+            session["categories"] = json.dumps(form.categories)
             # {}
             return redirect(url_for("demo.explanations_summary"))
     elif form.is_submitted():
@@ -195,15 +198,13 @@ def categories():
     # def reversed_function(argument):
     #     return reversed(argument)
 
-    return render_template(
-        "categories.html", form=form
-    )
+    return render_template("categories.html", form=form)
 
 
 @demo_blueprint.route("/explanations_summary", methods=["GET", "POST"])
 def explanations_summary():
     form = FlaskForm(request.form)
-    categories = session.get("categories", {})
+    categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     ranges_for_feature = session.get("ranges_for_feature", {})
     range_groups_ages = ranges_for_feature.get("Age", [])
@@ -220,6 +221,7 @@ def explanations_summary():
         "Prediction or Confidence Score (Out of 100)",
     ]
 
+    pred_conf_score = "Prediction or Confidence Score (Out of 100)"
     form.table_heads += [f"{name} Contribution" for name in categories]
 
     all_case_values_query = CaseValue.query.filter(
@@ -289,7 +291,10 @@ def explanations_summary():
         form.table_rows += [row]
 
     return render_template(
-        "explanations_summary.html", form=form, range_groups_ages=range_groups_ages,
+        "explanations_summary.html",
+        form=form,
+        range_groups_ages=range_groups_ages,
+        pred_conf_score=pred_conf_score,
     )
 
 
@@ -297,7 +302,7 @@ def explanations_summary():
 def explanations_per_patient(case_id):
     form = FlaskForm(request.form)
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     ranges_for_feature = session.get("ranges_for_feature", {})
     range_groups_ages = ranges_for_feature.get("Age", [])
@@ -444,7 +449,7 @@ def financial_range_groups():
         )
     if form.validate_on_submit():
         if form.next.data:
-            session["categories"] = {}
+            session["categories"] = "{}"
             return redirect(url_for("demo.financial_categories"))
         try:
             if form.feature.data in ranges_for_feature:
@@ -470,7 +475,7 @@ def financial_range_groups():
 def financial_categories():
     form = CategoriesForm(request.form)
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     # ranges_for_feature = session.get("ranges_for_feature", {})
     if form.validate_on_submit():
@@ -478,12 +483,12 @@ def financial_categories():
             form.categories[form.category_name.data] = [
                 k for k in request.form if request.form[k] == "on"
             ]
-            session["categories"] = form.categories
+            session["categories"] = json.dumps(form.categories)
         if form.next.data:
             if not form.categories:
                 flash("Need define at least one category", "danger")
                 return render_template("categories.html", form=form)
-            session["categories"] = form.categories
+            session["categories"] = json.dumps(form.categories)
             # {}
             return redirect(url_for("demo.financial_explan_summary"))
     elif form.is_submitted():
@@ -497,7 +502,7 @@ def financial_categories():
 @demo_blueprint.route("/financial_explan_summary", methods=["GET", "POST"])
 def financial_explan_summary():
     form = FlaskForm(request.form)
-    categories = session.get("categories", {})
+    categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     ranges_for_feature = session.get("ranges_for_feature", {})
     range_groups_ages = ranges_for_feature.get("Age", [])
@@ -592,7 +597,7 @@ def financial_explan_per_client(case_id):
     form = FinancialSelectFeatures(request.form)
     form.case_id = case_id
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     # ranges_for_feature = session.get("ranges_for_feature", {})
     all_case_values_query = CaseValue.query.filter(
@@ -627,7 +632,7 @@ def financial_explan_per_client(case_id):
 def financial_explan_2_per_client(case_id):
     form = FlaskForm(request.form)
     form.case_id = case_id
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     # ranges_for_feature = session.get("ranges_for_feature", {})
     all_case_values_query = CaseValue.query.filter(
