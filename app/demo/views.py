@@ -243,11 +243,11 @@ def explanations_summary():
         age = age_range_groups(range_groups_ages, age)
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         predicted = "No" if prediction_score < 50 else "Yes"
-        prediction_score_color = "red"
+        prediction_score_color = "green"
         if prediction_score > 45:
             prediction_score_color = "yellow"
             if prediction_score > 70:
-                prediction_score_color = "green"
+                prediction_score_color = "red"
 
         patient_id_bgcolor = "MediumSlateBlue"
         row = [

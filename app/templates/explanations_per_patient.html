@@ -19,58 +19,58 @@
 } */
 
 .routeButton {
-    padding: 5px 20px;
-    background-color: aqua;
-    color: white;
-    cursor: pointer;
+  padding: 5px 20px;
+  background-color: aqua;
+  color: white;
+  cursor: pointer;
 }
 
 .prediction {
-    margin-right: 50px;
+  margin-right: 50px;
 }
 
 .explanationsButton {
-    background-color: yellow;
-    color: grey;
-    padding: 5px 40px;
-    margin-left: 100px;
+  background-color: yellow;
+  color: grey;
+  padding: 5px 40px;
+  margin-left: 100px;
 }
 
 .patientsTable {
-    margin-top: 18px;
-    max-width: 90vw;
-    width: 85vh;
+  margin-top: 18px;
+  max-width: 90vw;
+  width: 85vh;
 }
 
 .patientsTable>thead {
-    background-color: rgb(228, 227, 155);
-    border: 3px solid rgb(248, 248, 169);
+  background-color: rgb(228, 227, 155);
+  border: 3px solid rgb(248, 248, 169);
 }
 
 .bckcoloroption {
-    background-color: #FFF5EE;
+  background-color: #FFF5EE;
 }
 
 .ex-header-top-main {
-    padding: 15px;
-    text-align: left;
-    font-family: 'serif';
-    width: 100%;
-    color: #FFF5EE;
-    font-style: normal;
-    font-size: 250%;
-    padding-top: 2.4rem;
-    padding-bottom: 1rem;
-    /* margin-top: 150px; */
-    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
+  padding: 15px;
+  text-align: left;
+  font-family: 'serif';
+  width: 100%;
+  color: #FFF5EE;
+  font-style: normal;
+  font-size: 250%;
+  padding-top: 2.4rem;
+  padding-bottom: 1rem;
+  /* margin-top: 150px; */
+  background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
 }
 
 .centerDiv {
-    display: block;
-    max-width: 70vh;
-    width: 70vh;
-    margin-top: 38px;
-    margin-left: 100px;
+  display: block;
+  max-width: 70vh;
+  width: 60vh;
+  margin-top: 35px;
+  margin-left: 50px;
 }
 
 /* .table .leftDiv .centerDiv {
@@ -81,46 +81,48 @@
 } */
 
 .leftDiv  {
-    width: 55vh;
-    margin-top: 7px;
+  max-width: 70vh;
+  width: 65vh;
+  margin-top: 7px;
 }
 
 .rightDiv {
-    width: 110vh;
-    text-align: left;
-    padding: 10px;
-    margin-top: 10px;
-    margin-right: 70px;
-    margin-left: 40px;
+  max-width: 100vh;
+  width: 95vh;
+  text-align: left;
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 60px;
+  margin-left: 40px;
 }
 
 .rightDivExp2 {
-    text-align: left;
-    padding: 10px;
-    margin-top: 10px;
-    width: 90vh;
+  text-align: left;
+  padding: 10px;
+  margin-top: 10px;
+  width: 90vh;
 }
 
 .frame{
-    float:left;
-    width: 50%;
+  float:left;
+  width: 50%;
 }
 
 .div-style-font{
-font-size: 110%;
-font-family: 'arial';
-font-weight: 600;
+  font-size: 110%;
+  font-family: 'arial';
+  font-weight: 600;
 }
 
 .squareBtn{
-    height: 20px;
-    width: 20px;
-    background-color: #00BFFF;
+  height: 20px;
+  width: 20px;
+  background-color: #00BFFF;
 }
 
 .sidesWrapper {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .td_patient-value {
@@ -158,17 +160,19 @@ font-weight: 600;
       <section class="table">
         <div class="sidesWrapper">
           <div class="leftDiv">
-            <div style="padding: 20px; margin-top: 10px;">
-              <h5> How to view Contributions of Features </h5>
-              <div style="margin-bottom: 170px; width: 105%; background: url(http://wpandyou.ru/wp-content/uploads/2013/01/down_arrow_select.jpg) no-repeat right #DDD;">
+            <div style="padding: 18px 0px 20px 20px; margin-top: 10px;">
+              <div style="width: 330px;"><h5 style="font-size: 115%;"> How to view Contributions of Features </h5></div>
+              <div style="height: 15px;"> </div>
+              <div><h5 style="font-size: 115%;"> Proportional to the</h5></div>
+              <div style="margin-bottom: 170px; width: 71%; background: url(http://wpandyou.ru/wp-content/uploads/2013/01/down_arrow_select.jpg) no-repeat right #DDD;">
                 <select class="form-control" id="presentation_type" name="presentation_type"
                   style="width: 135%;" onchange="this.form.submit()">
                   {% if form.presentation_type == "Proportional to the Category Score" %}
-                  <option class="bckcoloroption" selected value="Proportional to the Category Score">Proportional to the Category Score</option>
-                  <option class="bckcoloroption" value="Proportional to the Total Confidence Score">Proportional to the Total Confidence Score</option>
+                  <option class="bckcoloroption" selected value="Proportional to the Category Score">Category Score</option>
+                  <option class="bckcoloroption" value="Proportional to the Total Confidence Score">Total Confidence Score</option>
                   {% else %}
-                  <option class="bckcoloroption" value="Proportional to the Category Score">Proportional to the Category Score</option>
-                  <option class="bckcoloroption" selected value="Proportional to the Total Confidence Score">Proportional to the Total Confidence Score</option>
+                  <option class="bckcoloroption" value="Proportional to the Category Score">Category Score</option>
+                  <option class="bckcoloroption" selected value="Proportional to the Total Confidence Score">Total Confidence Score</option>
                   {% endif %}
                 </select>
               </div>
@@ -176,11 +180,11 @@ font-weight: 600;
           </div>
           <div class="centerDiv div-style-font">
             <div>
-              <table style="text-align: justify; width: 100%;">
+              <table style="text-align: left; width: 100%;">
                 <tr> <td>Patient ID:</td> <td class="td_patient-value">{{form.case_id}}</td> </tr>
                 <tr> <td>Age:</td> <td class="td_patient-value">{{form.age}}</td> </tr>
                 <tr> <td>Diabetes Predicted:</td> <td class="td_patient-value">{{form.predicted}}</td> </tr>
-                <tr> <td>Prediction or Confidence Score (Out of 100):</td>
+                <tr> <td>Prediction or Confidence Score &nbsp;&nbsp; (Out of 100):</td>
                 <td style="text-align: center;">
                   <font style="color:brown; font-size: 130%;"> {{form.prediction_score}}</font>
                 </td>
