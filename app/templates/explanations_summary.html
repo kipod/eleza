@@ -49,12 +49,12 @@
 .patientsTable {
     margin-top: 18px;
     max-width: 120vw;
-    width: 110vh;
+    width: 120vh;
 }
 
 .patientsTable>thead {
-    background-color: rgb(247, 245, 156);
-    border: 3px solid yellow;
+    background-color: rgb(243, 243, 232);
+    border: 3px solid rgb(243, 243, 125);
 }
 
 /* .bckcoloroption {
@@ -163,11 +163,16 @@ font-weight: 600;
                 </select>
               </div>
             </div>
+            <div style="margin-left: 640px;"><div style="margin-top: 40px;">Explanations</div></div>
             <div style="margin-bottom: 40px;"></div>
             <table id="patientsTable" class="patientsTable table table-striped table-sm">
               <thead>
                 {% for head in form.table_heads %}
+                {% if head == pred_conf_score %}
                 <th style="text-align: center;">{{head}}</th>
+                {% else %}
+                <th style="text-align: center;">{{head}}</th>
+                {% endif %}
                 {% endfor %}
               </thead>
               <tbody style="text-align: center;">
