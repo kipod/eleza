@@ -31,9 +31,6 @@ def demo():
     form.model_type.choices = [(m.name, m.name) for m in form.models]
     form.active_domain = session.get("active_domain", "general")
 
-    # maybe need fix -?
-    form.general_type_applicat = ["Type1", "Type2", "Type3", "Type4", "Type5"]
-
     if form.validate_on_submit():
         session["subdomain"] = form.subdomain_id.data
         session["model_type"] = form.model_type.data
@@ -59,6 +56,7 @@ def demo():
         if form.domain.data == Subdomain.Domain.financial.name:
             return redirect(url_for("demo.financial_select_features"))
     elif form.is_submitted():
+        session["active_domain"] = form.domain.data
         flash("Invalid data", "warning")
 
     return render_template("demo.html", form=form)

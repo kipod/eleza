@@ -55,6 +55,23 @@
           {% else %}
           <div class="tab-pane fade" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
           {% endif %}
+          <!-- Flash Messages BEGIN -->
+          <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismisible">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+          </div>
+          <!-- Flash Messages END -->
             <h3 style="margin-top: 10px;">
               <!-- Some general information -->
               Eleza Demo
@@ -69,8 +86,10 @@
                   </td>
                   <td>
                     <select class="form-control" id="subdomain_id" name="subdomain_id" style="font-size: 105%;">
-                      {% for type_application in form.general_type_applicat %}
-                      <option>{{type_application}}</option>
+                      {% for subdomain in form.subdomains %}
+                      {% if subdomain.domain.name == "general" %}
+                      <option value="{{subdomain.id}}">{{subdomain.name}}</option>
+                      {% endif %}
                       {% endfor %}
                     </select>
                   </td>
@@ -198,6 +217,23 @@
           {% else %}
           <div class="tab-pane fade" id="pills-fin" role="tabpanel" aria-labelledby="pills-fin-tab">
           {% endif %}
+          <!-- Flash Messages BEGIN -->
+          <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismisible">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+          </div>
+          <!-- Flash Messages END -->
           <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post" enctype="multipart/form-data">
             {{ form.csrf_token }}
             <input id="domain" name="domain" type="hidden" value="financial">
