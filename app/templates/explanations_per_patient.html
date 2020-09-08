@@ -6,17 +6,11 @@
 
 {% block content %}
 <style>
-
-  .sidesWrapper {
-    display: flex;
-    justify-content: space-between;
-}
-
-  .table {
-    margin-bottom: 5%;
-    border: 3px ridge lightskyblue;
-    background: #FFFAFA;
-    width: 100%;
+.table {
+  margin-bottom: 5%;
+  border: 3px ridge lightskyblue;
+  background: #FFFAFA;
+  width: 100%;
 }
 
 /* .sidesWrapper {
@@ -129,6 +123,12 @@ font-weight: 600;
     justify-content: space-between;
 }
 
+.td_patient-value {
+  font-size: 110%;
+  width: 30%;
+  text-align: center;
+}
+
 </style>
 <!-- Header -->
 <div class="ex-header-top-main bck" title='Healthcare - {{ form.subdomain.name }} Diagnosis'>
@@ -160,7 +160,7 @@ font-weight: 600;
           <div class="leftDiv">
             <div style="padding: 20px; margin-top: 10px;">
               <h5> How to view Contributions of Features </h5>
-              <div style="width:85%; margin-bottom: 170px; width: 100%; background: url(http://wpandyou.ru/wp-content/uploads/2013/01/down_arrow_select.jpg) no-repeat right #DDD;">
+              <div style="margin-bottom: 170px; width: 105%; background: url(http://wpandyou.ru/wp-content/uploads/2013/01/down_arrow_select.jpg) no-repeat right #DDD;">
                 <select class="form-control" id="presentation_type" name="presentation_type"
                   style="width: 135%;" onchange="this.form.submit()">
                   {% if form.presentation_type == "Proportional to the Category Score" %}
@@ -176,22 +176,16 @@ font-weight: 600;
           </div>
           <div class="centerDiv div-style-font">
             <div>
-              <div style="max-width: 100%;">
-                <div style="width: 65%; font-weight: 600;"> Patient ID: &emsp;&emsp; {{form.case_id}}
-                </div>
-                <!-- <div style="width: 70%; text-align: center; padding: 5px;"></div> -->
-              </div>
-              <div style="max-width: 100%; margin-top: 15px;">
-                <div style="width: 65%; height: 10%; font-weight: 600; text-align: left;">Age:
-                  &emsp;&emsp; {{form.age}}</div>
-                <!-- <div style="width: 70%; text-align: center; padding:  5px;">20 - 30</div> -->
-              </div>
-              <div style="margin-top: 15px; font-weight: 600; width: 90%;">Diabetes Predicted:
-                &ensp;&emsp; {{form.predicted}}</div>
-            </div>
-            <div style="margin-top: 30px; width: 90%; height: 25%; font-weight: 600;">
-              Prediction or Confidence Score (Out of 100):
-              <font style="color:brown; font-size: 140%;"> &emsp;&emsp; {{form.prediction_score}}</font>
+              <table style="text-align: justify; width: 100%;">
+                <tr> <td>Patient ID:</td> <td class="td_patient-value">{{form.case_id}}</td> </tr>
+                <tr> <td>Age:</td> <td class="td_patient-value">{{form.age}}</td> </tr>
+                <tr> <td>Diabetes Predicted:</td> <td class="td_patient-value">{{form.predicted}}</td> </tr>
+                <tr> <td>Prediction or Confidence Score (Out of 100):</td>
+                <td style="text-align: center;">
+                  <font style="color:brown; font-size: 130%;"> {{form.prediction_score}}</font>
+                </td>
+                </tr>
+              </table>
             </div>
           </div>
           <div class="rightDiv">
