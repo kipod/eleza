@@ -39,11 +39,12 @@
 }
 
 .explanations {
-    background-color: rgb(228, 180, 23);
-    color: grey;
-    padding: 3px 60px;
-    margin-left: 450px;
-    border: 2px solid rgb(96, 195, 241);
+  background: #FFD55F;
+  border: 2px solid rgb(241, 217, 76);
+  text-align: center;
+  font-size: 140%;
+  color: #FFFAFA;
+  font-family: 'arial';
 }
 
 .patientsTable {
@@ -115,6 +116,7 @@ font-weight: 600;
   width: 68%;
 }
 
+
 </style>
 <!-- <div class="container" style="margin-bottom: 0%; margin-left: 0%;"></div> -->
 <div class="ex-header-top-main bck" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
@@ -152,7 +154,7 @@ font-weight: 600;
               </div>
               <h5>How to view Contributions: </h5>
               <div>
-                <select class="form-control" style="width: 60%;" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
+                <select class="form-control" style="width: 400px;" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
                   {% if form.presentation_type == "Percents" %}
                   <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
                   <option class="bckcoloroption" value="Values">Contribution Value</option>
@@ -163,17 +165,20 @@ font-weight: 600;
                 </select>
               </div>
             </div>
-            <div style="margin-left: 640px;"><div style="margin-top: 40px;">Explanations</div></div>
             <div style="margin-bottom: 40px;"></div>
             <table id="patientsTable" class="patientsTable table table-striped table-sm">
-              <thead>
+              <thead class="own_table">
+                <tr>
+                  <td colspan="4"></td>
+                  <div>
+                  <td class="explanations" colspan="{{ len(form.table_heads) - 4 }}">Explanations</td>
+                  </div>
+                </tr>
+                <tr>
                 {% for head in form.table_heads %}
-                {% if head == pred_conf_score %}
-                <th style="text-align: center;">{{head}}</th>
-                {% else %}
-                <th style="text-align: center;">{{head}}</th>
-                {% endif %}
+                  <th style="text-align: center;">{{head}}</th>
                 {% endfor %}
+                </tr>
               </thead>
               <tbody style="text-align: center;">
                 {% for row in form.table_rows %}

@@ -174,6 +174,10 @@ def range_groups():
                         ranges_for_feature[form.feature.data] = [
                             (float(form.range_from.data), float(form.range_to.data))
                         ]
+                    else:
+                        ranges_for_feature[form.feature.data] = [
+                            (float(form.range_from.data), float(form.range_to.data))
+                        ]
                 else:
                     ranges_for_feature[form.feature.data] = [
                         (float(form.range_from.data), float(form.range_to.data))
@@ -235,10 +239,9 @@ def explanations_summary():
         "Patient ID",
         "Age",
         f"{form.subdomain.name} Predicted",
-        "Prediction or Confidence Score (Out of 100)",
+        "Prediction_or_Confidence Score (Out of 100)",
     ]
 
-    pred_conf_score = "Prediction or Confidence Score (Out of 100)"
     form.table_heads += [f"{name} Contribution" for name in categories]
 
     all_case_values_query = CaseValue.query.filter(
@@ -273,6 +276,7 @@ def explanations_summary():
             (prediction_score, prediction_score_color),
         ]
         explainers = []
+        explainers_abs_values = []
         for cat_name in categories:
             sum_explainer = 0
             for feature_name in categories[cat_name]:
@@ -282,11 +286,12 @@ def explanations_summary():
                 ).first()
                 sum_explainer += case_val.explainer
             explainers += [sum_explainer]
+            explainers_abs_values += [abs(sum_explainer)]
         # if not selected percentage
         cells = None
 
         if form.presentation_type == "Percents":
-            hundred = sum(explainers)
+            hundred = sum(explainers_abs_values)
             values = list(
                 map(lambda val: int(round(val * 100 / hundred, 0)), explainers)
             )
@@ -309,8 +314,7 @@ def explanations_summary():
     return render_template(
         "explanations_summary.html",
         form=form,
-        range_groups_ages=range_groups_ages,
-        pred_conf_score=pred_conf_score,
+        range_groups_ages=range_groups_ages, len=len,
     )
 
 
@@ -478,9 +482,6 @@ def financial_range_groups():
             min_val_of_range_from = float(form.ranges[form.feature.data][0])
             max_val_of_range_from = float(form.ranges[form.feature.data][1])
             if form.feature.data in ranges_for_feature:
-                # if float(form.range_from.data) < min_value_of_range_from:
-                #     form.range_from.data = min_value_of_range_from
-                #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
                 if (
                     (
                         min_val_of_range_from > float(form.range_to.data)
@@ -523,6 +524,10 @@ def financial_range_groups():
                         or float(form.range_to.data) > max_val_of_range_from
                     ):
                         form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] = [
+                            (float(form.range_from.data), float(form.range_to.data))
+                        ]
+                    else:
                         ranges_for_feature[form.feature.data] = [
                             (float(form.range_from.data), float(form.range_to.data))
                         ]
@@ -586,7 +591,7 @@ def financial_explan_summary():
         "Client ID",
         "Age",
         "Risk of default",
-        "Prediction or Confidence Score (Out of 100)",
+        "Prediction_or_Confidence Score (Out of 100)",
     ]
 
     form.table_heads += [f"{name} Contribution" for name in categories]
@@ -623,6 +628,7 @@ def financial_explan_summary():
             (prediction_score, prediction_score_color),
         ]
         explainers = []
+        explainers_abs_values = []
         for cat_name in categories:
             sum_explainer = 0
             for feature_name in categories[cat_name]:
@@ -632,11 +638,12 @@ def financial_explan_summary():
                 ).first()
                 sum_explainer += case_val.explainer
             explainers += [sum_explainer]
+            explainers_abs_values += [abs(sum_explainer)]
         # if not selected percentage
         cells = None
 
         if form.presentation_type == "Percents":
-            hundred = sum(explainers)
+            hundred = sum(explainers_abs_values)
             values = list(
                 map(lambda val: int(round(val * 100 / hundred, 0)), explainers)
             )
@@ -657,7 +664,7 @@ def financial_explan_summary():
         form.table_rows += [row]
 
     return render_template(
-        "financial_explan_summary.html", form=form, range_groups_ages=range_groups_ages,
+        "financial_explan_summary.html", form=form, range_groups_ages=range_groups_ages,len=len
     )
 
 
