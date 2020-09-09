@@ -129,7 +129,43 @@ def range_groups():
                 # if float(form.range_from.data) < min_value_of_range_from:
                 #     form.range_from.data = min_value_of_range_from
                 #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
-                if (
+                if form.feature.data == "Age":
+                    if (
+                        (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        )
+                        or (float(form.range_from.data) < min_val_of_range_from)
+                        or (float(form.range_from.data) > max_val_of_range_from)
+                    ):
+                        if float(form.range_from.data) < min_val_of_range_from or (
+                            float(form.range_from.data) > max_val_of_range_from
+                        ):
+                            form.range_from.data = min_val_of_range_from
+                        if (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        ):
+                            form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] += [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] += [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+
+                elif (
                     (
                         min_val_of_range_from > float(form.range_to.data)
                         or float(form.range_to.data) > max_val_of_range_from
@@ -154,7 +190,43 @@ def range_groups():
                         (float(form.range_from.data), float(form.range_to.data))
                     ]
             else:
-                if (
+                if form.feature.data == "Age":
+                    if (
+                        (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        )
+                        or (float(form.range_from.data) < min_val_of_range_from)
+                        or (float(form.range_from.data) > max_val_of_range_from)
+                    ):
+                        if float(form.range_from.data) < min_val_of_range_from or (
+                            float(form.range_from.data) > max_val_of_range_from
+                        ):
+                            form.range_from.data = min_val_of_range_from
+                        if (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        ):
+                            form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] = [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] = [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+
+                elif (
                     (
                         min_val_of_range_from > float(form.range_to.data)
                         or float(form.range_to.data) > max_val_of_range_from
@@ -182,6 +254,7 @@ def range_groups():
                     ranges_for_feature[form.feature.data] = [
                         (float(form.range_from.data), float(form.range_to.data))
                     ]
+
             session["ranges_for_feature"] = ranges_for_feature
         except ValueError:
             flash("Invalid data", "warning")
@@ -314,7 +387,8 @@ def explanations_summary():
     return render_template(
         "explanations_summary.html",
         form=form,
-        range_groups_ages=range_groups_ages, len=len,
+        range_groups_ages=range_groups_ages,
+        len=len,
     )
 
 
@@ -352,7 +426,7 @@ def explanations_per_patient(case_id):
             ).first()
             sum_explainer[cat_name] += case_val.explainer
             sum_explainer_abs[cat_name] += abs(case_val.explainer)
-        form.table_heads += [[cat_name, ], "Feature Contribution"]
+        form.table_heads += [[cat_name,], "Feature Contribution"]
     form.table_rows = []
     num_of_rows = max([len(form.categories[k]) for k in form.categories])
     for cat_name in form.categories:
@@ -410,7 +484,10 @@ def explanations_per_patient(case_id):
         return type(val) is list
 
     return render_template(
-        "explanations_per_patient.html", form=form, check_is_list=check_is_list, enumerate=enumerate
+        "explanations_per_patient.html",
+        form=form,
+        check_is_list=check_is_list,
+        enumerate=enumerate,
     )
 
 
@@ -482,7 +559,46 @@ def financial_range_groups():
             min_val_of_range_from = float(form.ranges[form.feature.data][0])
             max_val_of_range_from = float(form.ranges[form.feature.data][1])
             if form.feature.data in ranges_for_feature:
-                if (
+                # if float(form.range_from.data) < min_value_of_range_from:
+                #     form.range_from.data = min_value_of_range_from
+                #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
+                if form.feature.data == "Age":
+                    if (
+                        (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        )
+                        or (float(form.range_from.data) < min_val_of_range_from)
+                        or (float(form.range_from.data) > max_val_of_range_from)
+                    ):
+                        if float(form.range_from.data) < min_val_of_range_from or (
+                            float(form.range_from.data) > max_val_of_range_from
+                        ):
+                            form.range_from.data = min_val_of_range_from
+                        if (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        ):
+                            form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] += [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] += [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+
+                elif (
                     (
                         min_val_of_range_from > float(form.range_to.data)
                         or float(form.range_to.data) > max_val_of_range_from
@@ -507,7 +623,43 @@ def financial_range_groups():
                         (float(form.range_from.data), float(form.range_to.data))
                     ]
             else:
-                if (
+                if form.feature.data == "Age":
+                    if (
+                        (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        )
+                        or (float(form.range_from.data) < min_val_of_range_from)
+                        or (float(form.range_from.data) > max_val_of_range_from)
+                    ):
+                        if float(form.range_from.data) < min_val_of_range_from or (
+                            float(form.range_from.data) > max_val_of_range_from
+                        ):
+                            form.range_from.data = min_val_of_range_from
+                        if (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        ):
+                            form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] = [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] = [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+
+                elif (
                     (
                         min_val_of_range_from > float(form.range_to.data)
                         or float(form.range_to.data) > max_val_of_range_from
@@ -535,6 +687,7 @@ def financial_range_groups():
                     ranges_for_feature[form.feature.data] = [
                         (float(form.range_from.data), float(form.range_to.data))
                     ]
+
             session["ranges_for_feature"] = ranges_for_feature
         except ValueError:
             flash("Invalid data", "warning")
@@ -664,7 +817,10 @@ def financial_explan_summary():
         form.table_rows += [row]
 
     return render_template(
-        "financial_explan_summary.html", form=form, range_groups_ages=range_groups_ages,len=len
+        "financial_explan_summary.html",
+        form=form,
+        range_groups_ages=range_groups_ages,
+        len=len,
     )
 
 
