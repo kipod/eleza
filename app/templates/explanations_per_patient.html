@@ -198,8 +198,12 @@
             <h5 style="font-weight: 600;">View Explanations (Per Patient)</h5>
             <table class="patientsTable">
               <thead style="text-align: center;">
-                {% for table_head in form.table_heads %}
-                <th>
+                {% for i,table_head in enumerate(form.table_heads) %}
+                {% if (i//2)%2 == 0 %}
+                <th style="background-color: #FFE394;">
+                {% else %}
+                <th style="background-color: #B6E6FC;">
+                {% endif %}
                   {% if check_is_list(table_head) %}
                   {{table_head[0]}} <div style="color:brown;">({{table_head[1]}}%)</div>
                   {% else %}
@@ -211,9 +215,13 @@
               <tbody style="color: floralwhite; text-align: center; color: black;">
                 {% for table_row in form.table_rows %}
                 <tr>
-                  {% for index in table_row %}
+                  {% for i,index in enumerate(table_row) %}
                   {% for value in index %}
-                  <td>
+                  {% if i%2 == 0 %}
+                  <td style="background-color: #FEF1C9;">
+                  {% else %}
+                  <td style="background-color: #DAF2FD;">
+                  {% endif %}
                     {% if "{}".format(value).isnumeric() %}
                     {% for _ in range(value)%}
                     <button class="squareBtn"></button>

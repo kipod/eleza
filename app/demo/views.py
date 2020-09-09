@@ -350,7 +350,7 @@ def explanations_per_patient(case_id):
             ).first()
             sum_explainer[cat_name] += case_val.explainer
             sum_explainer_abs[cat_name] += abs(case_val.explainer)
-        form.table_heads += [[cat_name,], "Feature Contribution"]
+        form.table_heads += [[cat_name, ], "Feature Contribution"]
     form.table_rows = []
     num_of_rows = max([len(form.categories[k]) for k in form.categories])
     for cat_name in form.categories:
@@ -408,7 +408,7 @@ def explanations_per_patient(case_id):
         return type(val) is list
 
     return render_template(
-        "explanations_per_patient.html", form=form, check_is_list=check_is_list,
+        "explanations_per_patient.html", form=form, check_is_list=check_is_list, enumerate=enumerate
     )
 
 
