@@ -37,14 +37,16 @@
 }
 
 .patientsTable {
+  border: 3px ridge lightskyblue;
+  background: #FFFAFA;;
   margin-top: 18px;
   max-width: 90vw;
   width: 85vh;
 }
 
 .patientsTable>thead {
-  background-color: rgb(228, 227, 155);
-  border: 3px solid rgb(248, 248, 169);
+    background-color: rgb(243, 243, 232);
+    border: 3px ridge lightskyblue;
 }
 
 .bckcoloroption {
@@ -206,7 +208,7 @@
                 </th>
                 {% endfor %}
               </thead>
-              <tbody style="background-color: rgb(248, 212, 184); color: floralwhite; text-align: center; color: black;">
+              <tbody style="color: floralwhite; text-align: center; color: black;">
                 {% for table_row in form.table_rows %}
                 <tr>
                   {% for index in table_row %}
