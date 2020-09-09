@@ -693,7 +693,7 @@ def financial_explan_per_client(case_id):
                 CaseValue.feature_id == feature.id
             ).first()
             feature_values.append(feature_name)
-            feature_values.append(str(case_val.value))
+            feature_values.append(str(round(case_val.value, 3)))
             feature_values.append(round(case_val.explainer * 100, 3))
             sum_explainers += case_val.explainer * 100
             if len(feature_name) >= 2:
