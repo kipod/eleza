@@ -173,7 +173,7 @@ font-weight: 600;
               <tbody style="text-align: center;">
                 {% for row in form.table_rows %}
                 <tr>
-                  <td style="background-color: {{row[0][1]}};"><a style="color: #F0E68C;" href="{{url_for('demo.explanations_per_patient', case_id=row[0][0])}}">{{row[0][0]}}</a></td>
+                  <td><a style="color: #c04702;" href="{{url_for('demo.financial_explan_per_client', case_id=row[0][0])}}">{{row[0][0]}}</a></td>
                   {% for cell in row[1:] %}
                   {% if cell[1] %}
                   <td style="background-color: {{cell[1]}};">{{cell[0]}}</td>
