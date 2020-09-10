@@ -97,7 +97,7 @@
     text-align: left;
     padding: 10px;
     margin-top: 10px;
-    margin-left: 55px;
+    margin-left: 15vh;
 }
 
 .frame{
@@ -144,16 +144,16 @@ font-weight: 600;
       <section >
         <div class="sidesWrapper">
           <div class="rightDiv">
-            <div style="margin-left: 80px;">
+            <div style="margin-left: 120px;">
               <header>
-                <h5>Credit Score: View Explanations (Summary)</h5>
+                <h4><b>Credit Score: View Explanations (Summary)</b></h4>
               </header>
               <div>
                 <h5>Prediction Score & Category Contributions:</h5>
               </div>
               <h5>How to view Contributions: </h5>
               <div>
-                <select class="form-control" style="width: 68%;" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
+                <select class="form-control" style="width: 400px;" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
                   {% if form.presentation_type == "Percents" %}
                   <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
                   <option class="bckcoloroption" value="Values">Contribution Value</option>
