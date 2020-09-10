@@ -73,7 +73,7 @@ border: 3px solid #00BFFF;
             <h5>Ron’s Scores</h5>
           </div>
           <div>
-            <h5>Average Default Score:  7.5</h5>
+            <h5>Average Default Score: {{average_default_score}}</h5>
           </div>
           <div>
             <h5>Ron’s Score: {{total_score_name_client}}</h5>
@@ -112,7 +112,7 @@ border: 3px solid #00BFFF;
       </div>
       <div class="footer-buttons">
         <div style="padding: 20px;"><a
-          class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_summary') }}"
+          class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_per_client', case_id=form.case_id) }}"
           style='font-size: 135%;'>Go Back</a>
         </div>
       </div>

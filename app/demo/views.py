@@ -834,18 +834,6 @@ def financial_explan_per_client(case_id):
         CaseValue.case_id == case_id
     )
 
-    prediction_score_list = []
-    max_patient_id = max([v.case_id for v in all_case_values_query.all()])
-    for patient_id in range(max_patient_id + 1):
-        age_feature = Feature.query.filter(Feature.name == "Age").first()
-        age_case_val = all_case_values_query_for_patient.filter(
-            CaseValue.feature_id == age_feature.id
-        ).first()
-        prediction_score = int(round(age_case_val.prediction, 2) * 100)
-        prediction_score_list += [prediction_score]
-    sum_prediction_score = sum(prediction_score_list)
-    average_default_score = sum_prediction_score / (max_patient_id + 1)
-
     form.table_rows = [[]]
     sum_explainers = 0
     for cat_name in form.categories:
@@ -864,6 +852,25 @@ def financial_explan_per_client(case_id):
                 feature_values = []
     form.table_rows += [["Total", "", round(sum_explainers, 3)]]
     total_score_name_client = round(sum_explainers, 3)
+
+    prediction_score_list = []
+    max_patient_id = max([v.case_id for v in all_case_values_query.all()])
+    for patient_id in range(max_patient_id + 1):
+        all_case_values_query_for_patient = all_case_values_query.filter(
+            CaseValue.case_id == patient_id
+        )
+        if not all_case_values_query_for_patient.all():
+            continue
+        age_feature = Feature.query.filter(Feature.name == "Age").first()
+        age_case_val = all_case_values_query_for_patient.filter(
+            CaseValue.feature_id == age_feature.id
+        ).first()
+        prediction_score = int(round(age_case_val.prediction, 2) * 100)
+        prediction_score_list += [prediction_score]
+    sum_prediction_score = sum(prediction_score_list)
+    average_default_score = round(sum_prediction_score / (max_patient_id + 1),2)
+
+
     return render_template(
         "financial_explan_per_client.html",
         form=form,
@@ -911,9 +918,27 @@ def financial_explan_2_per_client(case_id):
     form.table_rows += [["Total", "", "", round(total_contrib, 3)]]
     total_score_name_client = round(total_contrib, 3)
 
+    prediction_score_list = []
+    max_patient_id = max([v.case_id for v in all_case_values_query.all()])
+    for patient_id in range(max_patient_id + 1):
+        all_case_values_query_for_patient = all_case_values_query.filter(
+            CaseValue.case_id == patient_id
+        )
+        if not all_case_values_query_for_patient.all():
+            continue
+        age_feature = Feature.query.filter(Feature.name == "Age").first()
+        age_case_val = all_case_values_query_for_patient.filter(
+            CaseValue.feature_id == age_feature.id
+        ).first()
+        prediction_score = int(round(age_case_val.prediction, 2) * 100)
+        prediction_score_list += [prediction_score]
+    sum_prediction_score = sum(prediction_score_list)
+    average_default_score = round(sum_prediction_score / (max_patient_id + 1),2)
+
     return render_template(
         "financial_explan_2_per_client.html",
         form=form,
         total_score_name_client=total_score_name_client,
+        average_default_score=average_default_score
     )
 
