@@ -1,4 +1,5 @@
 import json
+import operator
 from flask import render_template, Blueprint, request, session, redirect, url_for, flash
 from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType, CaseValue
@@ -75,6 +76,8 @@ def select_features():
     )
     for k in pred_pow:
         pred_pow[k] = round(pred_pow[k], 2)
+    sorted_x = sorted(pred_pow.items(), key=operator.itemgetter(1), reverse=True)
+    pred_pow = dict(sorted_x)
     if form.validate_on_submit():
         selected_features = []
         for name in request.form:
@@ -86,7 +89,7 @@ def select_features():
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template(
-        "select_features.html", features=features, pred_pow=pred_pow, form=form,
+        "select_features.html", features=features, pred_pow=pred_pow, form=form
     )
 
 
@@ -504,6 +507,8 @@ def financial_select_features():
     )
     for k in pred_pow:
         pred_pow[k] = round(pred_pow[k], 2)
+    sorted_x = sorted(pred_pow.items(), key=operator.itemgetter(1), reverse=True)
+    pred_pow = dict(sorted_x)
     if form.validate_on_submit():
         selected_features = []
         for name in request.form:
@@ -767,11 +772,11 @@ def financial_explan_summary():
         age = age_range_groups(range_groups_ages, age)
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         predicted = "No" if prediction_score < 10 else "Yes"
-        prediction_score_color = "red"
+        prediction_score_color = "green"
         if prediction_score > 45:
             prediction_score_color = "yellow"
             if prediction_score > 70:
-                prediction_score_color = "green"
+                prediction_score_color = "red"
 
         row = [
             (patient_id, None),

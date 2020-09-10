@@ -198,12 +198,8 @@
           <div class="rightDiv">
             <table class="patientsTable">
               <thead style="text-align: center;">
-                {% for i,table_head in enumerate(form.table_heads) %}
-                {% if (i//2)%2 == 0 %}
-                <th style="background-color: #FFE394;">
-                {% else %}
-                <th style="background-color: #B6E6FC;">
-                {% endif %}
+                {% for table_head in (form.table_heads) %}
+                <th>
                   {% if check_is_list(table_head) %}
                   {{table_head[0]}} <div style="color:brown;">({{table_head[1]}}%)</div>
                   {% else %}

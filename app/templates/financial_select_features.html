@@ -23,9 +23,6 @@
 <h5>
     <b>Select (keep) only relevant attributes from individual score cards:</b>
 </h5>
-<h5>
-    Summarized for all applicants, the attributes are listed from having the highest to lowest predictive power:
-</h5>
 <form class="form" role="form" action="{{ url_for('demo.financial_select_features') }}" method="post">
     {{ form.csrf_token }}
 <table class="ex-header_table" cellspacing="1" style="margin-bottom: 20%;
@@ -33,21 +30,21 @@ border: 3px outset lightskyblue; background: #FFFAFA; width: 100%; border-collap
     <thead>
         <th scope="col" style="text-align:center; padding: 4px;"><h5>Select Relevant</h5></th>
         <th scope="col" style="text-align:left;"><h5>Features</h5></th>
-        <th scope="col" style="text-align:left; font-size: 100%;"><h5>Predictive Power</h5></th>
+        <th scope="col" style="text-align:left; font-size: 100%;"><h5>Predictive Power (Highest to Lowest)</h5></th>
     </thead>
     <tbody>
         <tr><td></td><td></td><td></td></tr>
         <tr><td></td><td></td><td></td></tr>
-        {% for feature in features %}
+        {% for feature_name in pred_pow %}
         <tr>
-            {% if feature.name == 'Age' %}
-            <td style="text-align:center;"><div><input class="form-control" type="checkbox"  checked name="{{feature.name}}" onclick="return false;"></div></td>
-            <td style="text-align:justify;"><h5>{{feature.name}}</h5></td>
-            <td><div style="text-align: left;"><h5>{{pred_pow[feature.name]}}</h5></div></td>
+            {% if feature_name == 'Age' %}
+            <td style="text-align:center;"><div><input class="form-control" type="checkbox"  checked name="{{feature_name}}" onclick="return false;"></div></td>
+            <td style="text-align:justify;"><h5>{{feature_name}}</h5></td>
+            <td><div style="text-align: left;"><h5>{{pred_pow[feature_name]}}</h5></div></td>
             {% else %}
-            <td style="text-align:center;"><div><input class="form-control" type="checkbox" checked name="{{feature.name}}"></div></td>
-            <td style="text-align:justify;"><h5>{{feature.name}}</h5></td>
-            <td><div style="text-align: left;"><h5>{{pred_pow[feature.name]}}</h5></div></td>
+            <td style="text-align:center;"><div><input class="form-control" type="checkbox" checked name="{{feature_name}}"></div></td>
+            <td style="text-align:justify;"><h5>{{feature_name}}</h5></td>
+            <td><div style="text-align: left;"><h5>{{pred_pow[feature_name]}}</h5></div></td>
             {% endif %}
         </tr>
         {% endfor %}
