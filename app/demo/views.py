@@ -370,7 +370,7 @@ def explanations_summary():
             )
             max_val = max(values)
             colors = list(
-                map(lambda val: ("green" if val == max_val else None), values)
+                map(lambda val: ("red" if val == max_val else None), values)
             )
             values = map(lambda val: f"{val}%", values)
             cells = list(zip(values, colors))
@@ -378,7 +378,7 @@ def explanations_summary():
             values = list(map(lambda val: (round(val, 3)), explainers))
             max_val = max(values)
             colors = list(
-                map(lambda val: ("green" if val == max_val else None), values)
+                map(lambda val: ("red" if val == max_val else None), values)
             )
             cells = list(zip(values, colors))
         row += cells
@@ -801,7 +801,7 @@ def financial_explan_summary():
             )
             max_val = max(values)
             colors = list(
-                map(lambda val: ("green" if val == max_val else None), values)
+                map(lambda val: ("red" if val == max_val else None), values)
             )
             values = map(lambda val: f"{val}%", values)
             cells = list(zip(values, colors))
@@ -809,7 +809,7 @@ def financial_explan_summary():
             values = list(map(lambda val: (round(val * 100, 2)), explainers))
             max_val = max(values)
             colors = list(
-                map(lambda val: ("green" if val == max_val else None), values)
+                map(lambda val: ("red" if val == max_val else None), values)
             )
             cells = list(zip(values, colors))
         row += cells
