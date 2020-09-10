@@ -372,17 +372,13 @@ def explanations_summary():
                 map(lambda val: int(round(val * 100 / hundred, 0)), explainers)
             )
             max_val = max(values)
-            colors = list(
-                map(lambda val: ("red" if val == max_val else None), values)
-            )
+            colors = list(map(lambda val: ("red" if val == max_val else None), values))
             values = map(lambda val: f"{val}%", values)
             cells = list(zip(values, colors))
         else:
             values = list(map(lambda val: (round(val, 3)), explainers))
             max_val = max(values)
-            colors = list(
-                map(lambda val: ("red" if val == max_val else None), values)
-            )
+            colors = list(map(lambda val: ("red" if val == max_val else None), values))
             cells = list(zip(values, colors))
         row += cells
         form.table_rows += [row]
@@ -463,7 +459,7 @@ def explanations_per_patient(case_id):
             if len(form.table_rows) <= i:
                 form.table_rows += [[]]
             form.table_rows[i] += [["", ""]]
-    explainers = sum((list(map(abs,sum_explainer.values()))))
+    explainers = sum((list(map(abs, sum_explainer.values()))))
     values = list(
         map(lambda val: int(round(val * 100 / explainers, 0)), sum_explainer.values())
     )
@@ -805,17 +801,13 @@ def financial_explan_summary():
                 map(lambda val: int(round(val * 100 / hundred, 0)), explainers)
             )
             max_val = max(values)
-            colors = list(
-                map(lambda val: ("red" if val == max_val else None), values)
-            )
+            colors = list(map(lambda val: ("red" if val == max_val else None), values))
             values = map(lambda val: f"{val}%", values)
             cells = list(zip(values, colors))
         else:
             values = list(map(lambda val: (round(val * 100, 2)), explainers))
             max_val = max(values)
-            colors = list(
-                map(lambda val: ("red" if val == max_val else None), values)
-            )
+            colors = list(map(lambda val: ("red" if val == max_val else None), values))
             cells = list(zip(values, colors))
         row += cells
         form.table_rows += [row]
@@ -835,13 +827,24 @@ def financial_explan_per_client(case_id):
     form.selected_features = session.get("selected_features", [])
     form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
-    # ranges_for_feature = session.get("ranges_for_feature", {})
     all_case_values_query = CaseValue.query.filter(
         CaseValue.user_data_id == session["user_data_id"]
     )
     all_case_values_query_for_patient = all_case_values_query.filter(
         CaseValue.case_id == case_id
     )
+
+    prediction_score_list = []
+    max_patient_id = max([v.case_id for v in all_case_values_query.all()])
+    for patient_id in range(max_patient_id + 1):
+        age_feature = Feature.query.filter(Feature.name == "Age").first()
+        age_case_val = all_case_values_query_for_patient.filter(
+            CaseValue.feature_id == age_feature.id
+        ).first()
+        prediction_score = int(round(age_case_val.prediction, 2) * 100)
+        prediction_score_list += [prediction_score]
+    sum_prediction_score = sum(prediction_score_list)
+    average_default_score = sum_prediction_score / (max_patient_id + 1)
 
     form.table_rows = [[]]
     sum_explainers = 0
@@ -860,8 +863,13 @@ def financial_explan_per_client(case_id):
                 form.table_rows += [feature_values]
                 feature_values = []
     form.table_rows += [["Total", "", round(sum_explainers, 3)]]
-
-    return render_template("financial_explan_per_client.html", form=form)
+    total_score_name_client = round(sum_explainers, 3)
+    return render_template(
+        "financial_explan_per_client.html",
+        form=form,
+        total_score_name_client=total_score_name_client,
+        average_default_score=average_default_score
+    )
 
 
 @demo_blueprint.route("/financial_explan_2_per_client/<case_id>", methods=["GET"])
@@ -870,7 +878,6 @@ def financial_explan_2_per_client(case_id):
     form.case_id = case_id
     form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
-    # ranges_for_feature = session.get("ranges_for_feature", {})
     all_case_values_query = CaseValue.query.filter(
         CaseValue.user_data_id == session["user_data_id"]
     )
@@ -902,5 +909,11 @@ def financial_explan_2_per_client(case_id):
         sub_head[3] = round(sum_contribution, 3)
         total_contrib += sum_contribution
     form.table_rows += [["Total", "", "", round(total_contrib, 3)]]
+    total_score_name_client = round(total_contrib, 3)
 
-    return render_template("financial_explan_2_per_client.html", form=form)
+    return render_template(
+        "financial_explan_2_per_client.html",
+        form=form,
+        total_score_name_client=total_score_name_client,
+    )
+

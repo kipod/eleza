@@ -23,13 +23,20 @@
 .bottomcontainer  {
   max-width: 100%;
   padding: 20px;
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
 }
 
 .clientTable {
 border: 3px solid #00BFFF;
+}
+
+.rons_block {
+  width: 100vh;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 </style>
 <!-- Header -->
@@ -60,6 +67,17 @@ border: 3px solid #00BFFF;
           <h4>
             <b>Credit Score: View Explanations</b>
           </h4>
+        </div>
+        <div class="rons_block">
+          <div  style="margin-left: 30px;">
+            <h5>Ron’s Scores</h5>
+          </div>
+          <div>
+            <h5>Average Default Score:  7.5</h5>
+          </div>
+          <div>
+            <h5>Ron’s Score: {{total_score_name_client}}</h5>
+          </div>
         </div>
         <div class="bottomcontainer">
           <div class="rightblock">

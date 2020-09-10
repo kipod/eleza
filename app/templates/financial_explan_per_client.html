@@ -7,10 +7,10 @@
 {% block content %}
 <!-- Header -->
 <style>
- .maincontainer {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: space-between;
+.maincontainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
 }
 
 .topcontainer {
@@ -36,7 +36,7 @@
 .bottomcontainer  {
     max-width: 100%;
     padding: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
   }
@@ -58,11 +58,18 @@
     background-color: rgb(243, 243, 232);
     border: 3px solid #00BFFF;
 }
+
 .footer-buttons{
   display: flex;
   justify-content: space-between;
 }
 
+.rons_block {
+  width: 100vh;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
 </style>
 <div class="ex-header-top-main bck" title='Financial – Assessing {{ form.subdomain.name }} '>
   Financial – Assessing {{ form.subdomain.name }}
@@ -94,6 +101,17 @@
             <h4>
               <b>Credit Score: View Explanations</b>
             </h4>
+          </div>
+          <div class="rons_block">
+            <div style="margin-left: 30px;">
+              <h5>Ron’s Scores</h5>
+            </div>
+            <div>
+              <h5>Average Default Score:  {{average_default_score}}</h5>
+            </div>
+            <div>
+              <h5>Ron’s Score: {{total_score_name_client}}</h5>
+            </div>
           </div>
           <div class="bottomcontainer">
             <div class="rightblock">
@@ -127,7 +145,7 @@
             class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_summary') }}"
             style='font-size: 135%;'>Go Back</a>
           </div>
-          <div style="margin-top: 05px; padding: 20px;"><a
+          <div style="padding: 20px;"><a
             class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_2_per_client', case_id=form.case_id) }}"
             style='font-size: 135%;'>Next</a>
           </div>
