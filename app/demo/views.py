@@ -460,8 +460,7 @@ def explanations_per_patient(case_id):
             if len(form.table_rows) <= i:
                 form.table_rows += [[]]
             form.table_rows[i] += [["", ""]]
-
-    explainers = sum(sum_explainer.values())
+    explainers = sum((list(map(abs,sum_explainer.values()))))
     values = list(
         map(lambda val: int(round(val * 100 / explainers, 0)), sum_explainer.values())
     )
