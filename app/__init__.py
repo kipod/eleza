@@ -31,9 +31,9 @@ def create_app(environment="development"):
     csrf.init_app(app)
 
     # Register blueprints.
-    app.register_blueprint(auth_blueprint)
-    app.register_blueprint(main_blueprint)
-    app.register_blueprint(demo_blueprint, url_prefix="/demo")
+    # app.register_blueprint(auth_blueprint)
+    # app.register_blueprint(main_blueprint)
+    app.register_blueprint(demo_blueprint, url_prefix="/")
 
     # Set up flask login.
     @login_manager.user_loader
