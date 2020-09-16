@@ -1,5 +1,4 @@
 from flask import render_template, Blueprint, request, session, redirect, url_for, flash
-from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType, CaseValue
 from app.contoller import predictive_power, import_data_from_file_stream
 from flask_wtf import FlaskForm
@@ -22,7 +21,6 @@ demo_blueprint = Blueprint("demo", __name__)
 
 
 @demo_blueprint.route("/", methods=["GET", "POST"])
-@login_required
 def demo():
     form = SubdomainChoiceForm(request.form)
     form.subdomains = Subdomain.query.all()
