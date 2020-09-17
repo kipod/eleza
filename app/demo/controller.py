@@ -20,4 +20,4 @@ def age_range_groups(range_groups_ages, age):
 
 
 def gen_squares_code(number):
-    return number
+    return abs(number)

@@ -15,6 +15,11 @@ BASE_DIR = os.path.join(
 def db_fill_data(import_values=True):
     from app.models import Subdomain, ModelType, Feature, User
 
+    Subdomain(domain=Subdomain.Domain.general, name="Type 1").save(False)
+    Subdomain(domain=Subdomain.Domain.general, name="Type 2").save(False)
+    Subdomain(domain=Subdomain.Domain.general, name="Type 3").save(False)
+    Subdomain(domain=Subdomain.Domain.general, name="Type 4").save(False)
+    Subdomain(domain=Subdomain.Domain.general, name="Type 5").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Cancer").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Diabetic").save(False)
     Subdomain(domain=Subdomain.Domain.healthcare, name="Dermatology").save(False)

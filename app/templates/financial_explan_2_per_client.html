@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block links %}
@@ -5,6 +6,39 @@
 {% endblock %}
 
 {% block content %}
+<style>
+.table {
+  margin-bottom: 5%;
+  border: 3px ridge lightskyblue;
+  background: #FFFAFA;
+  width: 100%;
+}
+
+.rightblock {
+  margin-left: 15vh;
+  max-width: 80%;
+  width: 70%;
+}
+
+.bottomcontainer  {
+  max-width: 100%;
+  padding: 20px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.clientTable {
+border: 3px solid #00BFFF;
+}
+
+.rons_block {
+  width: 100vh;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+</style>
 <!-- Header -->
 <div title='Financial – Assessing {{ form.subdomain.name }} '>
     <div class="ex-header-top-main bck">Financial – Assessing {{ form.subdomain.name }}</div>
@@ -25,51 +59,70 @@
   {% endwith %}
 </div>
 <!-- Flash Messages END -->
-  <main>
-    <h4>Credit Score: View Explanations</h4>
-    <div style="width: 80%;">
-      <section class="table">
-        <div class="sidesWrapper">
-
-            <table>
-              <thead style="text-align: left; ">
-                {% for table_head in form.table_heads %}
-                <th style="background-color: #FFE394;">
-                  {{table_head}}
-                </th>
-                {% endfor %}
-              </thead>
-              <tbody>
-                {% for table_row in form.table_rows %}
-                <tr>
-                  {% for cell in table_row %}
-                  {% if table_row[0] %}
-                  <td style="background-color: #F7D8D6;">
-                    <b>{{cell}}</b>
-                  </td>
-                  {% else %}
-                  <td>
-                    {{cell}}
-                  </td>
-                  {% endif %}
+<main>
+  <div style="width: 100%;">
+    <section class="table">
+      <div>
+        <div>
+          <h4>
+            <b>Credit Score: View Explanations</b>
+          </h4>
+        </div>
+        <div class="rons_block">
+          <div  style="margin-left: 30px;">
+            <h5>Ron’s Scores</h5>
+          </div>
+          <div>
+            <h5>Average Default Score: {{average_default_score}}</h5>
+          </div>
+          <div>
+            <h5>Ron’s Score: {{total_score_name_client}}</h5>
+          </div>
+        </div>
+        <div class="bottomcontainer">
+          <div class="rightblock">
+              <table class="clientTable">
+                <thead style="text-align: left; ">
+                  {% for table_head in form.table_heads %}
+                  <th style="background-color: rgb(243, 243, 232);">
+                    {{table_head}}
+                  </th>
                   {% endfor %}
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-
+                </thead>
+                <tbody>
+                  {% for table_row in form.table_rows %}
+                  <tr>
+                    {% for cell in table_row %}
+                    {% if table_row[0] %}
+                    <td style="background-color: #F7D8D6;">
+                      <b>{{cell}}</b>
+                    </td>
+                    {% else %}
+                    <td>
+                      {{cell}}
+                    </td>
+                    {% endif %}
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
         </div>
-        <div style="display: flex; justify-content: space-between;"></div>
-        <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
-            class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_per_client', case_id=form.case_id) }}"
-            style='font-size: 120%;'>Go Back</a>
+      </div>
+      <div class="footer-buttons">
+        <div style="padding: 20px;"><a
+          class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_explan_per_client', case_id=form.case_id) }}"
+          style='font-size: 135%;'>Go Back</a>
         </div>
-    </div>
+      </div>
     </section>
-    </div>
-  </main>
+  </div>
+</main>
 
 {% endblock %}
 
 {% block scripts %}
 {% endblock %}
+
+

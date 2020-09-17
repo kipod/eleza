@@ -17,7 +17,7 @@
 
 .table {
     border: 3px ridge lightskyblue;
-    background: #FFFAFA;
+    background: #FFFAFA;;
     width: 100%;
     height: 100%;
 }
@@ -39,27 +39,28 @@
 }
 
 .explanations {
-    background-color: rgb(228, 180, 23);
-    color: grey;
-    padding: 3px 60px;
-    margin-left: 450px;
-    border: 2px solid rgb(96, 195, 241);
+  background: #FFD55F;
+  border: 2px solid rgb(241, 217, 76);
+  text-align: center;
+  font-size: 140%;
+  color: #FFFAFA;
+  font-family: 'arial';
 }
 
 .patientsTable {
     margin-top: 18px;
-    max-width: 90vw;
-    width: 85vh;
+    max-width: 120vw;
+    width: 120vh;
 }
 
 .patientsTable>thead {
-    background-color: rgb(247, 245, 156);
-    border: 3px solid yellow;
+    background-color: rgb(243, 243, 232);
+    border: 3px solid rgb(243, 243, 125);
 }
 
-.bckcoloroption {
-    background-color: #FFF5EE;
-}
+/* .bckcoloroption {
+    background: -webkit-linear-gradient(top, #00BFFF, #FFF5EE);
+} */
 
 .ex-header-top-main {
     padding: 15px;
@@ -75,7 +76,7 @@
     background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
 }
 
-.centerDiv {~
+.centerDiv {
     display: block;
     width: 35vh;
     margin-top: 38px;
@@ -93,10 +94,10 @@
 
 .rightDiv {
     width: 170vh;
-    text-align: left;s
+    text-align: left;
     padding: 10px;
     margin-top: 10px;
-    margin-left: 50px;
+    margin-left: 55px;
 }
 
 .frame{
@@ -110,9 +111,11 @@ font-weight: 600;
 }
 
 .dropdown {
+  border: 1px solid rgb(16, 25, 29);
   background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
-  width: 90%;
+  width: 68%;
 }
+
 
 </style>
 <!-- <div class="container" style="margin-bottom: 0%; margin-left: 0%;"></div> -->
@@ -143,16 +146,16 @@ font-weight: 600;
       <section >
         <div class="sidesWrapper">
           <div class="rightDiv">
-            <div>
+            <div style="margin-left: 80px;">
               <header>
-                <h5>Credit Score: View Explanations (Summary)</h5>
+                <h5><b>View Explanations (Summary)</b></h5>
               </header>
               <div>
-                <span class="prediction"  style="padding: 5px;"><h5>Prediction Score & Category Contributions:</h5></span>
+                <h5>Prediction Score & Category Contributions:</h5>
               </div>
               <h5>How to view Contributions: </h5>
-              <div style="width:65%;">
-                <select class="form-control dropdown" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
+              <div>
+                <select class="form-control" style="width: 400px;" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
                   {% if form.presentation_type == "Percents" %}
                   <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
                   <option class="bckcoloroption" value="Values">Contribution Value</option>
@@ -162,18 +165,26 @@ font-weight: 600;
                   {% endif %}
                 </select>
               </div>
-              <!-- <div><span class="explanations div-style-font" style="width: 10%">Explanations</span></div> -->
             </div>
+            <div style="margin-bottom: 40px;"></div>
             <table id="patientsTable" class="patientsTable table table-striped table-sm">
-              <thead>
+              <thead class="own_table">
+                <tr>
+                  <td colspan="4"></td>
+                  <div>
+                  <td class="explanations" colspan="{{ len(form.table_heads) - 4 }}">Explanations</td>
+                  </div>
+                </tr>
+                <tr>
                 {% for head in form.table_heads %}
-                <th style="text-align: center;">{{head}}</th>
+                  <th style="text-align: center;">{{head}}</th>
                 {% endfor %}
+                </tr>
               </thead>
               <tbody style="text-align: center;">
                 {% for row in form.table_rows %}
                 <tr>
-                  <td style="background-color: {{row[0][1]}};"><a style="color: #F0E68C;" href="{{url_for('demo.explanations_per_patient', case_id=row[0][0])}}">{{row[0][0]}}</a></td>
+                  <td><a style="color: #c04702;" href="{{url_for('demo.explanations_per_patient', case_id=row[0][0])}}">{{row[0][0]}}</a></td>
                   {% for cell in row[1:] %}
                   {% if cell[1] %}
                   <td style="background-color: {{cell[1]}};">{{cell[0]}}</td>
@@ -203,22 +214,3 @@ font-weight: 600;
 {% block scripts %}
 <script src="/static/js/jquery.dataTables.min.js"></script>
 {% endblock %}
-
-
-
-<!-- <class class="leftDiv"></class>
-            <div style="padding: 38px; margin-top: 35px;">
-              <h5>How to view Contributions: </h5>
-              <div style="width:100%;">
-                <select class="form-control dropdown" id="presentation_type" name="presentation_type" onchange="this.form.submit()">
-                  {% if form.presentation_type == "Percents" %}
-                  <option class="bckcoloroption" selected value="Percents">Percentage of Contributions Per Row</option>
-                  <option class="bckcoloroption" value="Values">Contribution Value</option>
-                  {% else %}
-                  <option class="bckcoloroption" value="Percents">Percentage of Contributions Per Row</option>
-                  <option class="bckcoloroption" selected value="Values">Contribution Value</option>
-                  {% endif %}
-                </select>
-              </div>
-            </div>
-          </div> -->

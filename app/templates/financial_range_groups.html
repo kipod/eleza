@@ -2,130 +2,140 @@
 {% block content %}
 <!-- Header -->
 
-<div id="header" class="ex-header"></div>
-<div class="container" style="margin-bottom: 5%; margin-left: 0%;">
-  <div class="ex-header-top-main" style="padding: 15px; text-align: left;
-    font-family: 'serif';
-    width: 1318px;
-    color: #FFF5EE;
-    font-style: normal;
-    font-size: 250%;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);" title='Financial – Assessing {{ form.subdomain.name }}'>
-    Financial – Assessing {{ form.subdomain.name }}
-  </div>
-  <h4>
-    Post-model Binning
-  </h4>
-  <!-- Flash Messages BEGIN -->
-  <div>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }} alert-dismisible">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        <span class="sr-only">Close</span>
-      </button>
-      {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-  </div>
-  <!-- Flash Messages END -->
-  <form class="form" role="form" action="{{ url_for("demo.financial_range_groups") }}" method="post">
-    {{ form.csrf_token }}
-  <table cellspacing="1" style="margin-bottom: 20%;
-    border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%;" height="520">
-    <tbody>
-      <tr>
-        <td>
-          <table>
-            <tr>
-              <td style="padding: 8px;">
-                <div>
-                  <div class="form-control">Select Feature to Bin:</div>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <div style="width:107%;">
-                    <select class="form-control" id="feature" name="feature">
-                      {% for feature in form.selected_features %}
-                      {% if feature == form.feature.data %}
-                      <option selected value="{{feature}}">{{feature}}</optinon>
-                      {% else %}
-                      <option value="{{feature}}">{{feature}}</option>
-                      {% endif %}
-                      {% endfor %}
-                    </select>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="3" style="padding: 8px; border-cell;">
-              <div id="description"> Create {{ feature }} Groups [Allowable {{feature}} Range: 21 – 81]: </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="3" style="padding: 8px; border-cell;">
-                <div> Enter Range </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div style="padding: 8px; border-cell;"> From: &ensp; {{ form.range_from(class="form-control") }}</div>
-                </div>
-              </td>
-              <td>
-                <div style="border-cell;"> To: &ensp; {{ form.range_to(class="form-control") }}</div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><div style="margin-top: 10px; margin-bottom: 10px;">{{ form.submit(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
-            </tr>
-            <tr>
-              <td>
+<style>
+.ex-header-top-main {
+  padding: 15px;
+  text-align: left;
+  font-family: 'serif';
+  width: 100%;
+  color: #FFF5EE;
+  font-style: normal;
+  font-size: 250%;
+  padding-top: 2.6rem;
+  padding-bottom: 1rem;
 
-              </td>
-              <td></td>
-            </tr>
-          </table>
-        </td>
-        <td style="width: 50%;">
-          <table id="group_table">
-            <thead>
-              <th scope="col" style="width: 50%;">
-                "Features" groups
-              </th>
-              <th scope="col" style="text-align: center;">
-                Ranges
-              </th>
-            </thead>
-            <tbody>
-              <tr></tr>
-              <tr></tr>
-              <tr></tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;">
-            <a class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_select_features') }}" style="font-size: 120%;">Go Back</a>
-          </div>
-        </td>
-        <td><div style="margin-top: 10px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
-      </tr>
-    </tbody>
-  </table>
-</form>
+  background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
+}
+
+.bold_text_default{
+  font-weight: 600;
+}
+
+</style>
+<div class="ex-header-top-main" title='Financial – Assessing {{ form.subdomain.name }}'>
+    Financial – Assessing {{ form.subdomain.name }}
 </div>
+<h4>
+  <b>Post-model Binning</b>
+</h4>
+<!-- Flash Messages BEGIN -->
+<div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }} alert-dismisible">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+</div>
+<!-- Flash Messages END -->
+<form class="form" role="form" action="{{ url_for("demo.financial_range_groups") }}" method="post">
+  {{ form.csrf_token }}
+<table cellspacing="1" style="margin-bottom: 20%;
+  border: 3px outset lightskyblue; background: #FFFAFA; width: 100%;" height="520">
+  <tbody>
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td style="padding: 8px;">
+              <div>
+                <h5>Select Feature to Bin:</h5>
+              </div>
+            </td>
+            <td>
+              <div>
+                <div style="width:100%;">
+                  <select class="form-control" id="feature" name="feature">
+                    {% for feature in form.selected_features %}
+                    {% if feature == form.feature.data %}
+                    <option selected value="{{feature}}">{{feature}}</optinon>
+                    {% else %}
+                    <option value="{{feature}}">{{feature}}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="padding: 8px; border-cell;">
+            <h5 id="description">Create {{ feature }} Groups [Allowable {{feature}} Range: 21 – 81]: </h5>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="padding: 8px; border-cell;">
+              <div><h5>Enter Range </h5></div>
+            </td>
+          </tr>
+          <tr>
+            <td><div style="padding: 8px; border-cell;"> From: &ensp; {{ form.range_from(class="form-control") }}</div>
+              </div>
+            </td>
+            <td>
+              <div style="border-cell;"> To: &ensp; {{ form.range_to(class="form-control") }}</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><div style="margin-top: 10px; margin-bottom: 10px;">{{ form.submit(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
+          </tr>
+          <tr>
+            <td>
+
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </td>
+      <td style="width: 50%;">
+        <table id="group_table">
+          <thead>
+            <th scope="col" style="width: 50%;">
+              <h5 class="bold_text_default">"Features" groups</h5>
+            </th>
+            <th scope="col" style="text-align: center;">
+              <h5 class="bold_text_default">Ranges</h5>
+            </th>
+          </thead>
+          <tbody>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div style="margin-top: 10px; margin-bottom: 10px; padding: 8px;">
+          <a class="btn-solid-lg page-scroll" href="{{ url_for('demo.financial_select_features') }}" style="font-size: 150%;">Go Back</a>
+        </div>
+      </td>
+      <td><div style="margin-top: 10px; margin-bottom: 10px;">{{ form.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 150%;") }}</div></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+
 {% endblock %}
 
 {% block scripts %}

@@ -1,3 +1,5 @@
+import json
+import operator
 from flask import render_template, Blueprint, request, session, redirect, url_for, flash
 from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType, CaseValue
@@ -56,6 +58,7 @@ def demo():
         if form.domain.data == Subdomain.Domain.financial.name:
             return redirect(url_for("demo.financial_select_features"))
     elif form.is_submitted():
+        session["active_domain"] = form.domain.data
         flash("Invalid data", "warning")
 
     return render_template("demo.html", form=form)
@@ -73,6 +76,8 @@ def select_features():
     )
     for k in pred_pow:
         pred_pow[k] = round(pred_pow[k], 2)
+    sorted_x = sorted(pred_pow.items(), key=operator.itemgetter(1), reverse=True)
+    pred_pow = dict(sorted_x)
     if form.validate_on_submit():
         selected_features = []
         for name in request.form:
@@ -84,7 +89,7 @@ def select_features():
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template(
-        "select_features.html", features=features, pred_pow=pred_pow, form=form,
+        "select_features.html", features=features, pred_pow=pred_pow, form=form
     )
 
 
@@ -97,6 +102,7 @@ def range_groups():
     form.feature.choices = [(v, v) for v in form.selected_features]
     form.ranges = {}
     ranges_for_feature = session.get("ranges_for_feature", {})
+    Feature_Name_Age = "Age"
     for feature_name in form.selected_features:
         feature = Feature.query.filter(Feature.name == feature_name).first()
         all_values = [
@@ -105,20 +111,153 @@ def range_groups():
             .filter(CaseValue.feature == feature)
             .all()
         ]
-        form.ranges[feature_name] = (round(min(all_values), 2), round(max(all_values), 2))
+        if feature_name == Feature_Name_Age:
+            form.ranges[feature_name] = (
+                int(min(all_values)),
+                int(max(all_values)),
+            )
+        else:
+            form.ranges[feature_name] = (
+                round(min(all_values), 3),
+                round(max(all_values), 3),
+            )
     if form.validate_on_submit():
         if form.next.data:
-            session["categories"] = {}
+            session["categories"] = "{}"
             return redirect(url_for("demo.categories"))
         try:
+            min_val_of_range_from = float(form.ranges[form.feature.data][0])
+            max_val_of_range_from = float(form.ranges[form.feature.data][1])
             if form.feature.data in ranges_for_feature:
-                ranges_for_feature[form.feature.data] += [
-                    (float(form.range_from.data), float(form.range_to.data))
-                ]
+                # if float(form.range_from.data) < min_value_of_range_from:
+                #     form.range_from.data = min_value_of_range_from
+                #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
+                if form.feature.data == "Age":
+                    if (
+                        (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        )
+                        or (float(form.range_from.data) < min_val_of_range_from)
+                        or (float(form.range_from.data) > max_val_of_range_from)
+                    ):
+                        if float(form.range_from.data) < min_val_of_range_from or (
+                            float(form.range_from.data) > max_val_of_range_from
+                        ):
+                            form.range_from.data = min_val_of_range_from
+                        if (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        ):
+                            form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] += [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] += [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+
+                elif (
+                    (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    )
+                    or (float(form.range_from.data) < min_val_of_range_from)
+                    or (float(form.range_from.data) > max_val_of_range_from)
+                ):
+                    if float(form.range_from.data) < min_val_of_range_from or (
+                        float(form.range_from.data) > max_val_of_range_from
+                    ):
+                        form.range_from.data = min_val_of_range_from
+                    if (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    ):
+                        form.range_to.data = max_val_of_range_from
+                    ranges_for_feature[form.feature.data] += [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
+                else:
+                    ranges_for_feature[form.feature.data] += [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
             else:
-                ranges_for_feature[form.feature.data] = [
-                    (float(form.range_from.data), float(form.range_to.data))
-                ]
+                if form.feature.data == "Age":
+                    if (
+                        (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        )
+                        or (float(form.range_from.data) < min_val_of_range_from)
+                        or (float(form.range_from.data) > max_val_of_range_from)
+                    ):
+                        if float(form.range_from.data) < min_val_of_range_from or (
+                            float(form.range_from.data) > max_val_of_range_from
+                        ):
+                            form.range_from.data = min_val_of_range_from
+                        if (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        ):
+                            form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] = [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] = [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+
+                elif (
+                    (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    )
+                    or (float(form.range_from.data) < min_val_of_range_from)
+                    or (float(form.range_from.data) > max_val_of_range_from)
+                ):
+                    if float(form.range_from.data) < min_val_of_range_from or (
+                        float(form.range_from.data) > max_val_of_range_from
+                    ):
+                        form.range_from.data = min_val_of_range_from
+                    if (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    ):
+                        form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] = [
+                            (float(form.range_from.data), float(form.range_to.data))
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] = [
+                            (float(form.range_from.data), float(form.range_to.data))
+                        ]
+                else:
+                    ranges_for_feature[form.feature.data] = [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
+
             session["ranges_for_feature"] = ranges_for_feature
         except ValueError:
             flash("Invalid data", "warning")
@@ -134,7 +273,7 @@ def range_groups():
 def categories():
     form = CategoriesForm(request.form)
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     # ranges_for_feature = session.get("ranges_for_feature", {})
     if form.validate_on_submit():
@@ -142,23 +281,27 @@ def categories():
             form.categories[form.category_name.data] = [
                 k for k in request.form if request.form[k] == "on"
             ]
-            session["categories"] = form.categories
+            session["categories"] = json.dumps(form.categories)
         if form.next.data:
             if not form.categories:
                 flash("Need define at least one category", "danger")
                 return render_template("categories.html", form=form)
-            session["categories"] = form.categories
+            session["categories"] = json.dumps(form.categories)
             # {}
             return redirect(url_for("demo.explanations_summary"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
+
+    # def reversed_function(argument):
+    #     return reversed(argument)
+
     return render_template("categories.html", form=form)
 
 
 @demo_blueprint.route("/explanations_summary", methods=["GET", "POST"])
 def explanations_summary():
     form = FlaskForm(request.form)
-    categories = session.get("categories", {})
+    categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     ranges_for_feature = session.get("ranges_for_feature", {})
     range_groups_ages = ranges_for_feature.get("Age", [])
@@ -172,7 +315,7 @@ def explanations_summary():
         "Patient ID",
         "Age",
         f"{form.subdomain.name} Predicted",
-        "Prediction or Confidence Score (Out of 100)",
+        "Prediction_or_Confidence Score (Out of 100)",
     ]
 
     form.table_heads += [f"{name} Contribution" for name in categories]
@@ -196,20 +339,20 @@ def explanations_summary():
         age = age_range_groups(range_groups_ages, age)
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         predicted = "No" if prediction_score < 50 else "Yes"
-        prediction_score_color = "red"
+        prediction_score_color = "green"
         if prediction_score > 45:
             prediction_score_color = "yellow"
             if prediction_score > 70:
-                prediction_score_color = "green"
+                prediction_score_color = "red"
 
-        patient_id_bgcolor = "MediumSlateBlue"
         row = [
-            (patient_id, patient_id_bgcolor),
+            (patient_id, None),
             (age, None),
             (predicted, None),
             (prediction_score, prediction_score_color),
         ]
         explainers = []
+        explainers_abs_values = []
         for cat_name in categories:
             sum_explainer = 0
             for feature_name in categories[cat_name]:
@@ -219,32 +362,32 @@ def explanations_summary():
                 ).first()
                 sum_explainer += case_val.explainer
             explainers += [sum_explainer]
+            explainers_abs_values += [abs(sum_explainer)]
         # if not selected percentage
         cells = None
 
         if form.presentation_type == "Percents":
-            hundred = sum(explainers)
+            hundred = sum(explainers_abs_values)
             values = list(
                 map(lambda val: int(round(val * 100 / hundred, 0)), explainers)
             )
             max_val = max(values)
-            colors = list(
-                map(lambda val: ("green" if val == max_val else None), values)
-            )
-            values = map(lambda val: f'{val}%', values)
+            colors = list(map(lambda val: ("red" if val == max_val else None), values))
+            values = map(lambda val: f"{val}%", values)
             cells = list(zip(values, colors))
         else:
-            values = list(map(lambda val: (round(val, 4)), explainers))
+            values = list(map(lambda val: (round(val, 3)), explainers))
             max_val = max(values)
-            colors = list(
-                map(lambda val: ("green" if val == max_val else None), values)
-            )
+            colors = list(map(lambda val: ("red" if val == max_val else None), values))
             cells = list(zip(values, colors))
         row += cells
         form.table_rows += [row]
 
     return render_template(
-        "explanations_summary.html", form=form, range_groups_ages=range_groups_ages,
+        "explanations_summary.html",
+        form=form,
+        range_groups_ages=range_groups_ages,
+        len=len,
     )
 
 
@@ -252,7 +395,7 @@ def explanations_summary():
 def explanations_per_patient(case_id):
     form = FlaskForm(request.form)
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     ranges_for_feature = session.get("ranges_for_feature", {})
     range_groups_ages = ranges_for_feature.get("Age", [])
@@ -282,7 +425,7 @@ def explanations_per_patient(case_id):
             ).first()
             sum_explainer[cat_name] += case_val.explainer
             sum_explainer_abs[cat_name] += abs(case_val.explainer)
-        form.table_heads += [[cat_name, ], "Feature Contribution"]
+        form.table_heads += [[cat_name,], "Feature Contribution"]
     form.table_rows = []
     num_of_rows = max([len(form.categories[k]) for k in form.categories])
     for cat_name in form.categories:
@@ -297,21 +440,26 @@ def explanations_per_patient(case_id):
             if form.presentation_type == "Proportional to the Total Confidence Score":
                 one_square_val = sum(sum_explainer_abs.values()) / 12
                 square_num = int(round(abs(case_val.explainer) / one_square_val, 0))
-                form.table_rows[row_index] += [[feature_name, gen_squares_code(square_num)]]
+                form.table_rows[row_index] += [
+                    [feature_name, gen_squares_code(square_num)]
+                ]
             else:
                 each_category_squares = 12 / len(form.categories)
                 value_of_square = int(round(100 / each_category_squares, 0))
                 sum_explainer_category = sum_explainer_abs[cat_name]
-                feature_explainer = int((case_val.explainer / sum_explainer_category) * 100)
+                feature_explainer = int(
+                    (case_val.explainer / sum_explainer_category) * 100
+                )
                 feature_squares = int(round((feature_explainer / value_of_square), 0))
-                form.table_rows[row_index] += [[feature_name, gen_squares_code(feature_squares)]]
+                form.table_rows[row_index] += [
+                    [feature_name, gen_squares_code(feature_squares)]
+                ]
             row_index += 1
         for i in range(row_index, num_of_rows):
             if len(form.table_rows) <= i:
                 form.table_rows += [[]]
             form.table_rows[i] += [["", ""]]
-
-    explainers = sum(sum_explainer.values())
+    explainers = sum((list(map(abs, sum_explainer.values()))))
     values = list(
         map(lambda val: int(round(val * 100 / explainers, 0)), sum_explainer.values())
     )
@@ -337,7 +485,9 @@ def explanations_per_patient(case_id):
         "explanations_per_patient.html",
         form=form,
         check_is_list=check_is_list,
+        enumerate=enumerate,
     )
+
 
 # Begin financial domain!
 
@@ -353,6 +503,8 @@ def financial_select_features():
     )
     for k in pred_pow:
         pred_pow[k] = round(pred_pow[k], 2)
+    sorted_x = sorted(pred_pow.items(), key=operator.itemgetter(1), reverse=True)
+    pred_pow = dict(sorted_x)
     if form.validate_on_submit():
         selected_features = []
         for name in request.form:
@@ -364,7 +516,10 @@ def financial_select_features():
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template(
-        "financial_select_features.html", features=features, pred_pow=pred_pow, form=form,
+        "financial_select_features.html",
+        features=features,
+        pred_pow=pred_pow,
+        form=form,
     )
 
 
@@ -377,6 +532,7 @@ def financial_range_groups():
     form.feature.choices = [(v, v) for v in form.selected_features]
     form.ranges = {}
     ranges_for_feature = session.get("ranges_for_feature", {})
+    Feature_Name_Age = "Age"
     for feature_name in form.selected_features:
         feature = Feature.query.filter(Feature.name == feature_name).first()
         all_values = [
@@ -385,20 +541,153 @@ def financial_range_groups():
             .filter(CaseValue.feature == feature)
             .all()
         ]
-        form.ranges[feature_name] = (round(min(all_values), 3), round(max(all_values), 3))
+        if feature_name == Feature_Name_Age:
+            form.ranges[feature_name] = (
+                int(min(all_values)),
+                int(max(all_values)),
+            )
+        else:
+            form.ranges[feature_name] = (
+                round(min(all_values), 3),
+                round(max(all_values), 3),
+            )
     if form.validate_on_submit():
         if form.next.data:
-            session["categories"] = {}
+            session["categories"] = "{}"
             return redirect(url_for("demo.financial_categories"))
         try:
+            min_val_of_range_from = float(form.ranges[form.feature.data][0])
+            max_val_of_range_from = float(form.ranges[form.feature.data][1])
             if form.feature.data in ranges_for_feature:
-                ranges_for_feature[form.feature.data] += [
-                    (float(form.range_from.data), float(form.range_to.data))
-                ]
+                # if float(form.range_from.data) < min_value_of_range_from:
+                #     form.range_from.data = min_value_of_range_from
+                #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
+                if form.feature.data == "Age":
+                    if (
+                        (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        )
+                        or (float(form.range_from.data) < min_val_of_range_from)
+                        or (float(form.range_from.data) > max_val_of_range_from)
+                    ):
+                        if float(form.range_from.data) < min_val_of_range_from or (
+                            float(form.range_from.data) > max_val_of_range_from
+                        ):
+                            form.range_from.data = min_val_of_range_from
+                        if (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        ):
+                            form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] += [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] += [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+
+                elif (
+                    (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    )
+                    or (float(form.range_from.data) < min_val_of_range_from)
+                    or (float(form.range_from.data) > max_val_of_range_from)
+                ):
+                    if float(form.range_from.data) < min_val_of_range_from or (
+                        float(form.range_from.data) > max_val_of_range_from
+                    ):
+                        form.range_from.data = min_val_of_range_from
+                    if (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    ):
+                        form.range_to.data = max_val_of_range_from
+                    ranges_for_feature[form.feature.data] += [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
+                else:
+                    ranges_for_feature[form.feature.data] += [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
             else:
-                ranges_for_feature[form.feature.data] = [
-                    (float(form.range_from.data), float(form.range_to.data))
-                ]
+                if form.feature.data == "Age":
+                    if (
+                        (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        )
+                        or (float(form.range_from.data) < min_val_of_range_from)
+                        or (float(form.range_from.data) > max_val_of_range_from)
+                    ):
+                        if float(form.range_from.data) < min_val_of_range_from or (
+                            float(form.range_from.data) > max_val_of_range_from
+                        ):
+                            form.range_from.data = min_val_of_range_from
+                        if (
+                            min_val_of_range_from > float(form.range_to.data)
+                            or float(form.range_to.data) > max_val_of_range_from
+                        ):
+                            form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] = [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] = [
+                            (
+                                (
+                                    int(float(form.range_from.data)),
+                                    int(float(form.range_to.data)),
+                                )
+                            )
+                        ]
+
+                elif (
+                    (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    )
+                    or (float(form.range_from.data) < min_val_of_range_from)
+                    or (float(form.range_from.data) > max_val_of_range_from)
+                ):
+                    if float(form.range_from.data) < min_val_of_range_from or (
+                        float(form.range_from.data) > max_val_of_range_from
+                    ):
+                        form.range_from.data = min_val_of_range_from
+                    if (
+                        min_val_of_range_from > float(form.range_to.data)
+                        or float(form.range_to.data) > max_val_of_range_from
+                    ):
+                        form.range_to.data = max_val_of_range_from
+                        ranges_for_feature[form.feature.data] = [
+                            (float(form.range_from.data), float(form.range_to.data))
+                        ]
+                    else:
+                        ranges_for_feature[form.feature.data] = [
+                            (float(form.range_from.data), float(form.range_to.data))
+                        ]
+                else:
+                    ranges_for_feature[form.feature.data] = [
+                        (float(form.range_from.data), float(form.range_to.data))
+                    ]
+
             session["ranges_for_feature"] = ranges_for_feature
         except ValueError:
             flash("Invalid data", "warning")
@@ -414,7 +703,7 @@ def financial_range_groups():
 def financial_categories():
     form = CategoriesForm(request.form)
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     # ranges_for_feature = session.get("ranges_for_feature", {})
     if form.validate_on_submit():
@@ -422,17 +711,18 @@ def financial_categories():
             form.categories[form.category_name.data] = [
                 k for k in request.form if request.form[k] == "on"
             ]
-            session["categories"] = form.categories
+            session["categories"] = json.dumps(form.categories)
         if form.next.data:
             if not form.categories:
                 flash("Need define at least one category", "danger")
                 return render_template("categories.html", form=form)
-            session["categories"] = form.categories
+            session["categories"] = json.dumps(form.categories)
             # {}
             return redirect(url_for("demo.financial_explan_summary"))
     elif form.is_submitted():
         flash("Invalid data", "warning")
     return render_template("financial_categories.html", form=form)
+
 
 # financial_explan_summary
 
@@ -440,7 +730,7 @@ def financial_categories():
 @demo_blueprint.route("/financial_explan_summary", methods=["GET", "POST"])
 def financial_explan_summary():
     form = FlaskForm(request.form)
-    categories = session.get("categories", {})
+    categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
     ranges_for_feature = session.get("ranges_for_feature", {})
     range_groups_ages = ranges_for_feature.get("Age", [])
@@ -454,7 +744,7 @@ def financial_explan_summary():
         "Client ID",
         "Age",
         "Risk of default",
-        "Prediction or Confidence Score (Out of 100)",
+        "Prediction_or_Confidence Score (Out of 100)",
     ]
 
     form.table_heads += [f"{name} Contribution" for name in categories]
@@ -478,20 +768,20 @@ def financial_explan_summary():
         age = age_range_groups(range_groups_ages, age)
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         predicted = "No" if prediction_score < 10 else "Yes"
-        prediction_score_color = "red"
+        prediction_score_color = "green"
         if prediction_score > 45:
             prediction_score_color = "yellow"
             if prediction_score > 70:
-                prediction_score_color = "green"
+                prediction_score_color = "red"
 
-        patient_id_bgcolor = "MediumSlateBlue"
         row = [
-            (patient_id, patient_id_bgcolor),
+            (patient_id, None),
             (age, None),
             (predicted, None),
             (prediction_score, prediction_score_color),
         ]
         explainers = []
+        explainers_abs_values = []
         for cat_name in categories:
             sum_explainer = 0
             for feature_name in categories[cat_name]:
@@ -501,32 +791,32 @@ def financial_explan_summary():
                 ).first()
                 sum_explainer += case_val.explainer
             explainers += [sum_explainer]
+            explainers_abs_values += [abs(sum_explainer)]
         # if not selected percentage
         cells = None
 
         if form.presentation_type == "Percents":
-            hundred = sum(explainers)
+            hundred = sum(explainers_abs_values)
             values = list(
                 map(lambda val: int(round(val * 100 / hundred, 0)), explainers)
             )
             max_val = max(values)
-            colors = list(
-                map(lambda val: ("green" if val == max_val else None), values)
-            )
-            values = map(lambda val: f'{val}%', values)
+            colors = list(map(lambda val: ("red" if val == max_val else None), values))
+            values = map(lambda val: f"{val}%", values)
             cells = list(zip(values, colors))
         else:
-            values = list(map(lambda val: (round(val*100, 2)), explainers))
+            values = list(map(lambda val: (round(val * 100, 2)), explainers))
             max_val = max(values)
-            colors = list(
-                map(lambda val: ("green" if val == max_val else None), values)
-            )
+            colors = list(map(lambda val: ("red" if val == max_val else None), values))
             cells = list(zip(values, colors))
         row += cells
         form.table_rows += [row]
 
     return render_template(
-        "financial_explan_summary.html", form=form, range_groups_ages=range_groups_ages,
+        "financial_explan_summary.html",
+        form=form,
+        range_groups_ages=range_groups_ages,
+        len=len,
     )
 
 
@@ -535,9 +825,8 @@ def financial_explan_per_client(case_id):
     form = FinancialSelectFeatures(request.form)
     form.case_id = case_id
     form.selected_features = session.get("selected_features", [])
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
-    # ranges_for_feature = session.get("ranges_for_feature", {})
     all_case_values_query = CaseValue.query.filter(
         CaseValue.user_data_id == session["user_data_id"]
     )
@@ -555,17 +844,38 @@ def financial_explan_per_client(case_id):
                 CaseValue.feature_id == feature.id
             ).first()
             feature_values.append(feature_name)
-            feature_values.append(str(case_val.value))
+            feature_values.append(str(round(case_val.value, 3)))
             feature_values.append(round(case_val.explainer * 100, 3))
-            sum_explainers += (case_val.explainer * 100)
+            sum_explainers += case_val.explainer * 100
             if len(feature_name) >= 2:
                 form.table_rows += [feature_values]
                 feature_values = []
     form.table_rows += [["Total", "", round(sum_explainers, 3)]]
+    total_score_name_client = round(sum_explainers, 3)
+
+    prediction_score_list = []
+    max_patient_id = max([v.case_id for v in all_case_values_query.all()])
+    for patient_id in range(max_patient_id + 1):
+        all_case_values_query_for_patient = all_case_values_query.filter(
+            CaseValue.case_id == patient_id
+        )
+        if not all_case_values_query_for_patient.all():
+            continue
+        age_feature = Feature.query.filter(Feature.name == "Age").first()
+        age_case_val = all_case_values_query_for_patient.filter(
+            CaseValue.feature_id == age_feature.id
+        ).first()
+        prediction_score = int(round(age_case_val.prediction, 2) * 100)
+        prediction_score_list += [prediction_score]
+    sum_prediction_score = sum(prediction_score_list)
+    average_default_score = round(sum_prediction_score / (max_patient_id + 1),2)
+
 
     return render_template(
         "financial_explan_per_client.html",
-        form=form
+        form=form,
+        total_score_name_client=total_score_name_client,
+        average_default_score=average_default_score
     )
 
 
@@ -573,9 +883,8 @@ def financial_explan_per_client(case_id):
 def financial_explan_2_per_client(case_id):
     form = FlaskForm(request.form)
     form.case_id = case_id
-    form.categories = session.get("categories", {})
+    form.categories = json.loads(session.get("categories", "{}"))
     form.subdomain = Subdomain.query.get(session.get("subdomain", None))
-    # ranges_for_feature = session.get("ranges_for_feature", {})
     all_case_values_query = CaseValue.query.filter(
         CaseValue.user_data_id == session["user_data_id"]
     )
@@ -595,13 +904,41 @@ def financial_explan_2_per_client(case_id):
             case_val = all_case_values_query_for_patient.filter(
                 CaseValue.feature_id == feature.id
             ).first()
-            form.table_rows += [["", feature_name, round(case_val.value, 3), round(case_val.explainer, 3)]]
-            sum_contribution += case_val.explainer
+            form.table_rows += [
+                [
+                    "",
+                    feature_name,
+                    round(case_val.value, 3),
+                    round(case_val.explainer * 100, 3),
+                ]
+            ]
+            sum_contribution += case_val.explainer * 100
         sub_head[3] = round(sum_contribution, 3)
         total_contrib += sum_contribution
     form.table_rows += [["Total", "", "", round(total_contrib, 3)]]
+    total_score_name_client = round(total_contrib, 3)
+
+    prediction_score_list = []
+    max_patient_id = max([v.case_id for v in all_case_values_query.all()])
+    for patient_id in range(max_patient_id + 1):
+        all_case_values_query_for_patient = all_case_values_query.filter(
+            CaseValue.case_id == patient_id
+        )
+        if not all_case_values_query_for_patient.all():
+            continue
+        age_feature = Feature.query.filter(Feature.name == "Age").first()
+        age_case_val = all_case_values_query_for_patient.filter(
+            CaseValue.feature_id == age_feature.id
+        ).first()
+        prediction_score = int(round(age_case_val.prediction, 2) * 100)
+        prediction_score_list += [prediction_score]
+    sum_prediction_score = sum(prediction_score_list)
+    average_default_score = round(sum_prediction_score / (max_patient_id + 1),2)
 
     return render_template(
         "financial_explan_2_per_client.html",
-        form=form
+        form=form,
+        total_score_name_client=total_score_name_client,
+        average_default_score=average_default_score
     )
+

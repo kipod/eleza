@@ -17,3 +17,4 @@ email_validator
 flask-migrate
 # pymysql
 mysqlclient
+flask-admin

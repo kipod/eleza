@@ -5,9 +5,138 @@
 {% endblock %}
 
 {% block content %}
+<style>
+.table {
+  margin-bottom: 5%;
+  border: 3px ridge lightskyblue;
+  background: #FFFAFA;
+  width: 100%;
+}
+
+/* .sidesWrapper {
+    display: flex;
+    justify-content: space-around;
+} */
+
+.routeButton {
+  padding: 5px 20px;
+  background-color: aqua;
+  color: white;
+  cursor: pointer;
+}
+
+.prediction {
+  margin-right: 50px;
+}
+
+.explanationsButton {
+  background-color: yellow;
+  color: grey;
+  padding: 5px 40px;
+  margin-left: 100px;
+}
+
+.patientsTable {
+  border: 3px ridge lightskyblue;
+  background: #FFFAFA;;
+  margin-top: 18px;
+  max-width: 90vw;
+  width: 85vh;
+}
+
+.patientsTable>thead {
+    background-color: rgb(243, 243, 232);
+    border: 2px ridge rgb(0, 0, 0);
+}
+
+.bckcoloroption {
+  background-color: #FFF5EE;
+}
+
+.ex-header-top-main {
+  padding: 15px;
+  text-align: left;
+  font-family: 'serif';
+  width: 100%;
+  color: #FFF5EE;
+  font-style: normal;
+  font-size: 250%;
+  padding-top: 2.4rem;
+  padding-bottom: 1rem;
+  /* margin-top: 150px; */
+  background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF);
+}
+
+.centerDiv {
+  display: block;
+  max-width: 70vh;
+  width: 60vh;
+  margin-top: 38px;
+  margin-left: 50px;
+}
+
+/* .table .leftDiv .centerDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+} */
+
+.leftDiv  {
+  max-width: 70vh;
+  width: 65vh;
+  margin-top: 7px;
+}
+
+.rightDiv {
+  max-width: 100vh;
+  width: 95vh;
+  text-align: left;
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 60px;
+  margin-left: 40px;
+}
+
+.rightDivExp2 {
+  text-align: left;
+  padding: 10px;
+  margin-top: 10px;
+  width: 90vh;
+}
+
+.frame{
+  float:left;
+  width: 50%;
+}
+
+.div-style-font{
+  font-size: 110%;
+  font-family: 'arial';
+  font-weight: 600;
+}
+
+.squareBtn{
+  height: 20px;
+  width: 20px;
+  background-color: #00BFFF;
+}
+
+.sidesWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.td_patient-value {
+  font-size: 110%;
+  width: 30%;
+  text-align: center;
+}
+
+</style>
 <!-- Header -->
-<div class="ex-header-top-main bck" title='Healthcare – {{ form.subdomain.name }} Diagnosis'>
-  Healthcare – {{ form.subdomain.name }} Diagnosis
+<div class="ex-header-top-main bck" title='Healthcare - {{ form.subdomain.name }} Diagnosis'>
+  Healthcare - {{ form.subdomain.name }} Diagnosis
 </div>
 <!-- Flash Messages BEGIN -->
 <div>
@@ -34,22 +163,20 @@
       <section class="table">
         <div class="sidesWrapper">
           <div class="leftDiv">
-            <div style="padding: 20px; margin-top: 10px;">
-              <h5> How to view Contributions of Features </h5>
-              <div style="width:70%; margin-bottom: 170px; width: 100%;">
+            <div style="padding: 18px 0px 20px 20px; margin-top: 10px;">
+              <h5><b>View Explanations (Per Patient)</b></h5>
+              <div style="width: 330px;"><h5 style="font-size: 115%;"> How to view Contributions of Features </h5></div>
+              <div style="height: 15px;"> </div>
+              <div><h5 style="font-size: 115%;"> Proportional to the</h5></div>
+              <div style="margin-bottom: 170px; width: 71%; background: url(http://wpandyou.ru/wp-content/uploads/2013/01/down_arrow_select.jpg) no-repeat right #DDD;">
                 <select class="form-control" id="presentation_type" name="presentation_type"
-                  style="background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF); width: 135%;" onchange="this.form.submit()">
-                  {% if form.presentation_type == "Proportional to the Total Confidence Score" %}
-                  <option class="bckcoloroption" selected value="Proportional to the Category Score">Proportional to the
-                    Category Score</option>
-                  <option class="bckcoloroption" value="Proportional to the Total Confidence Score">Proportional to the
-                    Total Confidence Score</option>
+                  style="width: 135%;" onchange="this.form.submit()">
+                  {% if form.presentation_type == "Proportional to the Category Score" %}
+                  <option class="bckcoloroption" selected value="Proportional to the Category Score">Category Score</option>
+                  <option class="bckcoloroption" value="Proportional to the Total Confidence Score">Total Confidence Score</option>
                   {% else %}
-                  <option class="bckcoloroption" value="Proportional to the Category Score">Proportional to the
-                    Category Score
-                  </option>
-                  <option class="bckcoloroption" selected value="Proportional to the Total Confidence Score">Proportional to the Total Confidence Score
-                  </option>
+                  <option class="bckcoloroption" value="Proportional to the Category Score">Category Score</option>
+                  <option class="bckcoloroption" selected value="Proportional to the Total Confidence Score">Total Confidence Score</option>
                   {% endif %}
                 </select>
               </div>
@@ -57,28 +184,22 @@
           </div>
           <div class="centerDiv div-style-font">
             <div>
-              <div style="max-width: 100%;">
-                <div class="form-control" style="width: 65%; font-weight: 600;">Patient ID: &emsp;&emsp; {{form.case_id}}
-                </div>
-                <!-- <div style="width: 70%; text-align: center; padding: 5px;"></div> -->
-              </div>
-              <div style="max-width: 100%; margin-top: 15px;">
-                <div class="form-control" style="width: 65%; height: 10%; font-weight: 600; text-align: left;">Age:
-                  &emsp;&emsp; {{form.age}}</div>
-                <!-- <div style="width: 70%; text-align: center; padding:  5px;">20 - 30</div> -->
-              </div>
-              <div class="form-control" style="margin-top: 15px; font-weight: 600; width: 90%;">Diabetes Predicted:
-                &ensp;&emsp; {{form.predicted}}</div>
-            </div>
-            <div class="form-control" style="margin-top: 30px; width: 90%; height: 25%; font-weight: 600;">
-              Prediction or Confidence Score (Out of 100):
-              <font style="color:brown; font-size: 150%;"> &emsp;&emsp; {{form.prediction_score}}</font>
+              <table style="text-align: left; width: 100%;">
+                <tr> <td>Patient ID:</td> <td class="td_patient-value">{{form.case_id}}</td> </tr>
+                <tr> <td>Age:</td> <td class="td_patient-value">{{form.age}}</td> </tr>
+                <tr> <td>Diabetes Predicted:</td> <td class="td_patient-value">{{form.predicted}}</td> </tr>
+                <tr> <td>Prediction or Confidence Score &nbsp;&nbsp; (Out of 100):</td>
+                <td style="text-align: center;">
+                  <font style="color:brown; font-size: 130%;"> {{form.prediction_score}}</font>
+                </td>
+                </tr>
+              </table>
             </div>
           </div>
           <div class="rightDiv">
             <table class="patientsTable">
               <thead style="text-align: center;">
-                {% for table_head in form.table_heads %}
+                {% for table_head in (form.table_heads) %}
                 <th>
                   {% if check_is_list(table_head) %}
                   {{table_head[0]}} <div style="color:brown;">({{table_head[1]}}%)</div>
@@ -88,12 +209,16 @@
                 </th>
                 {% endfor %}
               </thead>
-              <tbody style="background-color: rgb(207, 141, 93); color: floralwhite; text-align: center;">
+              <tbody style="color: floralwhite; text-align: center; color: black;">
                 {% for table_row in form.table_rows %}
                 <tr>
-                  {% for index in table_row %}
+                  {% for i,index in enumerate(table_row) %}
                   {% for value in index %}
-                  <td>
+                  {% if i%2 == 0 %}
+                  <td style="background-color: #FEF1C9;">
+                  {% else %}
+                  <td style="background-color: #DAF2FD;">
+                  {% endif %}
                     {% if "{}".format(value).isnumeric() %}
                     {% for _ in range(value)%}
                     <button class="squareBtn"></button>
@@ -113,7 +238,7 @@
         <div style="display: flex; justify-content: space-between;"></div>
         <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; padding: 12px;"><a
             class="btn-solid-lg page-scroll" href="{{ url_for('demo.explanations_summary') }}"
-            style='font-size: 120%;'>Go
+            style='font-size: 150%;'>Go
             Back</a>
         </div>
     </div>
@@ -122,6 +247,8 @@
   </main>
   {{ form.all_case_values_query_for_patient }}
 </form>
+
+<!-- background: -webkit-linear-gradient(top, #a5e7e7, #00BFFF); -->
 
 {% endblock %}
 

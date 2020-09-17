@@ -10,6 +10,7 @@ class Subdomain(db.Model, ModelMixin):
     __tablename__ = "subdomain"
 
     class Domain(enum.Enum):
+        general = "General"
         healthcare = "Healthcare"
         financial = "Financial"
         education = "Education"
