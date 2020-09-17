@@ -36,6 +36,7 @@
   </div>
   <!-- Flash Messages END -->
   <form class="form" role="form" action="{{ url_for("demo.financial_range_groups") }}" method="post">
+    {{ form.csrf_token }}
   <table cellspacing="1" style="margin-bottom: 20%;
     border: 3px outset lightskyblue; background: #FFFAFA; width: 118.8%;" height="520">
     <tbody>

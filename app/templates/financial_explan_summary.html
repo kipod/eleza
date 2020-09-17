@@ -30,6 +30,7 @@
 </div>
   <!-- Flash Messages END -->
 <form class="form" role="form" action="{{ url_for('demo.financial_explan_summary') }}" method="post">
+  {{ form.csrf_token }}
   <main>
     <div style="width: 100%;">
       <section class="table">

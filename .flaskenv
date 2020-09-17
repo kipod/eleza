@@ -5,5 +5,5 @@
 # For those cases, use the .env file.
 
 FLASK_APP=wsgi:app
-FLASK_ENV=development
+FLASK_ENV=production
 FLASK_DEBUG=1

@@ -7,8 +7,8 @@ class Feature(db.Model, ModelMixin):
     __tablename__ = "feature"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), unique=True, nullable=False)
-    short_name = db.Column(db.String(16), unique=True, nullable=False)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    short_name = db.Column(db.String(64), unique=True, nullable=False)
 
     def __repr__(self):
         return '<Feature %r>' % self.name

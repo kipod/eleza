@@ -28,6 +28,7 @@
 <!-- Flash Messages END -->
 <form class="form" role="form" action="{{ url_for('demo.explanations_per_patient', case_id=form.case_id) }}"
   method="post">
+  {{ form.csrf_token }}
   <main>
     <div style="width: 100%;">
       <section class="table">

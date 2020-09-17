@@ -137,6 +137,7 @@ font-weight: 600;
 </div>
   <!-- Flash Messages END -->
 <form class="form" role="form" action="{{ url_for('demo.explanations_summary') }}" method="post">
+  {{ form.csrf_token }}
   <main class="table">
     <div style="width: 100%;">
       <section >
