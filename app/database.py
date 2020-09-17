@@ -11,6 +11,10 @@ BASE_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "init_data"
 )
 
+ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'admin')
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'simple2b.info@gmail.com')
+
 
 def db_fill_data(import_values=True):
     from app.models import Subdomain, ModelType, Feature, User
@@ -75,6 +79,6 @@ def db_fill_data(import_values=True):
     ).save()
     Feature(name="Number of Dependents", short_name="NumberOfDependents").save()
 
-    user = User(username="admin", email="simple2b.info@gmail.com")
+    user = User(username=ADMIN_USERNAME, email=ADMIN_EMAIL)
     user.password = "ZAQ!xsw2"
     user.save()
