@@ -80,5 +80,5 @@ def db_fill_data(import_values=True):
     Feature(name="Number of Dependents", short_name="NumberOfDependents").save()
 
     user = User(username=ADMIN_USERNAME, email=ADMIN_EMAIL)
-    user.password = "ZAQ!xsw2"
+    user.password = ADMIN_PASSWORD
     user.save()
