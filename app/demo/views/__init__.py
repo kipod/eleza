@@ -1,37 +1,40 @@
 import json
 import operator
-from flask import render_template, Blueprint, request, session, redirect, url_for, flash
+from flask import render_template, request, session, redirect, url_for, flash
 from flask_login import login_required
 from app.models import Feature, Subdomain, ModelType, CaseValue
-from app.contoller import predictive_power, import_data_from_file_stream
+from app.contoller import predictive_power
 from flask_wtf import FlaskForm
-from .forms import (
+from app.demo.forms import (
     SubdomainChoiceForm,
     SelectFeaturesForm,
     RangeGroupsForm,
     CategoriesForm,
     FinancialSelectFeatures,
+    InitialForm
 )
-from .controller import (
+from app.demo.controller import (
     prediction_score,
     predicted,
     age_range_groups,
     gen_squares_code,
 )
 
+from .util import redirect_select_features
 
-demo_blueprint = Blueprint("demo", __name__)
+from .initial import demo_blueprint
 
 
 @demo_blueprint.route("/", methods=["GET", "POST"])
 @login_required
 def demo():
     form = SubdomainChoiceForm(request.form)
+    form_initial = InitialForm(request.form)
     form.subdomains = Subdomain.query.all()
     form.models = ModelType.query.all()
     form.subdomain_id.choices = [(s.id, s.name) for s in form.subdomains]
     form.model_type.choices = [(m.name, m.name) for m in form.models]
-    form.active_domain = session.get("active_domain", "general")
+    form.active_domain = session.get("active_domain", "initial")
 
     if form.validate_on_submit():
         session["subdomain"] = form.subdomain_id.data
@@ -45,23 +48,20 @@ def demo():
         if not explainer_file:
             flash("Need select explainer file", "warning")
             return render_template("demo.html", form=form)
-        user_data, read_features = import_data_from_file_stream(
+
+        redirect_select_features(
             file_value=bkg_file,
             file_explainer=explainer_file,
+            domain=form.domain.data,
             subdomain_id=form.subdomain_id.data,
-            model_type=form.model_type.data,
+            model_type=form.model_type.data
         )
-        session["features_in_file"] = [f.id for f in read_features]
-        session["user_data_id"] = user_data.id
-        if form.domain.data == Subdomain.Domain.healthcare.name:
-            return redirect(url_for("demo.select_features"))
-        if form.domain.data == Subdomain.Domain.financial.name:
-            return redirect(url_for("demo.financial_select_features"))
+
     elif form.is_submitted():
         session["active_domain"] = form.domain.data
         flash("Invalid data", "warning")
 
-    return render_template("demo.html", form=form)
+    return render_template("demo.html", form=form, form_initial=form_initial)
 
 
 # Begin healthcare domain!
@@ -941,4 +941,3 @@ def financial_explan_2_per_client(case_id):
         total_score_name_client=total_score_name_client,
         average_default_score=average_default_score
     )
-
