@@ -7,7 +7,7 @@ from app.contoller import generate_bkg_exp
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_PKL_FILE = os.path.join(BASE_DIR, "credit_app_explainers.pkl")
-TEST_DATA_FILE = os.path.join(BASE_DIR, "credit_app_explainers.data")
+TEST_DATA_FILE = os.path.join(BASE_DIR, "cs-test_curated.csv")
 
 app = create_app(environment="testing")
 
@@ -28,9 +28,10 @@ def client():
 
 def test_init_data(client):
 
-    bkg_file, explainer_file = generate_bkg_exp(
+    bkg_file, explainer_file, plot_file = generate_bkg_exp(
         path_to_pkl=TEST_PKL_FILE,
         path_to_data=TEST_DATA_FILE
         )
     assert bkg_file
     assert explainer_file
+    assert plot_file

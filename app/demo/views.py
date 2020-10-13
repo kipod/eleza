@@ -129,9 +129,6 @@ def range_groups():
             min_val_of_range_from = float(form.ranges[form.feature.data][0])
             max_val_of_range_from = float(form.ranges[form.feature.data][1])
             if form.feature.data in ranges_for_feature:
-                # if float(form.range_from.data) < min_value_of_range_from:
-                #     form.range_from.data = min_value_of_range_from
-                #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
                 if form.feature.data == "Age":
                     if (
                         (
@@ -425,7 +422,7 @@ def explanations_per_patient(case_id):
             ).first()
             sum_explainer[cat_name] += case_val.explainer
             sum_explainer_abs[cat_name] += abs(case_val.explainer)
-        form.table_heads += [[cat_name,], "Feature Contribution"]
+        form.table_heads += [[cat_name, ], "Feature Contribution"]
     form.table_rows = []
     num_of_rows = max([len(form.categories[k]) for k in form.categories])
     for cat_name in form.categories:
@@ -559,9 +556,6 @@ def financial_range_groups():
             min_val_of_range_from = float(form.ranges[form.feature.data][0])
             max_val_of_range_from = float(form.ranges[form.feature.data][1])
             if form.feature.data in ranges_for_feature:
-                # if float(form.range_from.data) < min_value_of_range_from:
-                #     form.range_from.data = min_value_of_range_from
-                #     ranges_for_feature[form.feature.data] += [(float(form.range_from.data), float(form.range_to.data))]
                 if form.feature.data == "Age":
                     if (
                         (
@@ -868,8 +862,7 @@ def financial_explan_per_client(case_id):
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         prediction_score_list += [prediction_score]
     sum_prediction_score = sum(prediction_score_list)
-    average_default_score = round(sum_prediction_score / (max_patient_id + 1),2)
-
+    average_default_score = round(sum_prediction_score / (max_patient_id + 1), 2)
 
     return render_template(
         "financial_explan_per_client.html",
@@ -933,7 +926,7 @@ def financial_explan_2_per_client(case_id):
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         prediction_score_list += [prediction_score]
     sum_prediction_score = sum(prediction_score_list)
-    average_default_score = round(sum_prediction_score / (max_patient_id + 1),2)
+    average_default_score = round(sum_prediction_score / (max_patient_id + 1), 2)
 
     return render_template(
         "financial_explan_2_per_client.html",
@@ -941,4 +934,3 @@ def financial_explan_2_per_client(case_id):
         total_score_name_client=total_score_name_client,
         average_default_score=average_default_score
     )
-
