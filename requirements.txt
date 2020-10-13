@@ -16,3 +16,11 @@ black
 email_validator
 flask-migrate
 flask-admin
+
+pandas
+numpy
+# sklearn
+shap
+xgboost==0.90
+matplotlib
+ipython
