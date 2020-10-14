@@ -1,0 +1,13 @@
+from .initial import demo_blueprint  # noqa 401
+from .select_features import demo_blueprint  # noqa 401
+from .range_groups import demo_blueprint  # noqa 401
+from .categories import demo_blueprint  # noqa 401
+from .explanations_summary import demo_blueprint  # noqa 401
+from .explanations_per_patient import demo_blueprint  # noqa 401
+from .financial_select_features import demo_blueprint  # noqa 401
+from .financial_range_groups import demo_blueprint  # noqa 401
+from .financial_categories import demo_blueprint  # noqa 401
+from .financial_explan_summary import demo_blueprint  # noqa 401
+from .financial_explan_per_client import demo_blueprint  # noqa 401
+from .financial_explan_2_per_client import demo_blueprint  # noqa 401
+from .demo import demo_blueprint  # noqa 401

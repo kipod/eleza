@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, redirect, flash, request
+from flask import Blueprint, render_template, url_for, redirect, flash, request, session
 from flask_login import login_user, logout_user, login_required
 
 from .models import User
@@ -28,7 +28,7 @@ def login():
         user = User.authenticate(form.user_id.data, form.password.data)
         if user is not None:
             login_user(user)
-            flash('Login successful.', 'success')
+            # flash('Login successful.', 'success')
             return redirect(url_for('demo.demo'))
         flash('Wrong user ID or password.', 'danger')
     return render_template('auth/login.html', form=form)
@@ -37,6 +37,5 @@ def login():
 @auth_blueprint.route('/logout')
 @login_required
 def logout():
-    logout_user()
-    flash('You were logged out.', 'info')
+    session.clear()
     return redirect(url_for('main.index'))

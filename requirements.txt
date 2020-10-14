@@ -18,3 +18,11 @@ flask-migrate
 # pymysql
 mysqlclient
 flask-admin
+
+pandas
+numpy
+# sklearn
+shap
+xgboost==0.90
+matplotlib
+ipython

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, HiddenField, StringField
+from wtforms import SelectField, SubmitField, HiddenField
 from app.models import Subdomain, ModelType
 from flask_wtf.file import FileField, FileAllowed
 
@@ -30,26 +30,4 @@ class SubdomainChoiceForm(FlaskForm):
     )
 
     model_type = SelectField("Select Model Type:")
-    next = SubmitField("Next")
-
-
-class SelectFeaturesForm(FlaskForm):
-    next = SubmitField("Next")
-
-
-class RangeGroupsForm(FlaskForm):
-    feature = SelectField("Select Feature to Bin:")
-    range_from = StringField("From:")
-    range_to = StringField("To:")
-    submit = SubmitField("Submit")
-    next = SubmitField("Next")
-
-
-class CategoriesForm(FlaskForm):
-    category_name = StringField("Enter category name:")
-    submit = SubmitField("Submit")
-    next = SubmitField("Next")
-
-
-class FinancialSelectFeatures(FlaskForm):
     next = SubmitField("Next")

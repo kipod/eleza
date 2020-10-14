@@ -18,10 +18,17 @@
         <!-- Nav tabs -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
-            {% if form.active_domain == "general" %}
-            <a class="nav-link active" id="pills-gen-tab" data-toggle="pill" href="#pills-gen" role="tab" aria-controls="pills-gen" aria-selected="true">General</a>
+            {% if form.active_domain == "initial" %}
+            <a class="nav-link active" id="pills-init-tab" data-toggle="pill" href="#pills-init" role="tab" aria-controls="pills-init" aria-selected="true">Initial</a>
             {% else %}
-            <a class="nav-link" id="pills-gen-tab" data-toggle="pill" href="#pills-gen" role="tab" aria-controls="pills-gen" aria-selected="true">General</a>
+            <a class="nav-link" id="pills-init-tab" data-toggle="pill" href="#pills-init" role="tab" aria-controls="pills-init" aria-selected="true">Initial</a>
+            {% endif %}
+          </li>
+          <li class="nav-item">
+            {% if form.active_domain == "general" %}
+            <a class="nav-link active" id="pills-gen-tab" data-toggle="pill" href="#pills-gen" role="tab" aria-controls="pills-gen" aria-selected="false">General</a>
+            {% else %}
+            <a class="nav-link" id="pills-gen-tab" data-toggle="pill" href="#pills-gen" role="tab" aria-controls="pills-gen" aria-selected="false">General</a>
             {% endif %}
           </li>
           <li class="nav-item">
@@ -50,11 +57,9 @@
         </ul>
         <!-- Tab panes begin -->
         <div class="tab-content" id="pills-tabContent">
-          {% if form.active_domain == "general" %}
-          <div class="tab-pane fade show active" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
-          {% else %}
-          <div class="tab-pane fade" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
-          {% endif %}
+
+          {% if form.active_domain == "initial" %}
+          <div class="tab-pane fade show active" id="pills-init" role="tabpanel" aria-labelledby="pills-init-tab">
           <!-- Flash Messages BEGIN -->
           <div>
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -72,13 +77,90 @@
             {% endwith %}
           </div>
           <!-- Flash Messages END -->
+          {% else %}
+          <div class="tab-pane fade" id="pills-init" role="tabpanel" aria-labelledby="pills-init-tab">
+          {% endif %}
+
+            <h3 style="margin-top: 10px;">
+              <!-- Some general information -->
+              Please enter required information:
+            </h3>
+            <form class="form" role="form" action="{{ url_for("demo.initial") }}" method="post" enctype="multipart/form-data">
+              {{ form.csrf_token }}
+              <input id="domain" name="domain" type="hidden" value="initial">
+              <table class="table table-hover table-borderless" style="margin-top: 20px;">
+                {% if form_initial.generated %}
+                <tr>
+                  <td>
+                    <img src="{{url_for("demo.generated_plot")}}" alt="plotter">
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                      {{ form_initial.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }}
+                  </td>
+                </tr>
+                {% else %}
+                <tr>
+                  <td>
+                    <h5 class="bold_text_default">Upload Model file: </h5>
+                  </td>
+                  <td>
+                    {{ form_initial.model_file(class="form-control", style='font-size: 105%;') }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h5 class="bold_text_default">Upload Testing Dataset file: </h5>
+                  </td>
+                  <td>
+                    {{ form_initial.dataset_file(class="form-control", style='font-size: 105%;') }}
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    {{ form_initial.generate(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }}
+                  </td>
+                </tr>
+                {% endif %}
+              </table>
+            </form>
+          </div>
+          {% if form.active_domain == "general" %}
+          <div class="tab-pane fade show active" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
+          <!-- Flash Messages BEGIN -->
+          <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismisible">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+          </div>
+          <!-- Flash Messages END -->
+          {% else %}
+          <div class="tab-pane fade" id="pills-gen" role="tabpanel" aria-labelledby="pills-gen-tab">
+          {% endif %}
+
             <h3 style="margin-top: 10px;">
               <!-- Some general information -->
               Eleza Demo
             </h3>
             <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post" enctype="multipart/form-data">
               {{ form.csrf_token }}
-              <input id="domain" name="domain" type="hidden" value="healthcare">
+              <input id="domain" name="domain" type="hidden" value="general">
               <table class="table table-hover table-borderless" style="margin-top: 20px;">
                 <tr>
                   <td>
@@ -133,26 +215,26 @@
           </div>
           {% if form.active_domain == "healthcare" %}
           <div class="tab-pane fade show active" id="pills-health" role="tabpanel" aria-labelledby="pills-health-tab">
+          <!-- Flash Messages BEGIN -->
+          <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismisible">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+          </div>
+          <!-- Flash Messages END -->
           {% else %}
           <div class="tab-pane fade" id="pills-health" role="tabpanel" aria-labelledby="pills-health-tab">
           {% endif %}
-            <!-- Flash Messages BEGIN -->
-            <div>
-              {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-              {% for category, message in messages %}
-              <div class="alert alert-{{ category }} alert-dismisible">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                  <span class="sr-only">Close</span>
-                </button>
-                {{ message }}
-              </div>
-              {% endfor %}
-              {% endif %}
-              {% endwith %}
-            </div>
-            <!-- Flash Messages END -->
 
             <h3 style="margin-top: 10px;">
               Please enter required information:
@@ -214,9 +296,6 @@
           </div>
           {% if form.active_domain == "financial" %}
           <div class="tab-pane fade show active" id="pills-fin" role="tabpanel" aria-labelledby="pills-fin-tab">
-          {% else %}
-          <div class="tab-pane fade" id="pills-fin" role="tabpanel" aria-labelledby="pills-fin-tab">
-          {% endif %}
           <!-- Flash Messages BEGIN -->
           <div>
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -234,6 +313,10 @@
             {% endwith %}
           </div>
           <!-- Flash Messages END -->
+          {% else %}
+          <div class="tab-pane fade" id="pills-fin" role="tabpanel" aria-labelledby="pills-fin-tab">
+          {% endif %}
+
           <form class="form" role="form" action="{{ url_for("demo.demo") }}" method="post" enctype="multipart/form-data">
             {{ form.csrf_token }}
             <input id="domain" name="domain" type="hidden" value="financial">
