@@ -7,6 +7,8 @@ from app.contoller import generate_bkg_exp
 
 from .blueprint import demo_blueprint
 
+from app.models import Subdomain
+
 
 @demo_blueprint.route("/initial", methods=["POST"])
 @login_required
@@ -43,15 +45,12 @@ def initial():
         session["generated_ploter_file"] = plot_file
         # show ploter
         session["data_generated"] = True
-        return redirect(url_for("demo.demo"))
     else:
         # pressed button <<Next>>
         # goto financial page
-        pass
+        session["active_domain"] = Subdomain.Domain.financial.name
 
     return redirect(url_for("demo.demo"))
-
-    # return redirect(url_for("demo.financial_select_features"))
 
 
 @demo_blueprint.route("/generated_ploter_image", methods=["GET"])

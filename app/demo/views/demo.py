@@ -20,7 +20,11 @@ def demo():
     form.models = ModelType.query.all()
     form.subdomain_id.choices = [(s.id, s.name) for s in form.subdomains]
     form.model_type.choices = [(m.name, m.name) for m in form.models]
-    form.active_domain = session.get("active_domain", "initial")
+    form.active_domain = session.get("active_domain", Subdomain.Domain.initial.name)
+
+    # if we have generated files
+    generated_background_file = session.get("generated_background_file", None)
+    generated_explainer_file = session.get("generated_explainer_file", None)
 
     if form.validate_on_submit():
         session["subdomain"] = form.subdomain_id.data
@@ -28,13 +32,20 @@ def demo():
         session["active_domain"] = form.domain.data
         bkg_file = request.files.get("bkg_file")
         if not bkg_file:
-            flash("Need select background file", "warning")
-            return render_template("demo.html", form=form)
+            if generated_background_file:
+                bkg_file = open(generated_background_file, "rb")
+            else:
+                flash("Need select background file", "warning")
+                return render_template("demo.html", form=form, form_initial=form_initial)
         explainer_file = request.files.get("explainer_file")
         if not explainer_file:
-            flash("Need select explainer file", "warning")
-            return render_template("demo.html", form=form)
+            if generated_explainer_file:
+                explainer_file = open(generated_explainer_file, "rb")
+            else:
+                flash("Need select explainer file", "warning")
+                return render_template("demo.html", form=form, form_initial=form_initial)
 
+        session["data_generated"] = False
         return redirect_select_features(
             file_value=bkg_file,
             file_explainer=explainer_file,
