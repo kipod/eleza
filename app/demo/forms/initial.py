@@ -15,4 +15,5 @@ class InitialForm(FlaskForm):
         validators=[FileAllowed(["*"], "Upload file")],
     )
 
+    generate = SubmitField("Generate")
     next = SubmitField("Next")

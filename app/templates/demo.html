@@ -108,7 +108,11 @@
                 <tr>
                   <td></td>
                   <td>
-                    {{ form_initial.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }}
+                    {% if form_initial.generated %}
+                      {{ form_initial.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }}
+                    {% else %}
+                      {{ form_initial.generate(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }}
+                    {% endif %}
                   </td>
                 </tr>
               </table>

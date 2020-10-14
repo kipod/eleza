@@ -10,17 +10,29 @@ from .blueprint import demo_blueprint
 def initial():
     form = InitialForm(request.form)
     session["active_domain"] = form.domain.data
-    if not form.validate_on_submit():
-        flash("Invalid data", "warning")
+    if form.generate.data:
+        # pressed button <<Generate>>
+        if not form.validate_on_submit():
+            flash("Invalid data", "warning")
+            return redirect(url_for("demo.demo"))
+        model_file = request.files.get("model_file")
+        if not model_file:
+            flash("Need select model file", "warning")
+            return redirect(url_for("demo.demo"))
+        dataset_file = request.files.get("dataset_file")
+        if not dataset_file:
+            flash("Need select dataset file", "warning")
+            return redirect(url_for("demo.demo"))
+        # process files
+        # store path to files in the session
+        # show ploter
+        session["data_generated"] = True
         return redirect(url_for("demo.demo"))
-    model_file = request.files.get("model_file")
-    if not model_file:
-        flash("Need select model file", "warning")
-        return redirect(url_for("demo.demo"))
-    dataset_file = request.files.get("dataset_file")
-    if not dataset_file:
-        flash("Need select dataset file", "warning")
-        return redirect(url_for("demo.demo"))
+    else:
+        # pressed button <<Next>>
+        # goto financial page
+        pass
 
     return redirect(url_for("demo.demo"))
+
     # return redirect(url_for("demo.financial_select_features"))
