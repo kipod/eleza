@@ -32,6 +32,8 @@ admin.add_view(ElezaModelView(ModelType, db.session))
 
 
 # flask cli context setup
+
+
 @app.shell_context_processor
 def get_context():
     """Objects exposed here will be automatically available from the shell."""
