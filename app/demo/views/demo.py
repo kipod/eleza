@@ -15,6 +15,7 @@ from .blueprint import demo_blueprint
 def demo():
     form = SubdomainChoiceForm(request.form)
     form_initial = InitialForm(request.form)
+    form_initial.generated = session.get("data_generated", False)
     form.subdomains = Subdomain.query.all()
     form.models = ModelType.query.all()
     form.subdomain_id.choices = [(s.id, s.name) for s in form.subdomains]

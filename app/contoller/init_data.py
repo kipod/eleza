@@ -11,17 +11,15 @@ import matplotlib.pyplot as plt  # for custom graphs at the end
 from app.logger import log
 
 
-PATH_TO_RESULT = os.environ.get("PATH_TO_RESULT", "results")
+PATH_TO_RESULT = os.path.abspath(os.environ.get("PATH_TO_RESULT", "results"))
 
 
-def generate_bkg_exp(path_to_pkl, path_to_data):
+def generate_bkg_exp(file_pkl, file_data):
     # LOAD PKL FILE
-    xgb_model = None
-    with open(path_to_pkl, "rb") as f:
-        xgb_model = pickle.load(f)
+    xgb_model = pickle.load(file_pkl)
 
     # Separate test (evaluation) dataset that doesn't include the output
-    test_data = pd.read_csv(path_to_data)
+    test_data = pd.read_csv(file_data)
 
     # Choose the same columns you trained the model with
     start_time = datetime.now()
@@ -45,8 +43,8 @@ def generate_bkg_exp(path_to_pkl, path_to_data):
     shap.initjs()
 
     # summarize the effects of all the features
-    # fig = shap.summary_plot(shap_values_XGB_test, X_new, show=False)
+    shap.summary_plot(shap_values_XGB_test, X_new, show=False)
     plot_file = os.path.join(PATH_TO_RESULT, f"plot_{file_uuid}.png")
-    plt.savefig(plot_file)
+    plt.savefig(plot_file, bbox_inches='tight')
 
     return background_file, explainer_file, plot_file

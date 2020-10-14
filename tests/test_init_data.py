@@ -1,5 +1,6 @@
 import os
 import pytest
+import tempfile
 from app import create_app
 from app.database import db, db_fill_data
 from app.contoller import generate_bkg_exp
@@ -27,11 +28,18 @@ def client():
 
 
 def test_init_data(client):
-
-    bkg_file, explainer_file, plot_file = generate_bkg_exp(
-        path_to_pkl=TEST_PKL_FILE,
-        path_to_data=TEST_DATA_FILE
-        )
+    bkg_file = None
+    explainer_file = None
+    plot_file = None
+    with open(TEST_PKL_FILE, 'rb') as file_pkl:
+        with open(TEST_DATA_FILE, 'rb') as file_data:
+            with tempfile.NamedTemporaryFile(delete=True) as data_file:
+                data_file.write(file_data.read())
+                data_file.flush()
+                bkg_file, explainer_file, plot_file = generate_bkg_exp(
+                    file_pkl=file_pkl,
+                    file_data=data_file.name
+                    )
     assert bkg_file
     assert explainer_file
     assert plot_file

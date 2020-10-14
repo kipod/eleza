@@ -1,6 +1,9 @@
-from flask import request, redirect, url_for, flash, session
+import tempfile
+
+from flask import request, redirect, url_for, flash, session, send_file
 from flask_login import login_required
 from app.demo.forms import InitialForm
+from app.contoller import generate_bkg_exp
 
 from .blueprint import demo_blueprint
 
@@ -24,7 +27,20 @@ def initial():
             flash("Need select dataset file", "warning")
             return redirect(url_for("demo.demo"))
         # process files
+        bkg_file = None
+        explainer_file = None
+        plot_file = None
+        with tempfile.NamedTemporaryFile(delete=True) as data_file:
+            data_file.write(dataset_file.read())
+            data_file.flush()
+            bkg_file, explainer_file, plot_file = generate_bkg_exp(
+                file_pkl=model_file,
+                file_data=data_file.name
+                )
         # store path to files in the session
+        session["generated_background_file"] = bkg_file
+        session["generated_explainer_file"] = explainer_file
+        session["generated_ploter_file"] = plot_file
         # show ploter
         session["data_generated"] = True
         return redirect(url_for("demo.demo"))
@@ -36,3 +52,9 @@ def initial():
     return redirect(url_for("demo.demo"))
 
     # return redirect(url_for("demo.financial_select_features"))
+
+
+@demo_blueprint.route("/generated_ploter_image", methods=["GET"])
+@login_required
+def generated_plot():
+    return send_file(session["generated_ploter_file"])
