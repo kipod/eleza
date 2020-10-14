@@ -11,7 +11,7 @@ csrf = CSRFProtect()
 
 def create_app(environment="development"):
     from config import config
-    from .views import main_blueprint
+    from .main import main_blueprint
     from .auth.views import auth_blueprint
     from .demo.views import demo_blueprint
     from .auth.models import User, AnonymousUser

@@ -10,6 +10,7 @@ class Subdomain(db.Model, ModelMixin):
     __tablename__ = "subdomain"
 
     class Domain(enum.Enum):
+        initial = "Initial"
         general = "General"
         healthcare = "Healthcare"
         financial = "Financial"
@@ -18,7 +19,7 @@ class Subdomain(db.Model, ModelMixin):
         legal = "Legal"
 
     id = db.Column(db.Integer, primary_key=True)
-    domain = db.Column(Enum(Domain), default=Domain.healthcare)
+    domain = db.Column(Enum(Domain), default=Domain.initial)
     name = db.Column(db.String(64), unique=True, nullable=False)
 
     def __repr__(self):

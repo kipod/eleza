@@ -3,6 +3,8 @@ from wtforms import SelectField, SubmitField, HiddenField, StringField
 from app.models import Subdomain, ModelType
 from flask_wtf.file import FileField, FileAllowed
 
+from .initial import InitialForm  # noqa 401
+
 
 def get_subdomain_names():
     """retrieve list of choices for SelectField
@@ -53,3 +55,4 @@ class CategoriesForm(FlaskForm):
 
 class FinancialSelectFeatures(FlaskForm):
     next = SubmitField("Next")
+
