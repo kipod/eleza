@@ -1,8 +1,5 @@
 import os
-from datetime import datetime
 import subprocess
-
-from app.logger import log
 
 
 PATH_TO_RESULT = os.path.abspath(os.environ.get("PATH_TO_RESULT", "results"))
@@ -21,14 +18,10 @@ def generate_bkg_exp(file_pkl, file_data):
     # LOAD PKL FILE
     cmd = [MODULE_GENERATOR, f"--file-pkl={file_pkl}", f"--file-data={file_data}"]
     try:
-        # my_env = os.environ.copy()
         test_process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        # test_process = subprocess.run(cmd, capture_output=True, timeout=30, shell=True)
-        # test_process.wait()
         outs, errs = test_process.communicate(timeout=10)
         if errs:
             raise ParsingError(errs.decode())
-        # return test_process.returncode == 0
     except subprocess.TimeoutExpired:
         raise ParsingError("TIMEOUT!!!")
 
