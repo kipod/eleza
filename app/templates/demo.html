@@ -90,6 +90,15 @@
               <input id="domain" name="domain" type="hidden" value="initial">
               <table class="table table-hover table-borderless" style="margin-top: 20px;">
                 {% if form_initial.generated %}
+                <tr><td>
+                  <h4>
+                    The following files were generated successfully:
+                    <ul>
+                      <li>Background Dataset file</li>
+                      <li>Explainer Dataset file</li>
+                    </ul>
+                  </h4>
+                </td></tr>
                 <tr>
                   <td>
                     <img src="{{url_for("demo.generated_plot")}}" alt="plotter">
@@ -100,6 +109,9 @@
                   </td>
                 </tr>
                 <tr>
+                  <td>
+                    <a href="{{url_for('demo.refresh_initial')}}"><div class="btn-solid-lg page-scroll form-text-size">Refresh</div></a>
+                  </td>
                   <td>
                       {{ form_initial.next(class="btn-solid-lg page-scroll", style="width: 250px; font-size: 170%;") }}
                   </td>

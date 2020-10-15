@@ -2199,3 +2199,9 @@ a:hover.back-to-top {
 	/* end of extra pages */
 }
 /* end of min-width width 1200px */
+
+.form-text-size {
+	width: 250px;
+	font-size: 170%;
+	text-align: center;
+}

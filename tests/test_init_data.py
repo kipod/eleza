@@ -3,7 +3,7 @@ import pytest
 import tempfile
 from app import create_app
 from app.database import db, db_fill_data
-from app.contoller import generate_bkg_exp
+from app.contoller import generate_bkg_exp, ParsingError
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -33,13 +33,35 @@ def test_init_data(client):
     plot_file = None
     with open(TEST_PKL_FILE, 'rb') as file_pkl:
         with open(TEST_DATA_FILE, 'rb') as file_data:
-            with tempfile.NamedTemporaryFile(delete=True) as data_file:
-                data_file.write(file_data.read())
-                data_file.flush()
-                bkg_file, explainer_file, plot_file = generate_bkg_exp(
-                    file_pkl=file_pkl,
-                    file_data=data_file.name
-                    )
+            with tempfile.NamedTemporaryFile(delete=False) as pkl_file:
+                pkl_file.write(file_pkl.read())
+                pkl_file.close()
+                with tempfile.NamedTemporaryFile(delete=False) as data_file:
+                    data_file.write(file_data.read())
+                    data_file.close()
+                    bkg_file, explainer_file, plot_file = generate_bkg_exp(
+                        file_pkl=pkl_file.name,
+                        file_data=data_file.name
+                        )
     assert bkg_file
     assert explainer_file
     assert plot_file
+
+
+def test_init_data_exception(client):
+    bkg_file = None
+    explainer_file = None
+    plot_file = None
+    with pytest.raises(ParsingError):
+        with open(TEST_DATA_FILE, 'rb') as file_pkl:
+            with open(TEST_DATA_FILE, 'rb') as file_data:
+                with tempfile.NamedTemporaryFile(delete=False) as pkl_file:
+                    pkl_file.write(file_pkl.read())
+                    pkl_file.close()
+                    with tempfile.NamedTemporaryFile(delete=False) as data_file:
+                        data_file.write(file_data.read())
+                        data_file.close()
+                        bkg_file, explainer_file, plot_file = generate_bkg_exp(
+                            file_pkl=pkl_file.name,
+                            file_data=data_file.name
+                            )
