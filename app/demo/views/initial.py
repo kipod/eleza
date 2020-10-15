@@ -3,7 +3,7 @@ import tempfile
 from flask import request, redirect, url_for, flash, session, send_file
 from flask_login import login_required
 from app.demo.forms import InitialForm
-from app.contoller import generate_bkg_exp
+from app.contoller import generate_bkg_exp, ParsingError
 
 from .blueprint import demo_blueprint
 
@@ -32,19 +32,26 @@ def initial():
         bkg_file = None
         explainer_file = None
         plot_file = None
-        with tempfile.NamedTemporaryFile(delete=True) as data_file:
-            data_file.write(dataset_file.read())
-            data_file.flush()
-            bkg_file, explainer_file, plot_file = generate_bkg_exp(
-                file_pkl=model_file,
-                file_data=data_file.name
-                )
+        try:
+            with tempfile.NamedTemporaryFile(delete=False) as data_file:
+                data_file.write(dataset_file.read())
+                data_file.close()
+                bkg_file, explainer_file, plot_file = generate_bkg_exp(
+                    file_pkl=model_file,
+                    file_data=data_file.name
+                    )
+        except ParsingError as error:
+            flash(str(error), "danger")
+            return redirect(url_for("demo.demo"))
         # store path to files in the session
         session["generated_background_file"] = bkg_file
         session["generated_explainer_file"] = explainer_file
         session["generated_ploter_file"] = plot_file
         # show ploter
         session["data_generated"] = True
+        # flash('The following files were generated successfully:', 'success')
+        # flash('Background Dataset file', 'success')
+        # flash('Explainer Dataset file', 'success')
     else:
         # pressed button <<Next>>
         # goto financial page
@@ -57,3 +64,14 @@ def initial():
 @login_required
 def generated_plot():
     return send_file(session["generated_ploter_file"])
+
+
+@demo_blueprint.route("/refresh_initial")
+@login_required
+def refresh_initial():
+    session["active_domain"] = Subdomain.Domain.initial.name
+    session["generated_background_file"] = None
+    session["generated_explainer_file"] = None
+    session["generated_ploter_file"] = None
+    session["data_generated"] = False
+    return redirect(url_for("demo.demo"))

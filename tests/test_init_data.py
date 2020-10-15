@@ -33,9 +33,10 @@ def test_init_data(client):
     plot_file = None
     with open(TEST_PKL_FILE, 'rb') as file_pkl:
         with open(TEST_DATA_FILE, 'rb') as file_data:
-            with tempfile.NamedTemporaryFile(delete=True) as data_file:
+            with tempfile.NamedTemporaryFile(delete=False) as data_file:
                 data_file.write(file_data.read())
                 data_file.flush()
+                data_file.close()
                 bkg_file, explainer_file, plot_file = generate_bkg_exp(
                     file_pkl=file_pkl,
                     file_data=data_file.name

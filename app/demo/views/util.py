@@ -13,6 +13,6 @@ def redirect_select_features(file_value, file_explainer, domain, subdomain_id, m
     session["features_in_file"] = [f.id for f in read_features]
     session["user_data_id"] = user_data.id
     if domain == Subdomain.Domain.healthcare.name:
-        return redirect(url_for("demo.financial_select_features"))
+        return redirect(url_for("demo.select_features"))
     if domain == Subdomain.Domain.financial.name:
         return redirect(url_for("demo.financial_select_features"))

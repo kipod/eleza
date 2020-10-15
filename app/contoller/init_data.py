@@ -14,12 +14,32 @@ from app.logger import log
 PATH_TO_RESULT = os.path.abspath(os.environ.get("PATH_TO_RESULT", "results"))
 
 
+class ParsingError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message
+
+
 def generate_bkg_exp(file_pkl, file_data):
     # LOAD PKL FILE
-    xgb_model = pickle.load(file_pkl)
+    try:
+        xgb_model = pickle.load(file_pkl)
+    except Exception:
+        raise ParsingError(
+            "The model file uploaded cannot be parsed."
+            " Please check you have uploaded the correct file."
+        )
 
     # Separate test (evaluation) dataset that doesn't include the output
-    test_data = pd.read_csv(file_data)
+    try:
+        test_data = pd.read_csv(file_data)
+    except Exception:
+        raise ParsingError(
+            "The Testing Dataset file uploaded cannot be parsed."
+            " Please check you have uploaded the correct file."
+        )
 
     # Choose the same columns you trained the model with
     start_time = datetime.now()
