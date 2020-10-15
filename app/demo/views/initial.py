@@ -33,13 +33,16 @@ def initial():
         explainer_file = None
         plot_file = None
         try:
-            with tempfile.NamedTemporaryFile(delete=False) as data_file:
-                data_file.write(dataset_file.read())
-                data_file.close()
-                bkg_file, explainer_file, plot_file = generate_bkg_exp(
-                    file_pkl=model_file,
-                    file_data=data_file.name
-                    )
+            with tempfile.NamedTemporaryFile(delete=False) as pkl_file:
+                pkl_file.write(model_file.read())
+                pkl_file.close()
+                with tempfile.NamedTemporaryFile(delete=False) as data_file:
+                    data_file.write(dataset_file.read())
+                    data_file.close()
+                    bkg_file, explainer_file, plot_file = generate_bkg_exp(
+                        file_pkl=pkl_file.name,
+                        file_data=data_file.name
+                        )
         except ParsingError as error:
             flash(str(error), "danger")
             return redirect(url_for("demo.demo"))

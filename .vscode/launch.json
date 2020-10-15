@@ -5,6 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "init_file_generator.py",
+            "type": "python",
+            "request": "launch",
+            "program": "init_file_generator.py",
+            "console": "integratedTerminal"
+            "args": [
+                "--file-pkl",
+                "tests/credit_app_explainers.pkl",
+                "--file-data",
+                "tests/cs-test_curated.csv"
+            ]
+        },
+        {
             "name": "debug",
             "type": "python",
             "request": "launch",

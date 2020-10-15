@@ -1,17 +1,12 @@
 import os
-import uuid
 from datetime import datetime
-
-import pandas as pd  # for manipulating data
-import xgboost as xgb  # for building models
-import pickle
-import shap  # SHAP package
-import matplotlib.pyplot as plt  # for custom graphs at the end
+import subprocess
 
 from app.logger import log
 
 
 PATH_TO_RESULT = os.path.abspath(os.environ.get("PATH_TO_RESULT", "results"))
+MODULE_GENERATOR = "./init_file_generator.py"
 
 
 class ParsingError(Exception):
@@ -24,47 +19,32 @@ class ParsingError(Exception):
 
 def generate_bkg_exp(file_pkl, file_data):
     # LOAD PKL FILE
+    cmd = [MODULE_GENERATOR, f"--file-pkl={file_pkl}", f"--file-data={file_data}"]
     try:
-        xgb_model = pickle.load(file_pkl)
-    except Exception:
-        raise ParsingError(
-            "The model file uploaded cannot be parsed."
-            " Please check you have uploaded the correct file."
-        )
+        # my_env = os.environ.copy()
+        test_process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # test_process = subprocess.run(cmd, capture_output=True, timeout=30, shell=True)
+        # test_process.wait()
+        outs, errs = test_process.communicate(timeout=10)
+        if errs:
+            raise ParsingError(errs.decode())
+        # return test_process.returncode == 0
+    except subprocess.TimeoutExpired:
+        raise ParsingError("TIMEOUT!!!")
 
-    # Separate test (evaluation) dataset that doesn't include the output
-    try:
-        test_data = pd.read_csv(file_data)
-    except Exception:
-        raise ParsingError(
-            "The Testing Dataset file uploaded cannot be parsed."
-            " Please check you have uploaded the correct file."
-        )
-
-    # Choose the same columns you trained the model with
-    start_time = datetime.now()
-    X_new = test_data[test_data.columns]
-    ypred = xgb_model.predict(xgb.DMatrix(X_new))
-    test_data["predictions"] = ypred
-    file_uuid = str(uuid.uuid4())
-    background_file = os.path.join(PATH_TO_RESULT, f"background_{file_uuid}.csv")
-    test_data.to_csv(background_file)
-    log(log.DEBUG, "Prediction. Took time: [%s]", datetime.now() - start_time)
-
-    explainerXGB = shap.TreeExplainer(xgb_model)
-    shap_values_XGB_test = explainerXGB.shap_values(X_new)
-
-    df_shap_XGB_test = pd.DataFrame(shap_values_XGB_test, columns=X_new.columns.values)
-    explainer_file = os.path.join(PATH_TO_RESULT, f"explainer_{file_uuid}.csv")
-    df_shap_XGB_test.to_csv(explainer_file)
-
-    # PLOT
-    # load JS visualization code to notebook
-    shap.initjs()
-
-    # summarize the effects of all the features
-    shap.summary_plot(shap_values_XGB_test, X_new, show=False)
-    plot_file = os.path.join(PATH_TO_RESULT, f"plot_{file_uuid}.png")
-    plt.savefig(plot_file, bbox_inches='tight')
+    background_file, explainer_file, plot_file = None, None, None
+    for line in outs.decode().split('\n'):
+        line = line.strip()
+        if PATH_TO_RESULT not in line:
+            continue
+        if not background_file:
+            background_file = line
+            continue
+        if not explainer_file:
+            explainer_file = line
+            continue
+        if not plot_file:
+            plot_file = line
+            continue
 
     return background_file, explainer_file, plot_file
