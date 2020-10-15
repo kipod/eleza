@@ -3,7 +3,7 @@ import subprocess
 
 
 PATH_TO_RESULT = os.path.abspath(os.environ.get("PATH_TO_RESULT", "results"))
-MODULE_GENERATOR = "./init_file_generator.py"
+MODULE_GENERATOR = os.path.abspath("init_file_generator.py")
 
 
 class ParsingError(Exception):
