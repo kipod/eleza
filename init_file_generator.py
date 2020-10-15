@@ -1,4 +1,4 @@
-#!.venv/bin/python3
+#!/usr/local/bin/python
 import os
 import sys
 
