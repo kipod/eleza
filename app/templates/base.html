@@ -85,6 +85,13 @@
           <li class="nav-item">
             <a class="nav-link page-scroll" href="#contact">Contact</a>
           </li>
+
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link page-scroll" href="{{ url_for('auth.logout') }}">Logout<span class="sr-only">(current)</span></a>
+          </li>
+          {% endif %}
+
         </ul>
         <span class="nav-item social-icons">
           <span class="fa-stack">

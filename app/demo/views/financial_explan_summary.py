@@ -49,10 +49,10 @@ def financial_explan_summary():
         prediction_score = int(round(age_case_val.prediction, 2) * 100)
         predicted = "No" if prediction_score < 10 else "Yes"
         prediction_score_color = "green"
-        if prediction_score > 45:
+        if prediction_score >= 10 and prediction_score <= 24:
             prediction_score_color = "yellow"
-            if prediction_score > 70:
-                prediction_score_color = "red"
+        elif prediction_score > 24:
+            prediction_score_color = "red"
 
         row = [
             (patient_id, None),
