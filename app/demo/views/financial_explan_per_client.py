@@ -20,8 +20,19 @@ def financial_explan_per_client(case_id):
         CaseValue.case_id == case_id
     )
 
+    age_feature = Feature.query.filter(Feature.name == "Age").first()
+    age_case_val = all_case_values_query_for_patient.filter(
+        CaseValue.feature_id == age_feature.id
+    ).first()
+    age_case_value = int(age_case_val.value)
+    age_case_explainer = round((age_case_val.explainer * 100), 3)
+
+    form.age_table_row = ["Age", age_case_value, age_case_explainer]
+
     form.table_rows = [[]]
     sum_explainers = 0
+
+    feature_names_in_one_position = []
     for cat_name in form.categories:
         feature_values = []
         for feature_name in form.categories[cat_name]:
@@ -29,10 +40,16 @@ def financial_explan_per_client(case_id):
             case_val = all_case_values_query_for_patient.filter(
                 CaseValue.feature_id == feature.id
             ).first()
-            feature_values.append(feature_name)
-            feature_values.append(str(round(case_val.value, 3)))
-            feature_values.append(round(case_val.explainer * 100, 3))
+            if feature_name in feature_names_in_one_position:
+                pass
+            else:
+                feature_values.append(feature_name)
+                feature_values.append(str(round(case_val.value, 3)))
+                feature_values.append(round(case_val.explainer * 100, 3))
+                feature_names_in_one_position += [feature_name]
+
             sum_explainers += case_val.explainer * 100
+
             if len(feature_name) >= 2:
                 form.table_rows += [feature_values]
                 feature_values = []
@@ -60,5 +77,6 @@ def financial_explan_per_client(case_id):
         "financial_explan_per_client.html",
         form=form,
         total_score_name_client=total_score_name_client,
-        average_default_score=average_default_score
+        average_default_score=average_default_score,
+        age_case_value=age_case_value
     )
