@@ -41,10 +41,14 @@ def financial_explan_per_client(case_id):
                 CaseValue.feature_id == feature.id
             ).first()
             if feature_name in feature_names_in_one_position:
-                pass
+                sum_explainers += case_val.explainer * 100
+                continue
             else:
                 feature_values.append(feature_name)
-                feature_values.append(str(round(case_val.value, 3)))
+                if feature_name == "Age" or feature_name.startswith("Number"):
+                    feature_values.append(int(case_val.value))
+                else:
+                    feature_values.append(str(round(case_val.value, 3)))
                 feature_values.append(round(case_val.explainer * 100, 3))
                 feature_names_in_one_position += [feature_name]
 

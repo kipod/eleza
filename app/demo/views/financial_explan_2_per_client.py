@@ -39,14 +39,24 @@ def financial_explan_2_per_client(case_id):
             case_val = all_case_values_query_for_patient.filter(
                 CaseValue.feature_id == feature.id
             ).first()
-            form.table_rows += [
-                [
-                    "",
-                    feature_name,
-                    round(case_val.value, 3),
-                    round(case_val.explainer * 100, 3),
+            if feature_name == "Age" or feature_name.startswith("Number"):
+                form.table_rows += [
+                    [
+                        "",
+                        feature_name,
+                        int(case_val.value),
+                        round(case_val.explainer * 100, 3),
+                    ]
                 ]
-            ]
+            else:
+                form.table_rows += [
+                    [
+                        "",
+                        feature_name,
+                        round(case_val.value, 3),
+                        round(case_val.explainer * 100, 3),
+                    ]
+                ]
             sum_contribution += case_val.explainer * 100
         sub_head[3] = round(sum_contribution, 3)
         total_contrib += sum_contribution
