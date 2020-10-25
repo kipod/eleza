@@ -16,45 +16,42 @@ def import_data_from_file_stream(
         TextIOWrapper(file_value, encoding="utf-8"), delimiter=","
     )
     read_features = []
-    try:
-        for row in csv_reader:
-            case_id = int(row[""])
-            prediction = row["predictions"]
-            for feature_short_name in feature_names:
-                if feature_short_name in row:
-                    if feature_names[feature_short_name] not in read_features:
-                        read_features += [feature_names[feature_short_name]]
-                    value = float(row[feature_short_name])
-                    case = CaseValue(
-                        case_id=case_id,
-                        value=value,
-                        feature=feature_names[feature_short_name],
-                        subdomain=subdomain,
-                        model_type=model,
-                        user_data=user_data,
-                        prediction=prediction
-                    ).save(False)
+    for row in csv_reader:
+        case_id = int(row[""])
+        prediction = row["predictions"]
+        for feature_short_name in feature_names:
+            if feature_short_name in row:
+                if feature_names[feature_short_name] not in read_features:
+                    read_features += [feature_names[feature_short_name]]
+                value = float(row[feature_short_name])
+                case = CaseValue(
+                    case_id=case_id,
+                    value=value,
+                    feature=feature_names[feature_short_name],
+                    subdomain=subdomain,
+                    model_type=model,
+                    user_data=user_data,
+                    prediction=prediction
+                ).save(False)
 
-        csv_reader = csv.DictReader(
-            TextIOWrapper(file_explainer, encoding="utf-8"), delimiter=","
-        )
-        for row in csv_reader:
-            case_id = int(row[""])
-            for feature_short_name in feature_names:
-                if feature_short_name in row:
-                    explainer = float(row[feature_short_name])
-                    case = (
-                        CaseValue.query.filter(CaseValue.case_id == case_id)
-                        .filter(CaseValue.subdomain == subdomain)
-                        .filter(CaseValue.model_type == model)
-                        .filter(CaseValue.feature == feature_names[feature_short_name])
-                        .filter(CaseValue.user_data == user_data)
-                        .first()
-                    )
-                    assert case
-                    case.explainer = explainer
-    except Exception:
-        return
+    csv_reader = csv.DictReader(
+        TextIOWrapper(file_explainer, encoding="utf-8"), delimiter=","
+    )
+    for row in csv_reader:
+        case_id = int(row[""])
+        for feature_short_name in feature_names:
+            if feature_short_name in row:
+                explainer = float(row[feature_short_name])
+                case = (
+                    CaseValue.query.filter(CaseValue.case_id == case_id)
+                    .filter(CaseValue.subdomain == subdomain)
+                    .filter(CaseValue.model_type == model)
+                    .filter(CaseValue.feature == feature_names[feature_short_name])
+                    .filter(CaseValue.user_data == user_data)
+                    .first()
+                )
+                assert case
+                case.explainer = explainer
 
     db.session.commit()
     log(log.INFO, "Import data successfull for %s[%s]", subdomain.domain, subdomain_id)
