@@ -2,6 +2,8 @@ from flask import session, redirect, url_for, flash
 from app.contoller import import_data_from_file_stream
 from app.models import Subdomain
 
+from app.logger import log
+
 
 def redirect_select_features(
     file_value, file_explainer, domain, subdomain_id, model_type
@@ -15,6 +17,7 @@ def redirect_select_features(
             model_type=model_type,
         )
     except Exception:
+        log(log.ERROR, "The Testing Dataset file uploaded cannot be parsed")
         flash(
             "The Testing Dataset file uploaded cannot be parsed."
             " Please check you have uploaded the correct file.",
