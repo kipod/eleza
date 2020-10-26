@@ -122,15 +122,6 @@
                 <th>Contributions</th>
               </thead>
               <tbody style="background-color: #FFFAFA; color: rgb(32, 28, 20); text-align: left;">
-
-                <tr>
-                  {% for cell in form.age_table_row %}
-                    <td>
-                      {{cell}}
-                    </td>
-                  {% endfor %}
-                </tr>
-
               {% for row in form.table_rows %}
                 <tr>
                     {% if row[1] == "" %}
