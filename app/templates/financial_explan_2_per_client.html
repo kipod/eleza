@@ -90,15 +90,6 @@ border: 3px solid #00BFFF;
                   {% endfor %}
                 </thead>
                 <tbody>
-
-                  <tr>
-                    {% for cell in form.age_table_row %}
-                      <td>
-                        {{cell}}
-                      </td>
-                    {% endfor %}
-                  </tr>
-
                   {% for table_row in form.table_rows %}
                   <tr>
                     {% for cell in table_row %}
