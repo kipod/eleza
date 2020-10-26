@@ -22,15 +22,6 @@ def financial_explan_2_per_client(case_id):
         CaseValue.case_id == case_id
     )
 
-    # age_feature = Feature.query.filter(Feature.name == "Age").first()
-    # age_case_val = all_case_values_query_for_patient.filter(
-    #     CaseValue.feature_id == age_feature.id
-    # ).first()
-    # age_case_value = int(age_case_val.value)
-    # age_case_explainer = round((age_case_val.explainer * 100), 3)
-
-    # form.age_table_row = ["", "Age", age_case_value, age_case_explainer]
-
     form.table_heads = ["Categories", "Characteristics", "Attributes", "Contributions"]
     form.table_rows = []
     total_contrib = 0
