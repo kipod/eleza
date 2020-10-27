@@ -19,8 +19,7 @@ def redirect_select_features(
     except Exception:
         log(log.ERROR, "The Testing Dataset file uploaded cannot be parsed")
         flash(
-            "The Testing Dataset file uploaded cannot be parsed."
-            " Please check you have uploaded the correct file.",
+            "Incorrect file(s) Loaded. Please upload correct file(s).",
             "danger"
         )
         return redirect(url_for("demo.demo"))
