@@ -40,11 +40,13 @@ def initial():
                     data_file.write(dataset_file.read())
                     data_file.close()
                     bkg_file, explainer_file, plot_file = generate_bkg_exp(
-                        file_pkl=pkl_file.name,
-                        file_data=data_file.name
-                        )
-        except ParsingError as error:
-            flash(str(error), "danger")
+                        file_pkl=pkl_file.name, file_data=data_file.name
+                    )
+        except ParsingError:
+            flash(
+                "The Testing Dataset file uploaded cannot be parsed. Please check you have uploaded the correct file.",
+                "danger",
+            )
             return redirect(url_for("demo.demo"))
         # store path to files in the session
         session["generated_background_file"] = bkg_file

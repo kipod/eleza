@@ -26,7 +26,8 @@ def test_index_page(client):
     assert b'Registration successful' in response.data
     logout(client)
     response = login(client, 'sam')
-    assert b'Login successful.' in response.data
+    assert b'Initial' in response.data
+    assert b'Generate' in response.data
     response = client.get('/')
     assert response.status_code == 200
 
@@ -66,10 +67,10 @@ def test_login_and_logout(client):
     register(client, 'sam', 'sam@example.com')
     # Should successfully logout the currently logged in user.
     response = logout(client)
-    assert b'You were logged out.' in response.data
+    assert b'demo' in response.data
     # Incorrect login credentials should fail.
     response = login(client, 'sam@example.com', 'wrongpassword')
     assert b'Wrong user ID or password.' in response.data
     # Correct credentials should login
     response = login(client, 'sam')
-    assert b'Login successful.' in response.data
+    assert b'Initial' in response.data
